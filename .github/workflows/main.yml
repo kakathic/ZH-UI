@@ -1,0 +1,16 @@
+name: CI
+on:
+  push:
+    branches: [ "Vip" ]
+  pull_request:
+    branches: [ "Vip" ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Shell
+        run: |
+          chmod 777 install.sh
+          . install.sh
