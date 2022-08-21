@@ -12,5 +12,5 @@ jobs:
       - uses: actions/checkout@v3
       - name: Run Shell
         run: |
-          chmod 777 install.sh
+          chmod -R 777 *.sh
           . install.sh
