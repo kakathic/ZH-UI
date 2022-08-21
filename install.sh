@@ -18,7 +18,9 @@ mkdir -p $Vak
 done
 
 echo "Tải file bổ sung..."
-pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome
+
+pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome >/dev/null
+pkg install zstd binutils android-tools e2fsprogs >/dev/null
 
 #Taive "$(Getpro Http)" "$Likk/rom.zip"
 #unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
@@ -30,7 +32,7 @@ pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome
 
 . $Likk/Repack.sh
 
-
+ls /bin > bin.txt
 
 
 
