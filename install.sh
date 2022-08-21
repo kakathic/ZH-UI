@@ -19,6 +19,8 @@ done
 
 echo "Tải file bổ sung..."
 
+sudo apt update >/dev/null
+sudo apt-get update >/dev/null
 pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome >/dev/null
 sudo apt install zstd binutils e2fsprogs >/dev/null
 
