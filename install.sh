@@ -20,8 +20,8 @@ done
 echo "Tải file bổ sung..."
 
 pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome >/dev/null
-sudo apt-get install -y zstd binutils e2fsprogs erofs-utils >/dev/null
-apt search android-sdk-ext4-utils
+sudo apt-get install -y zstd binutils e2fsprogs erofs-utils make >/dev/null
+
 #Taive "$(Getpro Http)" "$Likk/rom.zip"
 #unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
 #ls "$Likk/Unzip"
