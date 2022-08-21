@@ -20,6 +20,7 @@ Taive "$(Getpro Http)" "$Likk/rom.zip"
 
 unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
 
+ls "$Likk/Unzip"
 
 
 
