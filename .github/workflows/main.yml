@@ -14,3 +14,9 @@ jobs:
         run: |
           chmod -R 777 *.sh
           . install.sh
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: Zom_Edit
+          path: bin.txt
+          retention-days: 5
