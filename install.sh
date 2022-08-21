@@ -17,9 +17,12 @@ for Vak in $ListTM; do
 mkdir -p $Vak
 done
 
-Taive "$(Getpro Http)" "$Likk/rom.zip"
-unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
-ls "$Likk/Unzip"
+echo "Tải file bổ sung..."
+pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome
+
+#Taive "$(Getpro Http)" "$Likk/rom.zip"
+#unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
+#ls "$Likk/Unzip"
 
 . $Likk/Unpack.sh
 
