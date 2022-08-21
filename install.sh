@@ -20,7 +20,7 @@ done
 echo "Tải file bổ sung..."
 
 pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome >/dev/null
-sudo apt-get install -y zstd binutils e2fsprogs erofs-utils android-sdk-ext4-utils android-sdk >/dev/null
+sudo apt-get install -y zstd binutils e2fsprogs erofs-utils android-sdk-ext4-utils >/dev/null
 
 #Taive "$(Getpro Http)" "$Likk/rom.zip"
 #unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
@@ -32,7 +32,14 @@ sudo apt-get install -y zstd binutils e2fsprogs erofs-utils android-sdk-ext4-uti
 
 . $Likk/Repack.sh
 
-ls /bin > bin.txt
+e2fsck | tee -a bin.txt
+dump.erofs | tee -a bin.txt
+fsck.erofs | tee -a bin.txt
+make_ext4fs | tee -a bin.txt
+mkfs.erofs | tee -a bin.txt
+tune2fs | tee -a bin.txt
+resize2fs | tee -a bin.txt
+ls /bin | tee -a bin.txt
 
 
 
