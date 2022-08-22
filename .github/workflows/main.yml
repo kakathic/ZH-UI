@@ -1,12 +1,5 @@
 name: CI Auto
-
 on: 
-  label:
-    types:
-      - edited
-  push:
-    branches:
-      - Vip
   workflow_dispatch:
 jobs:
   build:
