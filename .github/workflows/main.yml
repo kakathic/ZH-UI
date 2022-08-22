@@ -1,33 +1,16 @@
 name: CI
-on:
-  push:
-    branches: [ "Vip" ]
-  pull_request:
-    branches: [ "Vip" ]
-  workflow_dispatch:
+
+on: [push]
+
 jobs:
   build:
-    runs-on: ubuntu-latest
-    name: Archarm
+    runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v2.1.0
-      - uses: uraimo/run-on-arch-action@v2
-        name: Run commands
-        id: runcmd
-        with:
-          arch: aarch64
-          distro: archarm_latest
-          githubToken: ${{ github.token }}
-          run: |
-            uname -a
-            echo ::set-output name=uname::$(uname -a)
-      - name: Run Shell
-        run: |
-          chmod -R 777 *.sh
-          . install.sh
-      - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v3
-        with:
-          name: Zom_Edit
-          path: bin.txt
-          retention-days: 5
+    - uses: actions/checkout@v1
+    - name: Install Archlinux
+      run: curl -L https://github.com/zaoqi/github-actions-archlinux/raw/master/install.sh | sh
+    - name: Docker hello-world
+      run: |
+        sudo pacman --noconfirm -Syu docker
+        sudo systemctl start docker
+        docker run --rm hello-world
