@@ -17,7 +17,9 @@ for Vak in $ListTM; do
 mkdir -p $Vak
 done
 
-echo "Tải file bổ sung..."
+echo "
+Tải file bổ sung...
+"
 
 sudo apt-get update >/dev/null
 sudo apt-get install zstd binutils e2fsprogs erofs-utils python3-pip >/dev/null
@@ -28,7 +30,9 @@ Taive "$(Getpro Http)" "$Likk/rom.zip"
 unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
 ls "$Likk/Unzip"
 
-echo "Tên máy chủ"
+echo "
+Tên máy chủ
+"
 uname -a
 echo ::set-output name=uname::$(uname -a)
 echo
