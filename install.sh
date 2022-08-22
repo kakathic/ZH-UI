@@ -46,3 +46,6 @@ echo
 . $Likk/Unpack.sh
 . $Likk/Mod.sh
 . $Likk/Repack.sh
+
+
+find $Likk > $Likk/bin.txt
