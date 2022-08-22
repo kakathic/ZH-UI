@@ -1,5 +1,5 @@
 # kakathic
-
+env
 Likk="$GITHUB_WORKSPACE"
 
 Taive(){ curl -s -L "$1" -o "$2"; }
