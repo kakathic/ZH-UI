@@ -18,8 +18,6 @@ mkdir -p $Vak
 done
 
 echo "Tải file bổ sung..."
-uname -a
-echo ::set-output name=uname::$(uname -a)
 
 sudo apt-get update >/dev/null
 sudo apt-get install zstd binutils e2fsprogs erofs-utils >/dev/null
@@ -28,6 +26,11 @@ pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome >/
 Taive "$(Getpro Http)" "$Likk/rom.zip"
 unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
 ls "$Likk/Unzip"
+
+echo "Tên máy chủ"
+uname -a
+echo ::set-output name=uname::$(uname -a)
+echo
 
 . $Likk/Unpack.sh
 . $Likk/Mod.sh
