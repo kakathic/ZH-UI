@@ -16,7 +16,7 @@ jobs:
         id: runcmd
         with:
           arch: aarch64
-          distro: alpine_latest
+          distro: archarm_latest
           githubToken: ${{ github.token }}
           run: |
             uname -a
