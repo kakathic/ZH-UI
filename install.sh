@@ -17,17 +17,13 @@ for Vak in $ListTM; do
 mkdir -p $Vak
 done
 
-
-set PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
-
 echo "
 Tải file bổ sung...
 "
 
 sudo apt-get update >/dev/null
-sudo apt-get install zstd binutils e2fsprogs erofs-utils python3-pip >/dev/null
+sudo apt-get install zstd binutils e2fsprogs erofs-utils >/dev/null
 pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome >/dev/null
-pip install --upgrade pip
 
 echo "pycryptodome
 docopt
