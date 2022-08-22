@@ -22,7 +22,7 @@ uname -a
 echo ::set-output name=uname::$(uname -a)
 
 sudo apt-get update >/dev/null
-sudo apt-get install -y zstd binutils e2fsprogs android-sdk-ext4-utils libc6 libuuid1 libselinux1 liblz4-1 >/dev/null
+sudo apt-get install -y zstd binutils e2fsprogs >/dev/null
 pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome >/dev/null
 
 #Taive "$(Getpro Http)" "$Likk/rom.zip"
@@ -33,9 +33,7 @@ pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome >/
 . $Likk/Mod.sh
 . $Likk/Repack.sh
 
-
-dump.erofs
-fsck.erofs
+make_ext4fs
 
 ls /bin >> bin.txt
 
