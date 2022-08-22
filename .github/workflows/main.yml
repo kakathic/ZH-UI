@@ -4,13 +4,10 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Install Archlinux
-      run: curl -L https://github.com/zaoqi/github-actions-archlinux/raw/master/install.sh | sh
-    - name: Docker hello-world
-      run: |
-        sudo pacman --noconfirm -Syu docker
-        sudo systemctl start docker
-        docker run --rm hello-world
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Validate package
+        uses: hapakaien/archlinux-package-action@v2
