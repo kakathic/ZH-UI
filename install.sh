@@ -20,13 +20,9 @@ done
 echo "Tải file bổ sung..."
 
 sudo apt-get update >/dev/null
-sudo apt-get install zstd binutils e2fsprogs erofs-utils >/dev/null
-
-sudo -H pip3 install --upgrade pip
-sudo -H pip2 install --upgrade pip
-
+sudo apt-get install zstd binutils e2fsprogs erofs-utils python3-pip >/dev/null
 pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome >/dev/null
-
+pip install --upgrade pip
 
 Taive "$(Getpro Http)" "$Likk/rom.zip"
 unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
