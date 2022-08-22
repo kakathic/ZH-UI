@@ -29,6 +29,11 @@ sudo apt-get install zstd binutils e2fsprogs erofs-utils python3-pip >/dev/null
 pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome >/dev/null
 pip install --upgrade pip
 
+echo "pycryptodome
+docopt
+protobuf<=3.20.1" > requirements.txt
+pip3 -r requirements.txt
+
 Taive "$(Getpro Http)" "$Likk/rom.zip"
 unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
 ls "$Likk/Unzip"
