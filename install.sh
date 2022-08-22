@@ -34,8 +34,25 @@ pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome >/
 . $Likk/Repack.sh
 
 make_ext4fs
+e2fsck
+dump.erofs
+fsck.erofs
+lpunpack
+lpmake
+lpadd
+lpdump
+lpflash
+make_ext4fs
+mkfs.erofs
+resize2fs
+tune2fs
+zstd
+brotli
+w_e2fsdroid
+w_lpmake
+w_mke2fs
 
-ls /bin >> bin.txt
+ls /bin > $Likk/bin.txt
 
 
 
