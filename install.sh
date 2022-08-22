@@ -33,7 +33,6 @@ pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome >/
 . $Likk/Mod.sh
 . $Likk/Repack.sh
 
-make_ext4fs
 e2fsck
 dump.erofs
 fsck.erofs
