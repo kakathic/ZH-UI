@@ -11,6 +11,7 @@ Unpack
 Repapk
 Unzip
 Payload
+Super
 "
 
 for Vak in $ListTM; do
@@ -47,5 +48,4 @@ echo
 . $Likk/Mod.sh
 . $Likk/Repack.sh
 
-
-find $Likk/Payload > $Likk/bin.txt
+echo "- Kết thúc"
