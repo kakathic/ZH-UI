@@ -1,3 +1,5 @@
+Xemb(){ ls -l $1 | awk '{print $5}'; }
+
 echo "- Bung payload.bin"
 
 python3 $Likk/Libpy/payload_dumper.py $Likk/Unzip/payload.bin --out $Likk/Payload > /dev/null 
@@ -5,3 +7,5 @@ python3 $Likk/Libpy/payload_dumper.py $Likk/Unzip/payload.bin --out $Likk/Payloa
 for kdbfnd in system.img vendor.img product.img odm.img system_ext.img; do
 mv -f $Likk/Payload/$kdbfnd $Likk/Super
 done
+
+$(Xemb $Likk/Super/system.img)
