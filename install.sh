@@ -17,6 +17,9 @@ for Vak in $ListTM; do
 mkdir -p $Vak
 done
 
+
+set PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+
 echo "
 Tải file bổ sung...
 "
