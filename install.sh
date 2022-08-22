@@ -1,5 +1,5 @@
 # kakathic
-env
+
 Likk="$GITHUB_WORKSPACE"
 
 Taive(){ curl -s -L "$1" -o "$2"; }
@@ -20,8 +20,10 @@ done
 echo "Tải file bổ sung..."
 
 sudo apt-get update >/dev/null
-sudo apt-get install -y zstd binutils e2fsprogs erofs-utils android-libcutils android-libselinux android-libext4-utils libc6 >/dev/null
+sudo apt-get install -y zstd binutils e2fsprogs android-tools-fsutils >/dev/null
 pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome >/dev/null
+
+dnf install erofs-utils
 
 #Taive "$(Getpro Http)" "$Likk/rom.zip"
 #unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
@@ -31,14 +33,11 @@ pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome >/
 . $Likk/Mod.sh
 . $Likk/Repack.sh
 
-e2fsck | tee -a bin.txt
-dump.erofs | tee -a bin.txt
-fsck.erofs | tee -a bin.txt
-make_ext4fs | tee -a bin.txt
-mkfs.erofs | tee -a bin.txt
-tune2fs | tee -a bin.txt
-resize2fs | tee -a bin.txt
-ls /bin | tee -a bin.txt
+
+dump.erofs
+fsck.erofs
+
+ls /bin >> bin.txt
 
 
 
