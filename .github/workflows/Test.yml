@@ -1,0 +1,17 @@
+name: Test Auto
+on: 
+  workflow_dispatch:
+jobs:
+  name: Test command
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run Shell
+        run: |
+          chmod -R 777 bin/*
+          export PATH="$GITHUB_WORKSPACE/bin:$PATH"
+          chmod -R 777 *.sh
+          . Test.sh
+
