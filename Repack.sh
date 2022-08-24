@@ -30,7 +30,7 @@ mamay=$(grep 'pre-device' /Unzip/*/*/*/metadata | awk -F= '{print $2}');
 
 # Cập nhật zip flash
 mkdir -p $Likk/tmp
-unzip -qo Flash_2in1.zip -d $Likk/tmp 
+unzip -qo /Lib/Flash_2in1.zip -d $Likk/tmp 
 sed -i "s|Device:|Device: $mamay|; s|ROM : MIUI China|ROM: MIUI $ten|" $Likk/tmp/*/*/*/update-binary 
 [ -s $Likk/super.img ] && zstd -10 $Likk/super.img -o $Likk/tmp/images/super.img.zst 
 # rm -f $Likk/Payload/vbmeta.img vbmeta_system.img 2> /dev/null 
