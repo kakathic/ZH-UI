@@ -26,5 +26,9 @@ lpmake -d "$super_raw_size" -s "$sokhe" -m 65536 -g "$nhom":"$super_size" --supe
 
 # Cập nhật zip flash
 mkdir -p $Likk/tmp
-unzip -qo Flash_2in1.zip -d $Likk/tmp
-[ -s $Likk/super.img ] && mv -f $Likk/super.img $Likk/tmp/images 
+unzip -qo Flash_2in1.zip -d $Likk/tmp 
+[ -s $Likk/super.img ] && zstd -10 $Likk/super.img -o $Likk/tmp/images/super.img.zst 
+# rm -f $Likk/Payload/vbmeta.img vbmeta_system.img 2> /dev/null 
+mv -f $Likk/Payload/* $Likk/tmp/images 
+cd $Likk/tmp 
+zip -9qr $Likk/$ten * 
