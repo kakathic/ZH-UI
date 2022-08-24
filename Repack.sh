@@ -13,19 +13,19 @@ Chedo=none
 # Kích cỡ phân vùng super 8.5GB
 Ssize=8.5
 
-# Tạo super.img
-taosuper() { lpmake -d "$Ssuperr" -s "$Sokhe" -m 65536 -g "$Nhom":"$Ssuper" --super-name super -p system:"$Chedo":"$Ssystem":"$Nhom" -i system=system.img -p system_ext:"$Chedo":"$Ssystem_ext":"$Nhom" -i system_ext=system_ext.img -p vendor:"$Chedo":"$Svendor":"$Nhom" -i vendor=vendor.img -p product:"$Chedo":"$Sproduct":"$Nhom" -i product=product.img -p odm:"$Shedo":"$Sodm":"$Nhom" -i odm=odm.img -o $Likk/super.img; } 
+# Kiểm tra kích cỡ 
+tongkichco() { Ssuper="$(ls -l $Likk/Super | sed -n 1p | awk '{print int($2)}')" 2> /dev/null; } 
 
-# Kiểm tra kích cỡ và tạo super.img 
-tongkichco() { Ssuper="$(ls -l $Likk/Super | sed -n 1p | awk '{print int($2)}')" > $Likk/tmp/super_size.txt; } 
+kichcosuper() { Ssuperr="$(awk "BEGIN {print int($Ssize*1024*1024*1024)}")" 2> /dev/null; } 
 
-kichcosuper() { Ssuperr="$(awk "BEGIN {print int($Ssize*1024*1024*1024)}")" > $Likk/tmp/super_raw_size.txt; } 
-
-kichco() { for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && TEN=$(echo $EXT | awk -F. '{print $1}') && S${TEN}=$(wc -c < $Likk/Super/$TEN.img) > $Likk/tmp/${TEN}_size.txt; done; } 
+kichco() { for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && TEN=$(echo $EXT | awk -F. '{print $1}') && S${TEN}=$(wc -c < $Likk/Super/$TEN.img) 2> /dev/null; done; } 
 
 giamthieu() { for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && resize2fs -f -M $Likk/Super/$EXT > /dev/null 2>&1 && resize2fs -f -M $Likk/Super/$EXT > /dev/null 2>&1; done; } 
  
-tangkichco() { for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && TEN=$(echo $EXT | awk -F. '{print $1}') && S${TEN}=$(wc -c < $Likk/Super/$TEN.img) > $Likk/tmp/${TEN}_size.txt && resize2fs -f $Likk/Super/$TEN.img $(expr "$S${TEN}" * 1024 + 200)M > /dev/null 2>&1; done; } 
+tangkichco() { for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && TEN=$(echo $EXT | awk -F. '{print $1}') && S${TEN}=$(wc -c < $Likk/Super/$TEN.img) 2> /dev/null && resize2fs -f $Likk/Super/$TEN.img $(awk "BEGIN {print int(${S$TEN}*1024+200)}")M > /dev/null 2>&1; done; } 
+
+# Tạo super.img
+taosuper() { lpmake -d "$Ssuperr" -s "$Sokhe" -m 65536 -g "$Nhom":"$Ssuper" --super-name super -p system:"$Chedo":"$Ssystem":"$Nhom" -i system=system.img -p system_ext:"$Chedo":"$Ssystem_ext":"$Nhom" -i system_ext=system_ext.img -p vendor:"$Chedo":"$Svendor":"$Nhom" -i vendor=vendor.img -p product:"$Chedo":"$Sproduct":"$Nhom" -i product=product.img -p odm:"$Shedo":"$Sodm":"$Nhom" -i odm=odm.img -o $Likk/super.img; } 
 
 kichcosuper && giamthieu && tangkichco && kichco && tongkichco 
 
