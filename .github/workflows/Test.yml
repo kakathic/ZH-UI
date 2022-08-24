@@ -1,4 +1,4 @@
-name: Test Code
+name: 'Test CODE'
 on: 
   workflow_dispatch:
 jobs:
@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: 'Chạy code shell'
+      - name: 'Xem thông báo'
         run: |
           chmod -R 777 bin/*
           export PATH="$GITHUB_WORKSPACE/bin:$PATH"
