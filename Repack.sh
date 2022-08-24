@@ -12,7 +12,7 @@ taosuper() { lpmake -d "$super_raw_size" -s "$sokhe" -m 65536 -g "$nhom":"$super
 
 giamthieu() { resize2fs -f -M $Likk/Super/$TEN.img > /dev/null 2>&1 && resize2fs -f -M $Likk/Super/$TEN.img > /dev/null 2>&1; } 
 
-tangkichco() { resize2fs -f $Likk/Super/$TEN.img $(expr (${TEN}_size * 1024 + 200)M > /dev/null 2>&1; } 
+tangkichco() { resize2fs -f $Likk/Super/$TEN.img $(expr ${TEN}_size * 1024 + 200)M > /dev/null 2>&1; } 
 
 # Tính kích cỡ từng tập tin 
 kichco() { ${TEN}_size=$(wc -c < $Likk/Super/$TEN.img); } 
