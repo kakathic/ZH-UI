@@ -16,18 +16,18 @@ taosuper() { lpmake -d "$super_raw_size" -s "$sokhe" -m 65536 -g "$nhom":"$super
 # Kiểm tra kích cỡ và tạo super.img 
 giamthieu() { resize2fs -f -M $Likk/Super/$TEN.img > /dev/null 2>&1 && resize2fs -f -M $Likk/Super/$TEN.img > /dev/null 2>&1; } 
 
-tangkichco() { resize2fs -f $Likk/Super/$TEN.img $(expr ${TEN}_size * 1024 + 200)M > /dev/null 2>&1; } 
+tangkichco() { resize2fs -f $Likk/Super/$TEN.img $(expr size_$TEN * 1024 + 200)M > /dev/null 2>&1; } 
 
 cd $Likk/Super 
 for EXT in system.img vendor.img product.img system_ext.img odm.img; do 
 TEN=$(echo $EXT | awk -F. '{print $1}'); 
-size_${TEN}=$(wc -c < $Likk/Super/$TEN.img);
+size_$TEN=$(wc -c < $Likk/Super/$TEN.img);
 [ -s $Likk/Super/$EXT ] && giamthieu
 done 
 
 for EXT in system.img vendor.img system_ext.img; do 
 TEN=$(echo $EXT | awk -F. '{print $1}'); 
-size_${TEN}=$(wc -c < $Likk/Super/$TEN.img);
+size_$TEN=$(wc -c < $Likk/Super/$TEN.img);
 [ -s $Likk/Super/$EXT ] && tangkichco 
 done 
 
@@ -40,7 +40,7 @@ else
 cd $Likk/Super
 for EXT in system.img vendor.img product.img system_ext.img odm.img; do 
 TEN=$(echo $EXT | awk -F. '{print $1}'); 
-size_${TEN}=$(wc -c < $Likk/Super/$TEN.img);
+size_$TEN=$(wc -c < $Likk/Super/$TEN.img);
 [ -s $Likk/Super/$EXT ] && giamthieu 
 done 
 super_raw_size=$(awk "BEGIN {print int($ssize*1024*1024*1024)}"); 
