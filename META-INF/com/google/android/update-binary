@@ -1,0 +1,132 @@
+#!/sbin/sh
+
+OUTFD=/proc/self/fd/$2
+ZIPFILE="$3"
+
+ui_print() {
+  echo -e "ui_print $1\nui_print" >>$OUTFD
+}
+
+package_extract_file() {
+  ui_print " - Trích xuất $(echo $1 | awk -F "/" '{print $NF}') đến $(echo $2 | awk -F "/" '{print $NF}') phân vùng"
+  unzip -p "$ZIPFILE" $1 >$2
+}
+
+package_extract_zstd() {
+  ui_print " - Trích xuất $(echo $1 | awk -F "/" '{print $NF}') đến $(echo $2 | awk -F "/" '{print $NF}') phân vùng"
+  unzip -p "$ZIPFILE" $1 | $bin/zstd -c -d >$2
+}
+
+keyListener() {
+  ui_print "Ấn [Volume+] để chọn Có, ấn [Volume-] để chọn Không"
+  ui_print ""
+  keyListener_2
+}
+
+keyListener_2() {
+  getevent -qlc 1 2>&1 | grep VOLUME | grep " DOWN" >/tmp/events
+  if $(grep -q "VOLUMEUP" /tmp/events); then
+    ui_print " - Đang xử lý, vui lòng chờ......"
+    return 0
+  elif $(grep -q "VOLUMEDOWN" /tmp/events); then
+    ui_print " - Đang xử lý, vui lòng chờ......"
+    return 1
+  else
+    keyListener_2
+  fi
+}
+
+bin=/tmp/bin/android
+if [ -d $bin ]; then
+  rm -rf $bin
+fi
+mkdir -p $bin
+unzip "$ZIPFILE" bin/android/* -d /tmp
+chmod -R 0777 $bin
+
+ui_print " "
+ui_print "======================================"
+ui_print "ROM：MIUI China"
+ui_print "Device: "
+ui_print "Author：chamchamfy"
+ui_print "======================================"
+ui_print " "
+ui_print " "
+ui_print " "
+ui_print "Cài đặt Magisk(Root)"
+if keyListener; then
+  package_extract_file "images/boot_magisk.img" "/dev/block/bootdevice/by-name/boot"
+  ui_print "Cài đặt hoàn tất Magisk(Root)"
+  ui_print " "
+  ui_print "Tắt tất cả các mô-đun Magisk để có thể khởi động bình thường?"
+  if keyListener; then
+    for list in $(ls -d /data/adb/modules/*); do
+      touch $list/disable
+    done
+    ui_print "Đã tắt các mô-đun Magisk"
+  else
+    ui_print "Không tắt mô-đun Magisk"
+  fi
+else
+  package_extract_file "images/boot.img" "/dev/block/bootdevice/by-name/boot"
+  ui_print "Không cài đặt Magisk(Root)"
+fi
+ui_print " "
+ui_print " "
+package_extract_file "images/cmnlib64.mbn" "/dev/block/bootdevice/by-name/cmnlib64"
+package_extract_file "images/xbl_config_5.elf" "/dev/block/bootdevice/by-name/xbl_config_5"
+package_extract_file "images/NON-HLOS.bin" "/dev/block/bootdevice/by-name/modem"
+package_extract_file "images/cmnlib.mbn" "/dev/block/bootdevice/by-name/cmnlib"
+package_extract_file "images/BTFM.bin" "/dev/block/bootdevice/by-name/bluetooth"
+package_extract_file "images/km4.mbn" "/dev/block/bootdevice/by-name/keymaster"
+package_extract_file "images/xbl_5.elf" "/dev/block/bootdevice/by-name/xbl_5"
+package_extract_file "images/tz.mbn" "/dev/block/bootdevice/by-name/tz"
+package_extract_file "images/aop.mbn" "/dev/block/bootdevice/by-name/aop"
+package_extract_file "images/featenabler.mbn" "/dev/block/bootdevice/by-name/featenabler"
+package_extract_file "images/xbl_config_4.elf" "/dev/block/bootdevice/by-name/xbl_config_4"
+package_extract_file "images/storsec.mbn" "/dev/block/bootdevice/by-name/storsec"
+package_extract_file "images/uefi_sec.mbn" "/dev/block/bootdevice/by-name/uefisecapp"
+package_extract_file "images/qupv3fw.elf" "/dev/block/bootdevice/by-name/qupfw"
+package_extract_file "images/abl.elf" "/dev/block/bootdevice/by-name/abl"
+package_extract_file "images/dspso.bin" "/dev/block/bootdevice/by-name/dsp"
+package_extract_file "images/devcfg.mbn" "/dev/block/bootdevice/by-name/devcfg"
+package_extract_file "images/xbl_4.elf" "/dev/block/bootdevice/by-name/xbl_4"
+package_extract_file "images/hyp.mbn" "/dev/block/bootdevice/by-name/hyp"
+package_extract_file "images/cmnlib64.mbn" "/dev/block/bootdevice/by-name/cmnlib64bak"
+package_extract_file "images/cmnlib.mbn" "/dev/block/bootdevice/by-name/cmnlibbak"
+package_extract_file "images/tz.mbn" "/dev/block/bootdevice/by-name/tzbak"
+package_extract_file "images/aop.mbn" "/dev/block/bootdevice/by-name/aopbak"
+package_extract_file "images/storsec.mbn" "/dev/block/bootdevice/by-name/storsecbak"
+package_extract_file "images/qupv3fw.elf" "/dev/block/bootdevice/by-name/qupfwbak"
+package_extract_file "images/abl.elf" "/dev/block/bootdevice/by-name/ablbak"
+package_extract_file "images/devcfg.mbn" "/dev/block/bootdevice/by-name/devcfgbak"
+package_extract_file "images/hyp.mbn" "/dev/block/bootdevice/by-name/hypbak"
+package_extract_file "images/logo.img" "/dev/block/bootdevice/by-name/logo"
+package_extract_file "images/dtbo.img" "/dev/block/bootdevice/by-name/dtbo"
+package_extract_file "images/vbmeta.img" "/dev/block/bootdevice/by-name/vbmeta"
+package_extract_file "images/vbmeta_system.img" "/dev/block/bootdevice/by-name/vbmeta_system"
+# flash firmware done
+package_extract_file "images/cust.img" "/dev/block/bootdevice/by-name/cust"
+package_extract_zstd "images/super.img.zst" "/dev/block/bootdevice/by-name/super"
+
+if [ -f "images/recovery.img" ]; then
+  package_extract_file "images/recovery.img" "/dev/block/bootdevice/by-name/recovery"
+fi
+
+lptools unmap system
+lptools map system
+
+# Kích hoạt khe hoạt động
+#/system/bin/bootctl set-active-boot-slot 0
+
+ui_print " "
+ui_print " "
+ui_print " Đã flash xong! " 
+ui_print "======================================"
+ui_print "Vui lòng bỏ qua thông báo lỗi mount màu đỏ"
+ui_print "Vui lòng bỏ qua thông báo lỗi mount màu đỏ"
+ui_print "======================================"
+ui_print " "
+ui_print " "
+
+exit 0
