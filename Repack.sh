@@ -18,21 +18,27 @@ giamthieu() { resize2fs -f -M $Likk/Super/$TEN.img > /dev/null 2>&1 && resize2fs
 
 tangkichco() { resize2fs -f $Likk/Super/$TEN.img $(expr size_$TEN * 1024 + 200)M > /dev/null 2>&1; } 
 
+kichco() { size_$TEN="$(wc -c < $Likk/Super/$TEN.img)"; } 
+
+tongkichco() { super_size="$(ls -l $Likk/Super | sed -n 1p | awk '{print int($2)}')"; } 
+
+kichcosuper() { super_raw_size="$(awk "BEGIN {print int($ssize*1024*1024*1024)}")"; } 
+
 cd $Likk/Super 
 for EXT in system.img vendor.img product.img system_ext.img odm.img; do 
 TEN=$(echo $EXT | awk -F. '{print $1}'); 
-size_$TEN=$(wc -c < $Likk/Super/$TEN.img);
+kichco 
 [ -s $Likk/Super/$EXT ] && giamthieu
 done 
 
 for EXT in system.img vendor.img system_ext.img; do 
 TEN=$(echo $EXT | awk -F. '{print $1}'); 
-size_$TEN=$(wc -c < $Likk/Super/$TEN.img);
+kichco 
 [ -s $Likk/Super/$EXT ] && tangkichco 
 done 
 
-super_size=$(ls -l $Likk/Super | sed -n 1p | awk '{print int($2)}'); 
-super_raw_size=$(awk "BEGIN {print int($ssize*1024*1024*1024)}"); 
+tongkichco 
+kichcosuper 
 
 if [ "$super_size" -lt "$super_raw_size" ]; then 
 taosuper
@@ -40,10 +46,10 @@ else
 cd $Likk/Super
 for EXT in system.img vendor.img product.img system_ext.img odm.img; do 
 TEN=$(echo $EXT | awk -F. '{print $1}'); 
-size_$TEN=$(wc -c < $Likk/Super/$TEN.img);
+kichco
 [ -s $Likk/Super/$EXT ] && giamthieu 
 done 
-super_raw_size=$(awk "BEGIN {print int($ssize*1024*1024*1024)}"); 
+tongkichco 
 taosuper
 fi 
 
