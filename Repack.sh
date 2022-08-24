@@ -18,7 +18,7 @@ giamthieu() { resize2fs -f -M $Likk/Super/$TEN.img > /dev/null 2>&1 && resize2fs
 
 tangkichco() { resize2fs -f $Likk/Super/$TEN.img $(expr size_$TEN * 1024 + 200)M > /dev/null 2>&1; } 
 
-kichco() { size_$TEN="$(wc -c < $Likk/Super/$TEN.img)"; } 
+kichco() { size_$TEN="$(ls -l $Likk/Super/$TEN.img | awk '{print $5}')"; } 
 
 tongkichco() { super_size="$(ls -l $Likk/Super | sed -n 1p | awk '{print int($2)}')"; } 
 
