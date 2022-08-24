@@ -1,4 +1,6 @@
 echo " + Tạo super..." 
+cd $Likk/Super 
+
 # Loại phân vùng (1,2,3) 
 Sokhe=1
 
@@ -19,17 +21,19 @@ tongkichco() { Ssuper="$(ls -l $Likk/Super | sed -n 1p | awk '{print int($2)}')"
 
 kichcosuper() { Ssuperr="$(awk "BEGIN {print int($Ssize*1024*1024*1024)}")"; } 
 
-kichco() { S${TEN}=$(wc -c < $Likk/Super/$TEN.img); } 
+kichco() { TEN=$(echo $EXT | awk -F. '{print $1}'); S${TEN}=$(wc -c < $Likk/Super/$TEN.img); } 
 
 giamthieu() { resize2fs -f -M $Likk/Super/$TEN.img > /dev/null 2>&1 && resize2fs -f -M $Likk/Super/$TEN.img > /dev/null 2>&1; } 
 
 tangkichco() { resize2fs -f $Likk/Super/$TEN.img $(expr "$S${TEN}" * 1024 + 200)M > /dev/null 2>&1; } 
 
-cd $Likk/Super 
+#for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && kichco && giamthieu; done 
 
-for EXT in system.img vendor.img product.img system_ext.img odm.img; do TEN=$(echo $EXT | awk -F. '{print $1}'); kichco; [ -s $Likk/Super/$EXT ] && giamthieu; done 
+#for EXT in system.img vendor.img system_ext.img; do [ -s $Likk/Super/$EXT ] && kichco && tangkichco; done 
 
-for EXT in system.img vendor.img system_ext.img; do TEN=$(echo $EXT | awk -F. '{print $1}'); kichco; [ -s $Likk/Super/$EXT ] && tangkichco; done 
+case $EXT in system.img | system_ext.img | vendor.img | product.img | odm.img) kichco; giamthieu;; esac 
+
+case $EXT in system.img | system_ext.img | vendor.img | product.img | odm.img) kichco; tangkichco;; esac 
 
 tongkichco 
 kichcosuper 
@@ -37,7 +41,9 @@ kichcosuper
 if [ "$Ssuper" -lt "$Ssuperr" ]; then 
 taosuper
 else 
-for EXT in system.img vendor.img product.img system_ext.img odm.img; do TEN=$(echo $EXT | awk -F. '{print $1}'); kichco; [ -s $Likk/Super/$EXT ] && giamthieu; done 
+# for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && kichco && giamthieu; done 
+
+case $EXT in system.img | system_ext.img | vendor.img | product.img | odm.img) kichco; giamthieu;; esac 
 
 tongkichco 
 taosuper
