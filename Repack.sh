@@ -21,33 +21,15 @@ tongkichco() { Ssuper="$(ls -l $Likk/Super | sed -n 1p | awk '{print int($2)}')"
 
 kichcosuper() { Ssuperr="$(awk "BEGIN {print int($Ssize*1024*1024*1024)}")"; } 
 
-kichco() { TEN=$(echo $EXT | awk -F. '{print $1}'); S${TEN}=$(wc -c < $Likk/Super/$TEN.img); } 
+kichco() { for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && TEN=$(echo $EXT | awk -F. '{print $1}') && S${TEN}=$(wc -c < $Likk/Super/$TEN.img); done; } 
 
-giamthieu() { resize2fs -f -M $Likk/Super/$TEN.img > /dev/null 2>&1 && resize2fs -f -M $Likk/Super/$TEN.img > /dev/null 2>&1; } 
+giamthieu() { for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && resize2fs -f -M $Likk/Super/$EXT > /dev/null 2>&1 && resize2fs -f -M $Likk/Super/$EXT > /dev/null 2>&1; done; } 
+ 
+tangkichco() { for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && TEN=$(echo $EXT | awk -F. '{print $1}') && S${TEN}=$(wc -c < $Likk/Super/$TEN.img) && resize2fs -f $Likk/Super/$TEN.img $(expr "$S${TEN}" * 1024 + 200)M > /dev/null 2>&1; done; } 
 
-tangkichco() { resize2fs -f $Likk/Super/$TEN.img $(expr "$S${TEN}" * 1024 + 200)M > /dev/null 2>&1; } 
+kichcosuper && giamthieu && tangkichco && kichco && tongkichco 
 
-#for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && kichco && giamthieu; done 
-
-#for EXT in system.img vendor.img system_ext.img; do [ -s $Likk/Super/$EXT ] && kichco && tangkichco; done 
-
-case $EXT in system.img | system_ext.img | vendor.img | product.img | odm.img) kichco; giamthieu;; esac 
-
-case $EXT in system.img | system_ext.img | vendor.img | product.img | odm.img) kichco; tangkichco;; esac 
-
-tongkichco 
-kichcosuper 
-
-if [ "$Ssuper" -lt "$Ssuperr" ]; then 
-taosuper
-else 
-# for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && kichco && giamthieu; done 
-
-case $EXT in system.img | system_ext.img | vendor.img | product.img | odm.img) kichco; giamthieu;; esac 
-
-tongkichco 
-taosuper
-fi 
+if [ "$Ssuper" -lt "$Ssuperr" ]; then taosuper; else giamthieu && kichco && tongkichco && taosuper; fi 
 
 # Phiên bản rom
 Ten=$(grep 'incremental' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
