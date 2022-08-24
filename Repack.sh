@@ -25,8 +25,8 @@ chedo=none
 lpmake -d "$super_raw_size" -s "$sokhe" -m 65536 -g "$nhom":"$super_size" --super-name super -p system:"$chedo":"$system_size":"$nhom" -i system=system.img -p system_ext:"$chedo":"$system_ext_size":"$nhom" -i system_ext=system_ext.img -p vendor:"$chedo":"$vendor_size":"$nhom" -i vendor=vendor.img -p product:"$chedo":"$product_size":"$nhom" -i product=product.img -p odm:"$chedo":"$odm_size":"$nhom" -i odm=odm.img -o $Likk/super.img
 
 # Phiên bản rom
-ten=$(grep 'incremental' /Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
-mamay=$(grep 'pre-device' /Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
+ten=$(grep 'incremental' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
+mamay=$(grep 'pre-device' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
 
 # Cập nhật zip flash
 mkdir -p $Likk/tmp
