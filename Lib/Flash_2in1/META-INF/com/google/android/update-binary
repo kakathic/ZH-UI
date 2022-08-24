@@ -46,9 +46,9 @@ chmod -R 0777 $bin
 
 ui_print " "
 ui_print "======================================"
-ui_print "ROM：MIUI China"
+ui_print "ROM: MIUI"
 ui_print "Device: "
-ui_print "Author：chamchamfy"
+ui_print "Author: chamchamfy && kakathic"
 ui_print "======================================"
 ui_print " "
 ui_print " "
