@@ -26,6 +26,7 @@ lpmake -d "$super_raw_size" -s "$sokhe" -m 65536 -g "$nhom":"$super_size" --supe
 
 # Phiên bản rom
 ten=$(grep 'incremental' /Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
+mamay=$(grep 'pre-device' /Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
 
 # Cập nhật zip flash
 mkdir -p $Likk/tmp
@@ -34,4 +35,4 @@ unzip -qo Flash_2in1.zip -d $Likk/tmp
 # rm -f $Likk/Payload/vbmeta.img vbmeta_system.img 2> /dev/null 
 mv -f $Likk/Payload/* $Likk/tmp/images 
 cd $Likk/tmp 
-zip -9qr $Likk/Rom_$ten.zip * 
+zip -9qr $Likk/Rom_2in1_${mamay}_${ten}.zip * 
