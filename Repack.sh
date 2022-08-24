@@ -1,3 +1,4 @@
+echo " + Tạo super..." 
 # Loại phân vùng (1,2,3) 
 Sokhe=1
 
@@ -25,6 +26,11 @@ giamthieu() { resize2fs -f -M $Likk/Super/$TEN.img > /dev/null 2>&1 && resize2fs
 tangkichco() { resize2fs -f $Likk/Super/$TEN.img $(expr "$S${TEN}" * 1024 + 200)M > /dev/null 2>&1; } 
 
 cd $Likk/Super 
+
+for EXT in system.img vendor.img product.img system_ext.img odm.img; do TEN=$(echo $EXT | awk -F. '{print $1}'); kichco; [ -s $Likk/Super/$EXT ] && giamthieu; done 
+
+for EXT in system.img vendor.img system_ext.img; do TEN=$(echo $EXT | awk -F. '{print $1}'); kichco; [ -s $Likk/Super/$EXT ] && tangkichco; done 
+
 tongkichco 
 kichcosuper 
 
@@ -32,8 +38,6 @@ if [ "$Ssuper" -lt "$Ssuperr" ]; then
 taosuper
 else 
 for EXT in system.img vendor.img product.img system_ext.img odm.img; do TEN=$(echo $EXT | awk -F. '{print $1}'); kichco; [ -s $Likk/Super/$EXT ] && giamthieu; done 
-
-for EXT in system.img vendor.img system_ext.img; do TEN=$(echo $EXT | awk -F. '{print $1}'); kichco; [ -s $Likk/Super/$EXT ] && tangkichco; done 
 
 tongkichco 
 taosuper
