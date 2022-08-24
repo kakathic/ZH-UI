@@ -24,6 +24,9 @@ chedo=none
 # Tạo super.img
 lpmake -d "$super_raw_size" -s "$sokhe" -m 65536 -g "$nhom":"$super_size" --super-name super -p system:"$chedo":"$system_size":"$nhom" -i system=system.img -p system_ext:"$chedo":"$system_ext_size":"$nhom" -i system_ext=system_ext.img -p vendor:"$chedo":"$vendor_size":"$nhom" -i vendor=vendor.img -p product:"$chedo":"$product_size":"$nhom" -i product=product.img -p odm:"$chedo":"$odm_size":"$nhom" -i odm=odm.img -o $Likk/super.img
 
+# Phiên bản rom
+ten=$(grep 'incremental' /Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
+
 # Cập nhật zip flash
 mkdir -p $Likk/tmp
 unzip -qo Flash_2in1.zip -d $Likk/tmp 
@@ -31,4 +34,4 @@ unzip -qo Flash_2in1.zip -d $Likk/tmp
 # rm -f $Likk/Payload/vbmeta.img vbmeta_system.img 2> /dev/null 
 mv -f $Likk/Payload/* $Likk/tmp/images 
 cd $Likk/tmp 
-zip -9qr $Likk/$ten * 
+zip -9qr $Likk/Rom_$ten.zip * 
