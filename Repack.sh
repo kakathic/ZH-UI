@@ -11,7 +11,7 @@ chedo=none
 ssize=8.5
 
 # Tạo super.img
-taosuper() { lpmake -d "$super_raw_size" -s "$sokhe" -m 65536 -g "$nhom":"$super_size" --super-name super -p system:"$chedo":"$system_size":"$nhom" -i system=system.img -p system_ext:"$chedo":"$system_ext_size":"$nhom" -i system_ext=system_ext.img -p vendor:"$chedo":"$vendor_size":"$nhom" -i vendor=vendor.img -p product:"$chedo":"$product_size":"$nhom" -i product=product.img -p odm:"$chedo":"$odm_size":"$nhom" -i odm=odm.img -o $Likk/super.img; } 
+taosuper() { lpmake -d "$super_raw_size" -s "$sokhe" -m 65536 -g "$nhom":"$super_size" --super-name super -p system:"$chedo":"$size_system":"$nhom" -i system=system.img -p system_ext:"$chedo":"$size_system_ext":"$nhom" -i system_ext=system_ext.img -p vendor:"$chedo":"$size_vendor":"$nhom" -i vendor=vendor.img -p product:"$chedo":"$size_product":"$nhom" -i product=product.img -p odm:"$chedo":"$size_odm":"$nhom" -i odm=odm.img -o $Likk/super.img; } 
 
 # Kiểm tra kích cỡ và tạo super.img 
 giamthieu() { resize2fs -f -M $Likk/Super/$TEN.img > /dev/null 2>&1 && resize2fs -f -M $Likk/Super/$TEN.img > /dev/null 2>&1; } 
@@ -21,13 +21,13 @@ tangkichco() { resize2fs -f $Likk/Super/$TEN.img $(expr ${TEN}_size * 1024 + 200
 cd $Likk/Super 
 for EXT in system.img vendor.img product.img system_ext.img odm.img; do 
 TEN=$(echo $EXT | awk -F. '{print $1}'); 
-${TEN}_size=$(wc -c < $Likk/Super/$TEN.img);
+size_${TEN}=$(wc -c < $Likk/Super/$TEN.img);
 [ -s $Likk/Super/$EXT ] && giamthieu
 done 
 
 for EXT in system.img vendor.img system_ext.img; do 
 TEN=$(echo $EXT | awk -F. '{print $1}'); 
-${TEN}_size=$(wc -c < $Likk/Super/$TEN.img);
+size_${TEN}=$(wc -c < $Likk/Super/$TEN.img);
 [ -s $Likk/Super/$EXT ] && tangkichco 
 done 
 
@@ -40,7 +40,7 @@ else
 cd $Likk/Super
 for EXT in system.img vendor.img product.img system_ext.img odm.img; do 
 TEN=$(echo $EXT | awk -F. '{print $1}'); 
-${TEN}_size=$(wc -c < $Likk/Super/$TEN.img);
+size_${TEN}=$(wc -c < $Likk/Super/$TEN.img);
 [ -s $Likk/Super/$EXT ] && giamthieu 
 done 
 super_raw_size=$(awk "BEGIN {print int($ssize*1024*1024*1024)}"); 
