@@ -14,7 +14,9 @@ Chedo=none
 Ssize=8.5
 
 # Kiểm tra kích cỡ 
-tongkichco() { Ssuper="$(ls -l $Likk/Super | sed -n 1p | awk '{print int($2)}')" 2> /dev/null; } 
+# tongkichco() { Ssuper="$(ls -l $Likk/Super | sed -n 1p | awk '{print int($2)}')" 2> /dev/null; } 
+
+tongkichco() { Ssuper=$(ls -l $Likk/Super/*.img | awk '{ssuper+=$5} END {print Ssuper}'); } 
 
 kichcosuper() { Ssuperr="$(awk "BEGIN {print int($Ssize*1024*1024*1024)}")" 2> /dev/null; } 
 
