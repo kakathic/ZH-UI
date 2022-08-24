@@ -3,11 +3,12 @@ on:
   workflow_dispatch:
 jobs:
   build:
+    name: 'Xem hoạt động'
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Run Shell
+      - name: 'Chạy code shell'
         run: |
           chmod -R 777 bin/*
           export PATH="$GITHUB_WORKSPACE/bin:$PATH"
