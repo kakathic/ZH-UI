@@ -45,15 +45,17 @@ taosuper
 if [[ "$Ssuper" -lt "$Ssuperr" ]]; then taosuper; else giamthieu && kichco && ghidoc && tongkichco && echo " Kích cỡ tổng super: $Ssuper" && taosuper; fi 
 
 # Phiên bản rom
-Ten=$(grep 'incremental' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
+Phienban=$(grep 'incremental' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
 Mamay=$(grep 'pre-device' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
 
 echo " + Tạo tập tin flash..." 
 [[ "$Khe" = "_a" ]] && cp -af $Likk/Lib/update-binary $Likk/Lib/Flash_2in1/META-INF/com/google/android 2> /dev/null && cp -af $Likk/Lib/windows-install.bat $Likk/Lib/Flash_2in1 2> /dev/null; 
-sed -i "s|Device:|Device: $Mamay|; s|ROM: MIUI|ROM: MIUI $Ten|" $Likk/Lib/Flash_2in1/*/*/*/*/update-binary 2> /dev/null 
+sed -i "s|Device:|Device: $Mamay|; s|ROM: MIUI|ROM: MIUI $Phienban|" $Likk/Lib/Flash_2in1/*/*/*/*/update-binary 2> /dev/null 
 if [[ -s $Likk/tmp/super.img ]]; then 
 zstd -10 $Likk/tmp/super.img -o $Likk/Lib/Flash_2in1/images/super.img.zst 
 # rm -f $Likk/Payload/vbmeta.img vbmeta_system${Khe}.img 2> /dev/null 
-mv -f $Likk/Payload/* $Likk/Lib/Flash_2in1/images 
+[[ -n "$(ls $Likk/Payload)" ]] && mv -f $Likk/Payload/* $Likk/Lib/Flash_2in1/images 
+[[ -n "$(ls $Likk/Unzip/images)" ]] && mv -f $Likk/Unzip/images/* $Likk/Lib/Flash_2in1/images 
+[[ -n "$(ls $Likk/Unzip/firmware-update)" ]] && mv -f $Likk/Unzip/firmware-update/* $Likk/Lib/Flash_2in1/images 
 [[ -s $Likk/Lib/Flash_2in1/images/super.img.zst ]] && echo " + Tạo xong"; 
 fi 
