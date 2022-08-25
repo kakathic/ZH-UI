@@ -10,7 +10,6 @@ Nhom=main
 # Khe 
 Khe= 
 
-
 # Chế độ (none/readonly)
 Chedo=none
 
@@ -31,7 +30,7 @@ tangkichco() { for EXT in system${Khe}.img vendor${Khe}.img product${Khe}.img sy
 ghidoc() { for EXT in system${Khe}.img vendor${Khe}.img product${Khe}.img system_ext${Khe}.img odm.img; do [ -s $Likk/Super/$EXT ] && e2fsck -y -E unshare_blocks $Likk/Super/$EXT > /dev/null 2>&1; done; } 
 
 echo " + Tạo super.img..." 
-taosuper() { python3 $Likk/Lib/Libpy/lpmake.py -d "$Ssuperr" -s "$Sokhe" -m 65536 -g "$Nhom":"$Ssuper" --super-name super -p system:"$Chedo":"$Ssystem":"$Nhom" -i system=system${Khe}.img -p system_ext:"$Chedo":"$Ssystem_ext":"$Nhom" -i system_ext=system_ext${Khe}.img -p vendor:"$Chedo":"$Svendor":"$Nhom" -i vendor=vendor${Khe}.img -p product:"$Chedo":"$Sproduct":"$Nhom" -i product=product${Khe}.img -p odm:"$Shedo":"$Sodm":"$Nhom" -i odm=odm.img -o $Likk/super.img; } 
+taosuper() { lpmake --device-size "$Ssuperr" --metadata-slots "$Sokhe" --metadata-size 65536 --group "$Nhom":"$Ssuper" --super-name super --partition system:"$Chedo":"$Ssystem":"$Nhom" --image system=system${Khe}.img --partition system_ext:"$Chedo":"$Ssystem_ext":"$Nhom" --image system_ext=system_ext${Khe}.img --partition vendor:"$Chedo":"$Svendor":"$Nhom" --image vendor=vendor${Khe}.img --partition product:"$Chedo":"$Sproduct":"$Nhom" --image product=product${Khe}.img --partition odm:"$Shedo":"$Sodm":"$Nhom" --image odm=odm.img -o $Likk/super.img; } 
 
 kichcosuper && echo " Kích cỡ phân vùng super: $Ssuperr" 
 #giamthieu && tangkichco 
