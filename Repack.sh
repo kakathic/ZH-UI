@@ -14,26 +14,24 @@ Chedo=none
 Ssize=8.5
 
 # Kiểm tra kích cỡ 
-
-kichcosuper() { Ssuperr="$(awk "BEGIN {print int($Ssize*1024*1024*1024)}")"; } 
-echo " Kích cỡ tổng super raw: $Ssuperr"
+kichcosuper() { Ssuperr=$(echo $Ssize | awk '{print int($Ssize*1024*1024*1024)}'); } 
 
 kichco() { Ssystem=$(wc -c < $Likk/Super/system.img); Ssystem_ext=$(wc -c < $Likk/Super/system_ext.img); Svendor=$(wc -c < $Likk/Super/vendor.img); Sproduct=$(wc -c < $Likk/Super/product.img); Sodm=$(wc -c < $Likk/Super/odm.img); } 
 
-#tongkichco() { Ssuper="$(ls -l $Likk/Super | sed -n 1p | awk '{print int($2)}')"; } 
-tongkichco() { Ssuper=$(awk "BEGIN {print int($Ssystem+$Svendor+$Ssystem_ext+$Sproduct+$Sodm)}"); } 
-echo " Kích cỡ tổng super: $Ssuper"
+tongkichco() { Ssuper=$(ls -l $Likk/Super | sed -n 1p | awk '{print int($2)}'); } 
 
 giamthieu() { for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && resize2fs -f -M $Likk/Super/$EXT > /dev/null 2>&1 && resize2fs -f -M $Likk/Super/$EXT > /dev/null 2>&1; done; } 
  
-tangkichco() { for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && resize2fs -f $Likk/Super/$EXT $(awk "BEGIN {print int($(wc -c < $Likk/Super/$EXT)*1024+200)}")M > /dev/null 2>&1; done; } 
+tangkichco() { for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && resize2fs -f $Likk/Super/$EXT $(echo $EXT | awk '{print int($(wc -c < $Likk/Super/$EXT)*1024+200)}')M > /dev/null 2>&1; done; } 
 
 echo " + Tạo super.img..." 
 taosuper() { lpmake -d "$Ssuperr" -s "$Sokhe" -m 65536 -g "$Nhom":"$Ssuper" --super-name super -p system:"$Chedo":"$Ssystem":"$Nhom" -i system=system.img -p system_ext:"$Chedo":"$Ssystem_ext":"$Nhom" -i system_ext=system_ext.img -p vendor:"$Chedo":"$Svendor":"$Nhom" -i vendor=vendor.img -p product:"$Chedo":"$Sproduct":"$Nhom" -i product=product.img -p odm:"$Shedo":"$Sodm":"$Nhom" -i odm=odm.img -o $Likk/super.img; } 
 
-kichcosuper && giamthieu && tangkichco && kichco && tongkichco 
+kichcosuper && echo " Kích cỡ phân vùng super: $Ssuperr" 
+giamthieu && tangkichco && kichco 
+tongkichco && echo " Kích cỡ tổng super: $Ssuper"
 
-if [[ "$Ssuper" -lt "$Ssuperr" ]]; then taosuper; else giamthieu && kichco && tongkichco && taosuper; fi 
+if [[ "$Ssuper" -lt "$Ssuperr" ]]; then taosuper; else giamthieu && kichco && tongkichco && echo " Kích cỡ tổng super: $Ssuper" && taosuper; fi 
 
 # Phiên bản rom
 Ten=$(grep 'incremental' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
