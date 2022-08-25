@@ -16,11 +16,11 @@ e2fsck
 make_ext4fs
 zstd --help 
 hexdump --help
-img2img
-simg2img
 tune2fs
-sdat2img
 fsck.erofs
-make.erofs
+mkfs.erofs
 7z
 java 
+img2img
+simg2img
+sdat2img
