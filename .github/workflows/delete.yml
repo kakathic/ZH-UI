@@ -1,7 +1,7 @@
 name: Tự động xóa quy trình làm việc cũ
 on:
   schedule:
-    - cron: '5 * * * *'
+    - cron: '0 9 * * *'
   workflow_dispatch:
 jobs:
   del_runs:
