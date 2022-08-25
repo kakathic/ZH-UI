@@ -30,7 +30,7 @@ tangkichco() { for EXT in system${Khe}.img vendor${Khe}.img product${Khe}.img sy
 ghidoc() { for EXT in system${Khe}.img vendor${Khe}.img product${Khe}.img system_ext${Khe}.img odm.img; do [ -s $Likk/Super/$EXT ] && e2fsck -y -E unshare_blocks $Likk/Super/$EXT > /dev/null 2>&1; done; } 
 
 echo " + Tạo super.img..." 
-taosuper() { lpmake --device-size "$Ssuperr" --metadata-slots "$Sokhe" --metadata-size 65536 --group "$Nhom":"$Ssuper" --super-name super --partition system${Khe}:"$Chedo":"$Ssystem":"$Nhom" --image system${Khe}=system${Khe}.img --partition system_ext${Khe}:"$Chedo":"$Ssystem_ext":"$Nhom" --image system_ext${Khe}=system_ext${Khe}.img --partition vendor${Khe}:"$Chedo":"$Svendor":"$Nhom" --image vendor${Khe}=vendor${Khe}.img --partition product${Khe}:"$Chedo":"$Sproduct":"$Nhom" --image product${Khe}=product${Khe}.img --partition odm${Khe}:"$Chedo":"$Sodm":"$Nhom" --image odm${Khe}=odm${Khe}.img -o $Likk/super.img; } 
+taosuper() { lpmake --device-size "$Ssuperr" --metadata-slots "$Sokhe" --metadata-size 65536 --group "$Nhom":"$Ssuper" --super-name super --partition system${Khe}:"$Chedo":"$Ssystem":"$Nhom" --image system${Khe}=system${Khe}.img --partition system_ext${Khe}:"$Chedo":"$Ssystem_ext":"$Nhom" --image system_ext${Khe}=system_ext${Khe}.img --partition vendor${Khe}:"$Chedo":"$Svendor":"$Nhom" --image vendor${Khe}=vendor${Khe}.img --partition product${Khe}:"$Chedo":"$Sproduct":"$Nhom" --image product${Khe}=product${Khe}.img --partition odm${Khe}:"$Chedo":"$Sodm":"$Nhom" --image odm${Khe}=odm${Khe}.img -o $Likk/tmp/super.img > /dev/null 2>&1; } 
 
 kichcosuper && echo " Kích cỡ phân vùng super: $Ssuperr" 
 #giamthieu && tangkichco 
@@ -46,11 +46,11 @@ Mamay=$(grep 'pre-device' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}');
 
 echo " + Tạo zip flash..." 
 sed -i "s|Device:|Device: $Mamay|; s|ROM: MIUI|ROM: MIUI $Ten|" $Likk/Lib/Flash_2in1/*/*/*/*/update-binary 2> /dev/null 
-if [ -s $Likk/super.img ]; then 
-zstd -10 $Likk/super.img -o $Likk/Lib/images/super.img.zst 
+if [ -s $Likk/tmp/super.img ]; then 
+zstd -10 $Likk/tmp/super.img -o $Likk/Lib/Flash_2in1/images/super.img.zst 
 # rm -f $Likk/Payload/vbmeta.img vbmeta_system${Khe}.img 2> /dev/null 
-mv -f $Likk/Payload/* $Likk/Lib/images 
-cd $Likk/Lib
-zip -9qr $Likk/Rom_2in1_${mamay}_${ten}.zip * 
-[ -s $Likk/Rom_2in1_${Mamay}_${Ten}.zip ] && echo " + Tạo xong"; 
+mv -f $Likk/Payload/* $Likk/Lib/Flash_2in1/images 
+#cd $Likk/Lib/Flash_2in1
+#zip -9qr $Likk/Rom_2in1_${mamay}_${ten}.zip * 
+#[ -s $Likk/Rom_2in1_${Mamay}_${Ten}.zip ] && echo " + Tạo xong"; 
 fi 
