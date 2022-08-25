@@ -21,6 +21,6 @@ fsck.erofs
 mkfs.erofs
 7z
 java 
-img2img
-simg2img
+simg2img | tee 1.txt
+rimg2sdat | tee 1.txt
 
