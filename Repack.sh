@@ -11,7 +11,7 @@ Nhom=main
 Khe= 
 
 # Chế độ (none/readonly)
-Chedo=readonly
+Chedo=none
 
 # Kích cỡ phân vùng super 8.5GB
 Ssize=8.5
@@ -30,7 +30,7 @@ tangkichco() { for EXT in system${Khe}.img vendor${Khe}.img product${Khe}.img sy
 ghidoc() { for EXT in system${Khe}.img vendor${Khe}.img product${Khe}.img system_ext${Khe}.img odm.img; do [ -s $Likk/Super/$EXT ] && e2fsck -y -E unshare_blocks $Likk/Super/$EXT > /dev/null 2>&1; done; } 
 
 echo " + Tạo super.img..." 
-taosuper() { lpmake --device-size "$Ssuperr" --metadata-slots "$Sokhe" --metadata-size 65536 --group "$Nhom":"$Ssuper" --super-name super --partition system${Khe}:"$Chedo":"$Ssystem":"$Nhom" --image system${Khe}=system${Khe}.img --partition system_ext${Khe}:"$Chedo":"$Ssystem_ext":"$Nhom" --image system_ext${Khe}=system_ext${Khe}.img --partition vendor${Khe}:"$Chedo":"$Svendor":"$Nhom" --image vendor${Khe}=vendor${Khe}.img --partition product${Khe}:"$Chedo":"$Sproduct":"$Nhom" --image product${Khe}=product${Khe}.img --partition odm${Khe}:"$Shedo":"$Sodm":"$Nhom" --image odm${Khe}=odm${Khe}.img -o $Likk/super.img; } 
+taosuper() { lpmake --device-size "$Ssuperr" --metadata-slots "$Sokhe" --metadata-size 65536 --group "$Nhom":"$Ssuper" --super-name super --partition system${Khe}:"$Chedo":"$Ssystem":"$Nhom" --image system${Khe}=system${Khe}.img --partition system_ext${Khe}:"$Chedo":"$Ssystem_ext":"$Nhom" --image system_ext${Khe}=system_ext${Khe}.img --partition vendor${Khe}:"$Chedo":"$Svendor":"$Nhom" --image vendor${Khe}=vendor${Khe}.img --partition product${Khe}:"$Chedo":"$Sproduct":"$Nhom" --image product${Khe}=product${Khe}.img --partition odm${Khe}:"$Chedo":"$Sodm":"$Nhom" --image odm${Khe}=odm${Khe}.img -o $Likk/super.img; } 
 
 kichcosuper && echo " Kích cỡ phân vùng super: $Ssuperr" 
 #giamthieu && tangkichco 
