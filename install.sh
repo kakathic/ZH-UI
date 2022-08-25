@@ -2,9 +2,13 @@
 
 Likk="$GITHUB_WORKSPACE"
 
-Taive(){ curl -s -L "$1" -o "$2"; }
-Xem(){ curl -s -L -G "$@"; }
-Getpro () { grep -m1 "$1=" $Likk/Zom_custom.md | cut -d = -f2; }
+Taive() { curl -s -L "$1" -o "$2"; }
+Xem() { curl -s -L -G "$@"; }
+Getpro() { grep -m1 "$1=" $Likk/Zom_custom.md | cut -d = -f2; }
+
+Laylink() { grep -m1 "$1://" $Likk/Zom_custom.md; } 
+Tenrom=$(grep -m1 "https://" $Likk/Zom_custom.md | awk -F/ '{print $5}') && Dinhdang=$(echo $Tenrom | awk -F. '{print $NF}');
+export Tenrom; 
 
 ListTM="tmp
 Unpack
@@ -33,9 +37,14 @@ pip3 install -r requirements.txt > /dev/null
 
 
 
-Taive "$(Getpro Http)" "$Likk/rom.zip"
-unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
-file "$Likk/rom.zip"
+# Taive "$(Getpro Http)" "$Likk/rom.zip"
+# unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
+# file "$Likk/rom.zip"
+
+Taive "$(Laylink https)" "$Likk/$Tenrom" 
+[[ "$Dinhdang" = "zip" ]] && unzip -qo "$Likk/$Tenrom" -d "$Likk/Unzip"
+[[ "$Dinhdang" = "tgz" ]] && tar -cf "$Likk/$Tenrom" -C "$Likk/Unzip"
+[[ -s $Likk/Unzip/images/super.img ]] && mv -f $Likk/Unzip/images/super.img $Likk/Unzip/super.img
 
 echo "
 Tên máy chủ
