@@ -6,9 +6,7 @@ python3 $Likk/Lib/Libpy/payload_dumper.py $Likk/Unzip/payload.bin --out $Likk/Pa
 
 [ $? -eq 0 ] && echo " + Trích xuất xong!" 
 
-for Tim in system.img vendor.img product.img odm.img system_ext.img; do
-mv -f $Likk/Payload/$Tim $Likk/Super 
-done
+#for tim in system.img vendor.img product.img odm.img system_ext.img; do mv -f $Likk/Payload/$tim $Likk/Super; done
 
-mv -f $Likk/Payload/{system,system_a,system_b,vendor,vendor_a,vendor_b,product,product_a,product_b,system_ext,system_ext_a,system_ext_b,odm,odm_a,odm_b}.img $Likk/Super 2> /dev/null; 
+case $tim in system.img|system_a.img|system_b.img|vendor.img|vendor_a.img|vendor_b.img|product.img|product_a.img|product_b.img|system_ext.img|system_ext_a.img|system_ext_b.img|odm.img|odm_a.img|odm_b.img) [[ -f $Likk/Payload/$tim ]] && mv -f $Likk/Payload/$tim $Likk/Super;; esac  
 
