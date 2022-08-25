@@ -23,4 +23,4 @@ mkfs.erofs
 java 
 img2img
 simg2img
-sdat2img
+
