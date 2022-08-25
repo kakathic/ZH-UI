@@ -8,7 +8,7 @@ Chedo=none
 Ssize=8.5
 
 # Loại phân vùng 
-if [ -f $Likk/Super/system_a.img ]; then 
+if [[ -f $Likk/Super/system_a.img ]]; then 
 Khe='_a'
 Sokhe=3
 Nhom='qti_dynamic_partitions_a'
@@ -27,11 +27,11 @@ kichco() { Ssystem=$(wc -c < $Likk/Super/system${Khe}.img); Ssystem_ext=$(wc -c 
 
 tongkichco() { Ssuper=$(ls -l $Likk/Super | awk '{Ssuper+=$5} END {print Ssuper}'); } 
 
-giamthieu() { for EXT in system${Khe}.img vendor${Khe}.img product${Khe}.img system_ext${Khe}.img odm${Khe}.img; do [ -s $Likk/Super/$EXT ] && resize2fs -f -M $Likk/Super/$EXT > /dev/null 2>&1 && resize2fs -f -M $Likk/Super/$EXT > /dev/null 2>&1; done; } 
+giamthieu() { for EXT in system${Khe}.img vendor${Khe}.img product${Khe}.img system_ext${Khe}.img odm${Khe}.img; do [[ -s $Likk/Super/$EXT ]] && resize2fs -f -M $Likk/Super/$EXT > /dev/null 2>&1 && resize2fs -f -M $Likk/Super/$EXT > /dev/null 2>&1; done; } 
  
-tangkichco() { for EXT in system${Khe}.img vendor${Khe}.img product${Khe}.img system_ext${Khe}.img; do [ -s $Likk/Super/$EXT ] && Size=$(echo "$(wc -c < $Likk/Super/$EXT)" | awk '{print int($TEN*1024+200)}') && resize2fs -f $Likk/Super/$EXT ${Size}M > /dev/null 2>&1; done; } 
+tangkichco() { for EXT in system${Khe}.img vendor${Khe}.img product${Khe}.img system_ext${Khe}.img; do [[ -s $Likk/Super/$EXT ]] && Size=$(echo "$(wc -c < $Likk/Super/$EXT)" | awk '{print int($TEN*1024+200)}') && resize2fs -f $Likk/Super/$EXT ${Size}M > /dev/null 2>&1; done; } 
 
-ghidoc() { for EXT in system${Khe}.img vendor${Khe}.img product${Khe}.img system_ext${Khe}.img odm${Khe}.img; do [ -s $Likk/Super/$EXT ] && e2fsck -y -E unshare_blocks $Likk/Super/$EXT > /dev/null 2>&1; done; } 
+ghidoc() { for EXT in system${Khe}.img vendor${Khe}.img product${Khe}.img system_ext${Khe}.img odm${Khe}.img; do [[ -s $Likk/Super/$EXT ]] && e2fsck -y -E unshare_blocks $Likk/Super/$EXT > /dev/null 2>&1; done; } 
 
 echo " + Tạo super.img..." 
 taosuper() { lpmake --device-size "$Ssuperr" --metadata-slots "$Sokhe" --metadata-size 65536 --super-name super --group "$Nhom":"$Ssuper" --partition system${Khe}:"$Chedo":"$Ssystem":"$Nhom" --image system${Khe}=system${Khe}.img --partition system_ext${Khe}:"$Chedo":"$Ssystem_ext":"$Nhom" --image system_ext${Khe}=system_ext${Khe}.img --partition vendor${Khe}:"$Chedo":"$Svendor":"$Nhom" --image vendor${Khe}=vendor${Khe}.img --partition product${Khe}:"$Chedo":"$Sproduct":"$Nhom" --image product${Khe}=product${Khe}.img --partition odm${Khe}:"$Chedo":"$Sodm":"$Nhom" --image odm${Khe}=odm${Khe}.img $Nhomkhac -o $Likk/tmp/super.img > /dev/null 2>&1; } 
@@ -49,11 +49,11 @@ Ten=$(grep 'incremental' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}');
 Mamay=$(grep 'pre-device' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
 
 echo " + Tạo tập tin flash..." 
-[ "$Khe" = "_a" ] && cp -af $Likk/Lib/update-binary $Likk/Lib/Flash_2in1/META-INF/com/google/android 2> /dev/null && cp -af $Likk/Lib/windows-install.bat $Likk/Lib/Flash_2in1 2> /dev/null; 
+[[ "$Khe" = "_a" ]] && cp -af $Likk/Lib/update-binary $Likk/Lib/Flash_2in1/META-INF/com/google/android 2> /dev/null && cp -af $Likk/Lib/windows-install.bat $Likk/Lib/Flash_2in1 2> /dev/null; 
 sed -i "s|Device:|Device: $Mamay|; s|ROM: MIUI|ROM: MIUI $Ten|" $Likk/Lib/Flash_2in1/*/*/*/*/update-binary 2> /dev/null 
-if [ -s $Likk/tmp/super.img ]; then 
+if [[ -s $Likk/tmp/super.img ]]; then 
 zstd -10 $Likk/tmp/super.img -o $Likk/Lib/Flash_2in1/images/super.img.zst 
 # rm -f $Likk/Payload/vbmeta.img vbmeta_system${Khe}.img 2> /dev/null 
 mv -f $Likk/Payload/* $Likk/Lib/Flash_2in1/images 
-[ -s $Likk/Lib/Flash_2in1/images/super.img.zst ] && echo " + Tạo xong"; 
+[[ -s $Likk/Lib/Flash_2in1/images/super.img.zst ]] && echo " + Tạo xong"; 
 fi 
