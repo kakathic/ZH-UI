@@ -1,4 +1,4 @@
-name: BUILD rom MIUI by CC
+name: REBUILD rom MIUI by CC
 on: 
   workflow_dispatch:
 jobs:
