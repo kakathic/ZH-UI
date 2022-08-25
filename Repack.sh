@@ -14,13 +14,15 @@ Chedo=none
 Ssize=8.5
 
 # Kiểm tra kích cỡ 
-# tongkichco() { Ssuper="$(ls -l $Likk/Super | sed -n 1p | awk '{print int($2)}')" 2> /dev/null; } 
 
-tongkichco() { Ssuper=$(ls -l $Likk/Super/*.img | awk '{ssuper+=$5} END {print Ssuper}'); } 
-
-kichcosuper() { Ssuperr="$(awk "BEGIN {print int($Ssize*1024*1024*1024)}")" 2> /dev/null; } 
+kichcosuper() { Ssuperr="$(awk "BEGIN {print int($Ssize*1024*1024*1024)}")"; } 
+echo " Kích cỡ tổng super raw: $Ssuperr"
 
 kichco() { Ssystem=$(wc -c < $Likk/Super/system.img); Ssystem_ext=$(wc -c < $Likk/Super/system_ext.img); Svendor=$(wc -c < $Likk/Super/vendor.img); Sproduct=$(wc -c < $Likk/Super/product.img); Sodm=$(wc -c < $Likk/Super/odm.img); } 
+
+#tongkichco() { Ssuper="$(ls -l $Likk/Super | sed -n 1p | awk '{print int($2)}')"; } 
+tongkichco() { Ssuper=$(awk "BEGIN {print int($Ssystem+$Svendor+$Ssystem_ext+$Sproduct+$Sodm)}"); } 
+echo " Kích cỡ tổng super: $Ssuper"
 
 giamthieu() { for EXT in system.img vendor.img product.img system_ext.img odm.img; do [ -s $Likk/Super/$EXT ] && resize2fs -f -M $Likk/Super/$EXT > /dev/null 2>&1 && resize2fs -f -M $Likk/Super/$EXT > /dev/null 2>&1; done; } 
  
