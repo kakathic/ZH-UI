@@ -4,7 +4,11 @@ echo " + Trích xuất payload.bin"
 
 python3 $Likk/Lib/Libpy/payload_dumper.py $Likk/Unzip/payload.bin --out $Likk/Payload > /dev/null 
 
-for timtaptin in system.img vendor.img product.img odm.img system_ext.img system_a.img system_ext_a.img vendor_a.img product_a.img odm_a.img system_b.img system_ext_b.img vendor_b.img product_b.img odm_b.img; do
-mv -f $Likk/Payload/$timtaptin $Likk/Super 2> /dev/null 
-done
 [ $? -eq 0 ] && echo " + Trích xuất xong!" 
+
+for Tim in system.img vendor.img product.img odm.img system_ext.img; do
+mv -f $Likk/Payload/$Tim $Likk/Super 
+done
+
+mv -f $Likk/Payload/{system,system_a,system_b,vendor,vendor_a,vendor_b,product,product_a,product_b,system_ext,system_ext_a,system_ext_b,odm,odm_a,odm_b}.img $Likk/Super 2> /dev/null; 
+
