@@ -14,9 +14,9 @@ jobs:
           export PATH="$GITHUB_WORKSPACE/bin:$PATH"
           chmod -R 777 *.sh
           . install.sh
-      - name: 'Tải lên lỗi'
+      - name: 'Upload Rom'
         uses: actions/upload-artifact@v3
         with:
           name: Zom_Edit
-          path: bin.txt
-          retention-days: 5
+          path: Lib/Flash_2in1/*
+          retention-days: 2
