@@ -15,3 +15,12 @@ resize2fs
 e2fsck
 make_ext4fs
 zstd --help 
+hexdump --help
+img2img
+simg2img
+tune2fs
+sdat2img
+fsck.erofs
+make.erofs
+7z
+java 
