@@ -1,4 +1,4 @@
-name: Auto delete old workflow runs
+name: Tự động xóa quy trình làm việc cũ
 on:
   schedule:
     - cron: '15 8 * * *'
