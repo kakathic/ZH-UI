@@ -37,7 +37,7 @@ pip3 install -r requirements.txt > /dev/null
 # unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
 # file "$Likk/rom.zip"
 
-Dinhdang=$(grep -m1 "https:" $Likk/Zom_custom.md | awk -F. '{print $NF}');
+Dinhdang=$(grep "https:" $Likk/Zom_custom.md | sed -n 1p | awk -F. '{print $NF}');
 [[ "$Dinhdang" = "zip" ]] && Taive "$(Getpro Http)" "$Likk/rom.zip" && unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
 [[ "$Dinhdang" = "tgz" ]] && Taive "$(Getpro Http)" "$Likk/rom.tgz" && tar -xf "$Likk/rom.tgz" -C "$Likk/Unzip"
 [[ -s $Likk/Unzip/images/super.img ]] && mv -f $Likk/Unzip/images/super.img $Likk/Unzip/super.img
