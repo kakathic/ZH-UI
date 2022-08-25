@@ -50,6 +50,7 @@ if [ -s $Likk/tmp/super.img ]; then
 zstd -10 $Likk/tmp/super.img -o $Likk/Lib/Flash_2in1/images/super.img.zst 
 # rm -f $Likk/Payload/vbmeta.img vbmeta_system${Khe}.img 2> /dev/null 
 mv -f $Likk/Payload/* $Likk/Lib/Flash_2in1/images 
+[ -s $Likk/Lib/Flash_2in1/images/super.img.zst ] && echo " + Tạo xong"; 
 #cd $Likk/Lib/Flash_2in1
 #zip -9qr $Likk/Rom_2in1_${mamay}_${ten}.zip * 
 #[ -s $Likk/Rom_2in1_${Mamay}_${Ten}.zip ] && echo " + Tạo xong"; 
