@@ -29,12 +29,7 @@ taosuper() { lpmake -d "$Ssuperr" -s "$Sokhe" -m 65536 -g "$Nhom":"$Ssuper" --su
 
 kichcosuper && echo " Kích cỡ phân vùng super: $Ssuperr" 
 giamthieu && tangkichco 
-kichco && echo " Kích cỡ:
-+ system:$Ssystem
-+ system_ext:$Ssystem_ext
-+ vendor:$Svendor
-+ product:$Ssproduct
-+ odm:$Sodm" 
+kichco && echo " Kích cỡ system: $Ssystem system_ext: $Ssystem_ext vendor: $Svendor product: $Sproduct odm: $Sodm" 
 tongkichco && echo " Kích cỡ tổng super: $Ssuper"
 
 if [[ "$Ssuper" -lt "$Ssuperr" ]]; then taosuper; else giamthieu && kichco && tongkichco && echo " Kích cỡ tổng super: $Ssuper" && taosuper; fi 
