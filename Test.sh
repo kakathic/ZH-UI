@@ -2,7 +2,7 @@ echo "- Chạy thử nghiệm lệnh"
 echo
 
 sudo apt-get update > /dev/null
-sudo apt-get install zstd binutils e2fsprogs erofs-utils simg2img > /dev/null
+sudo apt-get install zstd binutils e2fsprogs erofs-utils simg2img img2simg > /dev/null
 pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome > /dev/null
 
 echo "pycryptodome
