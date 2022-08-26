@@ -2,7 +2,7 @@ echo "- Chạy thử nghiệm lệnh"
 echo
 
 sudo apt-get update > /dev/null
-sudo apt-get install zstd binutils e2fsprogs erofs-utils android-tools > /dev/null
+sudo apt-get install zstd binutils e2fsprogs erofs-utils simg2img > /dev/null
 pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome > /dev/null
 
 echo "pycryptodome
@@ -24,4 +24,5 @@ java
 simg2img | tee 1.txt
 rimg2sdat | tee 1.txt
 img2simg | tee 1.txt
+sdat2img | tee 1.txt
 
