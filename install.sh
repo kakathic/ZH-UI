@@ -3,7 +3,7 @@
 Likk="$GITHUB_WORKSPACE"
 
 Taive() { curl -s -L "$1" -o "$2"; }
-Xem() { curl -s -L -G "$@"; }
+Xem(){ curl -s -L -G "$@"; }
 Getpro() { grep -m1 "$1=" $Likk/Zom_custom.md | cut -d = -f2; }
 
 ListTM="tmp
