@@ -14,11 +14,11 @@ jobs:
           chmod -R 777 bin/*
           export PATH="$GITHUB_WORKSPACE/bin:$PATH"
           chmod -R 777 *.sh
-          #./Test.sh
-          curl -s -L https://sourceforge.net/projects/xiaomi-eu-multilang-miui-roms/files/xiaomi.eu/MIUI-STABLE-RELEASES/MIUIv12/xiaomi.eu_multi_HMK20ProMI9TPro_V12.5.6.0.RFKCNXM_v12-11.zip/download -o rom.zip
+          ./Test.sh
+          #curl -s -L https://sourceforge.net/projects/xiaomi-eu-multilang-miui-roms/files/xiaomi.eu/MIUI-STABLE-RELEASES/MIUIv12/xiaomi.eu_multi_HMK20ProMI9TPro_V12.5.6.0.RFKCNXM_v12-11.zip/download -o rom.zip
       - name: 'Upload Rom'
         uses: actions/upload-artifact@v3
         with:
           name: Zom_Edit
-          path: rom.zip
+          path: 123.zip
           retention-days: 2
