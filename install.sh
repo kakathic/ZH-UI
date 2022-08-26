@@ -23,7 +23,7 @@ Tải file bổ sung...
 "
 
 sudo apt-get update > /dev/null
-sudo apt-get install zstd binutils e2fsprogs erofs-utils > /dev/null
+sudo apt-get install zstd binutils e2fsprogs erofs-utils simg2img > /dev/null
 pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome > /dev/null
 
 echo "pycryptodome
