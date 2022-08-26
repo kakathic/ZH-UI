@@ -31,15 +31,9 @@ docopt
 protobuf<=3.20.1" > requirements.txt
 pip3 install -r requirements.txt > /dev/null
 
-
-
-# Taive "$(Getpro Http)" "$Likk/rom.zip"
-# unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
+Taive "$(Getpro Http)" "$Likk/rom.zip"
+unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
 # file "$Likk/rom.zip"
-
-Taive "$(Getpro Http)" "$Likk/rom.zip" 
-unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip" || tar -xf "$Likk/rom.zip" -C "$Likk/Unzip"
-[[ -s $Likk/Unzip/images/super.img ]] && mv -f $Likk/Unzip/images/super.img $Likk/Unzip/super.img
 
 echo "
 Tên máy chủ
