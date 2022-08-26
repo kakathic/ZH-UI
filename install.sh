@@ -19,8 +19,7 @@ mkdir -p $Vak
 done
 
 echo "
-Tải file bổ sung...
-"
+Tải file bổ sung..."
 
 sudo apt-get update > /dev/null
 sudo apt-get install zstd binutils e2fsprogs erofs-utils simg2img img2simg > /dev/null
@@ -30,6 +29,9 @@ echo "pycryptodome
 docopt
 protobuf<=3.20.1" > requirements.txt
 pip3 install -r requirements.txt > /dev/null
+
+echo "
+Tải rom..." 
 
 Taive "$(Getpro Http)" "$Likk/rom.zip"
 unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
