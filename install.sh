@@ -38,8 +38,7 @@ pip3 install -r requirements.txt > /dev/null
 # file "$Likk/rom.zip"
 
 Taive "$(Getpro Http)" "$Likk/rom.ext" 
-Hexf=$(hexdump -n 4 $Likk/rom.ext | cut -c 8-12);
-[[ "$Hexf" == "4b50" ]] && unzip -qo "$Likk/rom.ext" -d "$Likk/Unzip" || tar -xf "$Likk/rom.ext" -C "$Likk/Unzip"
+unzip -qo "$Likk/rom.ext" -d "$Likk/Unzip" || tar -xf "$Likk/rom.ext" -C "$Likk/Unzip"
 [[ -s $Likk/Unzip/images/super.img ]] && mv -f $Likk/Unzip/images/super.img $Likk/Unzip/super.img
 
 echo "
