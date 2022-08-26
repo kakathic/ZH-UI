@@ -33,7 +33,7 @@ pip3 install -r requirements.txt > /dev/null
 
 Taive "$(Getpro Http)" "$Likk/rom.zip"
 unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
-# file "$Likk/rom.zip"
+file "$Likk/rom.zip"
 
 echo "
 Tên máy chủ
