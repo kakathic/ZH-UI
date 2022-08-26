@@ -18,11 +18,21 @@ done
 [[ -n "$(ls $Likk/Super/*.img)" ]] && echo " + Trích xuất xong!" 
 fi 
 
-if [[ -s $Likk/Unzip/super.img ]]; then 
+if [[ -s $Likk/Unzip/imgages/super.img ]]; then 
 echo " + Trích xuất super.img" 
+mv -f $Likk/Unzip/imgages/super.img $Likk/Unzip; 
 cd $Likk/Unzip 
 Hexf=$(hexdump -n 4 super.img | cut -c 8-12); 
-[[ $Hexf = "ff3a" ]] && mv -f super.img supers.img && simg2img supers.img super.img 
+[[ $Hexf == ff3a ]] && mv -f super.img supers.img && simg2img supers.img super.img 
+python3 $Likk/Lib/Libpy/lpunpack.py super.img $Likk/Super > /dev/null 
+[[ -n "$(ls $Likk/Super/*.img)" ]] && echo " + Trích xuất xong!" 
+fi 
+
+if [[ -s $Likk/Unzip/imgages/super.img.zst ]]; then 
+echo " + Trích xuất super.img.zst" 
+mv -f $Likk/Unzip/imgages/super.img.zst $Likk/Unzip; 
+cd $Likk/Unzip 
+zstd -d super.img.zst -o $Likk/Unzip >/dev/null
 python3 $Likk/Lib/Libpy/lpunpack.py super.img $Likk/Super > /dev/null 
 [[ -n "$(ls $Likk/Super/*.img)" ]] && echo " + Trích xuất xong!" 
 fi 
