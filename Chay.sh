@@ -1,4 +1,4 @@
-echo "- Kiểm thử"
+echo "▶ Kiểm thử"
 
 echo "- Cập nhật thư viện"
 sudo apt-get update > /dev/null
@@ -22,9 +22,9 @@ for Tao in $Danhsach; do
 mkdir -p $Tao
 done
 
-echo "- Tải tập tin"
-Taive() { curl -s -L "$1" -o "$2"; }
-Xem() { curl -s -L -G "$@"; }
+echo "- Thông tin tập tin"
+Taive(){ curl -s -L "$1" -o "$2"; }
+Xem(){ curl -s -L -G "$@"; }
 Laylink() { grep -m1 "$1" $Likk/Zom_custom.md | awk -F= '{print $2}'; } 
 
 echo "- Tìm tên rom" 
@@ -33,15 +33,15 @@ echo "
 Tên rom: $Tenrom 
 Định dạng: $Dinhdang
 "
-echo " Link Rom: $(Laylink "https://")"
-echo " Tải về"
+echo "- Link Rom: $(Laylink "https://")"
+echo "- Tải về"
 Taive "$(Laylink "https://")" "$Likk/$Tenrom" 
-echo "- Giải nén"
+echo "- Giải nén: $likk/$Tenrom"
 if [[ -s $Likk/$Tenrom ]]; then 
 echo "- Kiểm tra định dạng"
 [[ "$Dinhdang" == "zip" ]] && unzip -qo "$Likk/$Tenrom" -d "$Likk/Unzip"
 [[ "$Dinhdang" == "tgz" ]] && tar -cf "$Likk/$Tenrom" -C "$Likk/Unzip"
 [[ -s $Likk/Unzip/images/super.img ]] && mv -f $Likk/Unzip/images/super.img $Likk/Unzip/super.img 
-else "- Không có tập tin rom"
+else echo "- Không có tập tin rom"
 fi 
 echo "- Xong"
