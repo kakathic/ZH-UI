@@ -1,0 +1,18 @@
+name: 'Kiểm thử'
+on: 
+  workflow_dispatch:
+jobs:
+  build:
+    name: 'Xem hoạt động'
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: 'Xem thông báo'
+        shell: bash
+        run: |
+          chmod -R 777 bin/*
+          export PATH="$GITHUB_WORKSPACE/bin:$PATH"
+          chmod -R 777 *.sh
+          ./Chay.sh
+          retention-days: 2
