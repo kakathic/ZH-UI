@@ -35,9 +35,10 @@ Tên rom: $Tenrom
 "
 echo "- Link Rom: $(Laylink "https://")"
 echo "- Tải về"
+echo "- Giải nén rom - $(Laylink Http) $Likk/$Tenrom"
+
 Taive "$(Laylink Http)" "$Likk/$Tenrom" 
 # curl -s -L "$(Laylink "https://")" -o "$Likk/$Tenrom" 
-echo "- Giải nén rom - $(Laylink Http) $Likk/$Tenrom"
 
 
 ls "$Likk"
