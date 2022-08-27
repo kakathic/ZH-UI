@@ -14,5 +14,5 @@ jobs:
           chmod -R 777 bin/*
           export PATH="$GITHUB_WORKSPACE/bin:$PATH"
           chmod -R 777 *.sh
-          ./Chay.sh
+          . Chay.sh
          
