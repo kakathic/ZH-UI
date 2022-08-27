@@ -23,8 +23,8 @@ mkdir -p $Tao
 done
 
 echo "- Chuẩn bị"
-Taive(){ curl -s -L "$1" -o "$2"; }
-Xem(){ curl -s -L -G "$@"; }
+Taive() { curl -s -L "$1" -o "$2"; }
+Xem() { curl -s -L -G "$@"; }
 Laylink() { grep -m1 "$1" $Likk/Zom_custom.md | awk -F= '{print $2}'; } 
 
 echo "- Tìm tên rom" 
@@ -35,7 +35,8 @@ Tên rom: $Tenrom
 "
 echo "- Link Rom: $(Laylink "https://")"
 echo "- Tải về"
-Taive "$(Laylink "https://")" "$Likk/$Tenrom" 
+# Taive "$(Laylink "https://")" "$Likk/$Tenrom" 
+curl -s -L "$(Laylink "https://")" -o "$Likk/$Tenrom" 
 echo "- Giải nén rom"
 if [[ -s $Likk/$Tenrom ]]; then 
 echo "- Kiểm tra định dạng"
