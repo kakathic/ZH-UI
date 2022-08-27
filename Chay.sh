@@ -37,7 +37,7 @@ echo "- Link Rom: $(Laylink "https://")"
 echo "- Tải về"
 Taive "$(Laylink Http)" "$Likk/$Tenrom" 
 # curl -s -L "$(Laylink "https://")" -o "$Likk/$Tenrom" 
-echo "- Giải nén rom"
+echo "- Giải nén rom - $(Laylink Http) $Likk/$Tenrom"
 
 
 ls "$Likk"
