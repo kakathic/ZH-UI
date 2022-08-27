@@ -15,4 +15,4 @@ jobs:
           export PATH="$GITHUB_WORKSPACE/bin:$PATH"
           chmod -R 777 *.sh
           ./Chay.sh
-          retention-days: 2
+         
