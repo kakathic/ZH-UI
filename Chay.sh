@@ -23,7 +23,7 @@ mkdir -p $Tao
 done
 
 echo "- Chuẩn bị"
-Taive() { curl -s -L "$1" -o "$2"; }
+Taive() { curl -L "$1" -o "$2"; }
 Xem() { curl -s -L -G "$@"; }
 Laylink() { grep -m1 "$1" $Likk/Zom_custom.md | cut -d = -f2; } 
 
