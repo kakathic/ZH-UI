@@ -28,25 +28,27 @@ Xem() { curl -s -L -G "$@"; }
 Laylink() { grep -m1 "$1" $Likk/Zom_custom.md | cut -d = -f2; } 
 
 echo "- Tìm tên rom" 
-Tenrom=$(grep -m1 "https://" $Likk/Zom_custom.md | awk -F/ '{print $5}') && Dinhdang=$(echo $Tenrom | awk -F. '{print $NF}');
+Linkrom=$(Laylink "https://") 
+Tenrom=${Linkrom##*/} && Dinhdang=${Linkrom##*.}; 
+#Tenrom=$(grep -m1 "https://" $Likk/Zom_custom.md | awk -F/ '{print $5}') && Dinhdang=$(echo $Tenrom | awk -F. '{print $NF}');
 echo "
 Tên rom: $Tenrom 
 Định dạng: $Dinhdang
 "
-echo "- Link Rom: $(Laylink "https://")"
-echo "- Tải về"
+echo "- Link Rom: $Linkrom"
 
+echo "- Tải về" 
 Taive "$(Laylink Http)" "$Likk/$Tenrom" 
-# curl -s -L "$(Laylink "https://")" -o "$Likk/$Tenrom" 
+ls "$Likk/$Tenrom"
 
-echo "- Giải nén rom"
-
-ls "$Likk"
+echo "- Giải nén rom" 
 if [[ -s $Likk/$Tenrom ]]; then 
 echo "- Kiểm tra định dạng"
 [[ "$Dinhdang" == "zip" ]] && unzip -qo "$Likk/$Tenrom" -d "$Likk/Unzip"
 [[ "$Dinhdang" == "tgz" ]] && tar -cf "$Likk/$Tenrom" -C "$Likk/Unzip"
 [[ -s $Likk/Unzip/images/super.img ]] && mv -f $Likk/Unzip/images/super.img $Likk/Unzip/super.img 
+ls $Likk/Unzip 
 else echo "- Không có tập tin rom"
 fi 
+
 echo "- Xong"
