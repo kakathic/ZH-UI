@@ -38,6 +38,9 @@ echo "- Tải về"
 Taive "$(Laylink "https://")" "$Likk/$Tenrom" 
 # curl -s -L "$(Laylink "https://")" -o "$Likk/$Tenrom" 
 echo "- Giải nén rom"
+
+
+ls "$Likk"
 if [[ -s $Likk/$Tenrom ]]; then 
 echo "- Kiểm tra định dạng"
 [[ "$Dinhdang" == "zip" ]] && unzip -qo "$Likk/$Tenrom" -d "$Likk/Unzip"
