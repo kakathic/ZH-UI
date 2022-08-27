@@ -25,7 +25,7 @@ done
 echo "- Chuẩn bị"
 Taive() { curl -s -L "$1" -o "$2"; }
 Xem() { curl -s -L -G "$@"; }
-Laylink() { grep -m1 "$1" $Likk/Zom_custom.md | awk -F= '{print $2}'; } 
+Laylink() { grep -m1 "$1" $Likk/Zom_custom.md | cut -d = -f2; } 
 
 echo "- Tìm tên rom" 
 Tenrom=$(grep -m1 "https://" $Likk/Zom_custom.md | awk -F/ '{print $5}') && Dinhdang=$(echo $Tenrom | awk -F. '{print $NF}');
