@@ -22,8 +22,8 @@ if [[ -s $Likk/Unzip/imgages/super.img ]]; then
 echo " + Trích xuất super.img" 
 mv -f $Likk/Unzip/imgages/super.img $Likk/Unzip; 
 cd $Likk/Unzip 
-Hexf=$(hexdump -n 4 super.img | cut -c 8-12); 
-[[ $Hexf == ff3a ]] && mv -f super.img supers.img && simg2img supers.img super.img 
+#Hexf=$(hexdump -n 4 super.img | cut -c 8-12); 
+[[ -n "$(echo $(hexdump -n 4 super.img) | grep 'ff3a')" ]] && mv -f super.img supers.img && simg2img supers.img super.img 
 python3 $Likk/Lib/Libpy/lpunpack.py super.img $Likk/Super > /dev/null 
 [[ -n "$(ls $Likk/Super/*.img)" ]] && echo " + Trích xuất xong!" 
 fi 
