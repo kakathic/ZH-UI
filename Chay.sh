@@ -23,7 +23,7 @@ mkdir -p $Tao
 done
 
 echo "- Chuẩn bị"
-Taive() { curl -L "$1" -o "$2"; }
+Taive() { curl -s -L "$1" -o "$2"; }
 Xem() { curl -s -L -G "$@"; }
 Laylink() { grep -m1 "$1" $Likk/Zom_custom.md | cut -d = -f2; } 
 
@@ -35,11 +35,11 @@ Tên rom: $Tenrom
 "
 echo "- Link Rom: $(Laylink "https://")"
 echo "- Tải về"
-echo "- Giải nén rom - $(Laylink Http) $Likk/$Tenrom"
 
 Taive "$(Laylink Http)" "$Likk/$Tenrom" 
 # curl -s -L "$(Laylink "https://")" -o "$Likk/$Tenrom" 
 
+echo "- Giải nén rom"
 
 ls "$Likk"
 if [[ -s $Likk/$Tenrom ]]; then 
