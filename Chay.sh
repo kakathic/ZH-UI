@@ -2,7 +2,7 @@ echo "▶ Kiểm thử"
 
 echo "- Cập nhật thư viện"
 sudo apt-get update > /dev/null
-sudo apt-get install zstd binutils e2fsprogs erofs-utils simg2img img2simg > /dev/null
+sudo apt-get install curl zstd binutils e2fsprogs erofs-utils simg2img img2simg > /dev/null
 pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome > /dev/null
 
 echo "pycryptodome
@@ -22,7 +22,7 @@ for Tao in $Danhsach; do
 mkdir -p $Tao
 done
 
-echo "- Thông tin tập tin"
+echo "- Chuẩn bị"
 Taive(){ curl -s -L "$1" -o "$2"; }
 Xem(){ curl -s -L -G "$@"; }
 Laylink() { grep -m1 "$1" $Likk/Zom_custom.md | awk -F= '{print $2}'; } 
@@ -36,7 +36,7 @@ Tên rom: $Tenrom
 echo "- Link Rom: $(Laylink "https://")"
 echo "- Tải về"
 Taive "$(Laylink "https://")" "$Likk/$Tenrom" 
-echo "- Giải nén: $likk/$Tenrom"
+echo "- Giải nén rom"
 if [[ -s $Likk/$Tenrom ]]; then 
 echo "- Kiểm tra định dạng"
 [[ "$Dinhdang" == "zip" ]] && unzip -qo "$Likk/$Tenrom" -d "$Likk/Unzip"
