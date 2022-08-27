@@ -24,7 +24,7 @@ keyListener() {
 }
 
 keyListener_2() {
-  getevent -qlc 1 2>&1 | grep VOLUME | grep " DOWN" >/tmp/events
+  getevent -qlc 1 2>&1 | grep VOLUME | grep "DOWN" >/tmp/events
   if $(grep -q "VOLUMEUP" /tmp/events); then
     ui_print " - Đang xử lý, vui lòng chờ......"
     return 0
@@ -36,6 +36,8 @@ keyListener_2() {
   fi
 }
 
+khe=$(getprop ro.boot.slot_suffix) 
+blk=/dev/block/by-name 
 bin=/tmp/bin/android
 if [ -d $bin ]; then
   rm -rf $bin
@@ -52,81 +54,128 @@ ui_print "Author: chamchamfy && kakathic"
 ui_print "======================================"
 ui_print " "
 ui_print " "
-ui_print " "
-ui_print "Cài đặt Magisk(Root)"
+ui_print "- Cài đặt Magisk(Root)"
 if keyListener; then
-  package_extract_file "images/boot_magisk.img" "/dev/block/bootdevice/by-name/boot"
-  ui_print "Cài đặt hoàn tất Magisk(Root)"
+  for tim in boot boot_a boot_b; do 
+  [ -e "$blk/$tim" ] && package_extract_file "images/boot_magisk.img" "$blk/$tim"
+  done 
+  ui_print "+ Cài đặt hoàn tất Magisk(Root)"
   ui_print " "
-  ui_print "Tắt tất cả các mô-đun Magisk để có thể khởi động bình thường?"
+  ui_print "+ Tắt tất cả các mô-đun Magisk để có thể khởi động bình thường?"
   if keyListener; then
     for list in $(ls -d /data/adb/modules/*); do
       touch $list/disable
     done
-    ui_print "Đã tắt các mô-đun Magisk"
+    ui_print "+ Đã tắt các mô-đun Magisk"
   else
-    ui_print "Không tắt mô-đun Magisk"
+    ui_print "+ Không tắt mô-đun Magisk"
   fi
 else
-  package_extract_file "images/boot.img" "/dev/block/bootdevice/by-name/boot"
-  ui_print "Không cài đặt Magisk(Root)"
+  for tim in boot boot_a boot_b; do 
+  [ -e "$blk/$tim" ] && package_extract_file "images/boot.img" "$blk/$tim"
+  done 
+  ui_print "+ Không cài đặt Magisk(Root)"
 fi
 ui_print " "
-ui_print " "
-package_extract_file "images/cmnlib64.mbn" "/dev/block/bootdevice/by-name/cmnlib64"
-package_extract_file "images/xbl_config_5.elf" "/dev/block/bootdevice/by-name/xbl_config_5"
-package_extract_file "images/NON-HLOS.bin" "/dev/block/bootdevice/by-name/modem"
-package_extract_file "images/cmnlib.mbn" "/dev/block/bootdevice/by-name/cmnlib"
-package_extract_file "images/BTFM.bin" "/dev/block/bootdevice/by-name/bluetooth"
-package_extract_file "images/km4.mbn" "/dev/block/bootdevice/by-name/keymaster"
-package_extract_file "images/xbl_5.elf" "/dev/block/bootdevice/by-name/xbl_5"
-package_extract_file "images/tz.mbn" "/dev/block/bootdevice/by-name/tz"
-package_extract_file "images/aop.mbn" "/dev/block/bootdevice/by-name/aop"
-package_extract_file "images/featenabler.mbn" "/dev/block/bootdevice/by-name/featenabler"
-package_extract_file "images/xbl_config_4.elf" "/dev/block/bootdevice/by-name/xbl_config_4"
-package_extract_file "images/storsec.mbn" "/dev/block/bootdevice/by-name/storsec"
-package_extract_file "images/uefi_sec.mbn" "/dev/block/bootdevice/by-name/uefisecapp"
-package_extract_file "images/qupv3fw.elf" "/dev/block/bootdevice/by-name/qupfw"
-package_extract_file "images/abl.elf" "/dev/block/bootdevice/by-name/abl"
-package_extract_file "images/dspso.bin" "/dev/block/bootdevice/by-name/dsp"
-package_extract_file "images/devcfg.mbn" "/dev/block/bootdevice/by-name/devcfg"
-package_extract_file "images/xbl_4.elf" "/dev/block/bootdevice/by-name/xbl_4"
-package_extract_file "images/hyp.mbn" "/dev/block/bootdevice/by-name/hyp"
-package_extract_file "images/cmnlib64.mbn" "/dev/block/bootdevice/by-name/cmnlib64bak"
-package_extract_file "images/cmnlib.mbn" "/dev/block/bootdevice/by-name/cmnlibbak"
-package_extract_file "images/tz.mbn" "/dev/block/bootdevice/by-name/tzbak"
-package_extract_file "images/aop.mbn" "/dev/block/bootdevice/by-name/aopbak"
-package_extract_file "images/storsec.mbn" "/dev/block/bootdevice/by-name/storsecbak"
-package_extract_file "images/qupv3fw.elf" "/dev/block/bootdevice/by-name/qupfwbak"
-package_extract_file "images/abl.elf" "/dev/block/bootdevice/by-name/ablbak"
-package_extract_file "images/devcfg.mbn" "/dev/block/bootdevice/by-name/devcfgbak"
-package_extract_file "images/hyp.mbn" "/dev/block/bootdevice/by-name/hypbak"
-package_extract_file "images/logo.img" "/dev/block/bootdevice/by-name/logo"
-package_extract_file "images/dtbo.img" "/dev/block/bootdevice/by-name/dtbo"
-package_extract_file "images/vbmeta.img" "/dev/block/bootdevice/by-name/vbmeta"
-package_extract_file "images/vbmeta_system.img" "/dev/block/bootdevice/by-name/vbmeta_system"
-# flash firmware done
-package_extract_file "images/cust.img" "/dev/block/bootdevice/by-name/cust"
-package_extract_zstd "images/super.img.zst" "/dev/block/bootdevice/by-name/super"
+ui_print "- Cập nhật firmware"
+if [ -z "$khe" ]; then 
+package_extract_file "images/NON-HLOS.bin" "$blk/modem"
+package_extract_file "images/BTFM.bin" "$blk/bluetooth"
+package_extract_file "images/km4.mbn" "$blk/keymaster"
+package_extract_file "images/uefi_sec.mbn" "$blk/uefisecapp"
+package_extract_file "images/cmnlib64.mbn" "$blk/cmnlib64"
+package_extract_file "images/xbl_config_5.elf" "$blk/xbl_config_5"
+package_extract_file "images/cmnlib.mbn" "$blk/cmnlib"
+package_extract_file "images/xbl_5.elf" "$blk/xbl_5"
+package_extract_file "images/tz.mbn" "$blk/tz"
+package_extract_file "images/aop.mbn" "$blk/aop"
+package_extract_file "images/featenabler.mbn" "$blk/featenabler"
+package_extract_file "images/xbl_config_4.elf" "$blk/xbl_config_4"
+package_extract_file "images/storsec.mbn" "$blk/storsec"
+package_extract_file "images/qupv3fw.elf" "$blk/qupfw"
+package_extract_file "images/abl.elf" "$blk/abl"
+package_extract_file "images/dspso.bin" "$blk/dsp"
+package_extract_file "images/devcfg.mbn" "$blk/devcfg"
+package_extract_file "images/xbl_4.elf" "$blk/xbl_4"
+package_extract_file "images/hyp.mbn" "$blk/hyp"
+package_extract_file "images/cmnlib64.mbn" "$blk/cmnlib64bak"
+package_extract_file "images/cmnlib.mbn" "$blk/cmnlibbak"
+package_extract_file "images/tz.mbn" "$blk/tzbak"
+package_extract_file "images/aop.mbn" "$blk/aopbak"
+package_extract_file "images/storsec.mbn" "$blk/storsecbak"
+package_extract_file "images/qupv3fw.elf" "$blk/qupfwbak"
+package_extract_file "images/abl.elf" "$blk/ablbak"
+package_extract_file "images/devcfg.mbn" "$blk/devcfgbak"
+package_extract_file "images/hyp.mbn" "$blk/hypbak"
+package_extract_file "images/logo.img" "$blk/logo"
+package_extract_file "images/dtbo.img" "$blk/dtbo"
+package_extract_file "images/vbmeta.img" "$blk/vbmeta"
+package_extract_file "images/vbmeta_system.img" "$blk/vbmeta_system"
+else 
+package_extract_file "images/abl.img" "$blk/abl_a"
+package_extract_file "images/abl.img" "$blk/abl_b"
+package_extract_file "images/aop.img" "$blk/aop_a"
+package_extract_file "images/aop.img" "$blk/aop_b"
+package_extract_file "images/bluetooth.img" "$blk/bluetooth_a"
+package_extract_file "images/bluetooth.img" "$blk/bluetooth_b"
+package_extract_file "images/cmnlib64.img" "$blk/cmnlib64_a"
+package_extract_file "images/cmnlib64.img" "$blk/cmnlib64_b"
+package_extract_file "images/cmnlib.img" "$blk/cmnlib_a"
+package_extract_file "images/cmnlib.img" "$blk/cmnlib_b"
+package_extract_file "images/devcfg.img" "$blk/devcfg_a"
+package_extract_file "images/devcfg.img" "$blk/devcfg_b"
+package_extract_file "images/dsp.img" "$blk/dsp_a"
+package_extract_file "images/dsp.img" "$blk/dsp_b"
+package_extract_file "images/dtbo.img" "$blk/dtbo_a"
+package_extract_file "images/dtbo.img" "$blk/dtbo_b"
+package_extract_file "images/featenabler.img" "$blk/featenabler_a"
+package_extract_file "images/featenabler.img" "$blk/featenabler_b"
+package_extract_file "images/hyp.img" "$blk/hyp_a"
+package_extract_file "images/hyp.img" "$blk/hyp_b"
+package_extract_file "images/imagefv.img" "$blk/imagefv_a"
+package_extract_file "images/imagefv.img" "$blk/imagefv_b"
+package_extract_file "images/keymaster.img" "$blk/keymaster_a"
+package_extract_file "images/keymaster.img" "$blk/keymaster_b"
+package_extract_file "images/modem.img" "$blk/modem_a"
+package_extract_file "images/modem.img" "$blk/modem_b"
+package_extract_file "images/qupfw.img" "$blk/qupfw_a"
+package_extract_file "images/qupfw.img" "$blk/qupfw_b"
+package_extract_file "images/tz.img" "$blk/tz_a"
+package_extract_file "images/tz.img" "$blk/tz_b"
+package_extract_file "images/uefisecapp.img" "$blk/uefisecapp_a"
+package_extract_file "images/uefisecapp.img" "$blk/uefisecapp_b"
+package_extract_file "images/vbmeta.img" "$blk/vbmeta_a"
+package_extract_file "images/vbmeta.img" "$blk/vbmeta_b"
+package_extract_file "images/vbmeta_system.img" "$blk/vbmeta_system_a"
+package_extract_file "images/vbmeta_system.img" "$blk/vbmeta_system_b"
+package_extract_file "images/vendor_boot.img" "$blk/vendor_boot_a"
+package_extract_file "images/vendor_boot.img" "$blk/vendor_boot_b"
+package_extract_file "images/xbl_config.img" "$blk/xbl_config_a"
+package_extract_file "images/xbl_config.img" "$blk/xbl_config_b"
+package_extract_file "images/xbl.img" "$blk/xbl_a"
+package_extract_file "images/xbl.img" "$blk/xbl_b"
+fi 
 
-if [ -f "images/recovery.img" ]; then
-  package_extract_file "images/recovery.img" "/dev/block/bootdevice/by-name/recovery"
+ui_print " "
+ui_print "- Cập nhật hệ thống"
+package_extract_file "images/cust.img" "$blk/cust"
+package_extract_zstd "images/super.img.zst" "$blk/super"
+
+if [ -f "images/recovery.img" ] && [ -e "$blk/recovery ]; then
+  package_extract_file "images/recovery.img" "$blk/recovery"
 fi
 
 lptools unmap system
 lptools map system
 
 # Kích hoạt khe hoạt động
-#/system/bin/bootctl set-active-boot-slot 0
+[ -n "$khe" ] && /system/bin/bootctl set-active-boot-slot 0
 
 ui_print " "
-ui_print " "
-ui_print " Đã flash xong! " 
+ui_print "- Đã flash xong! " 
 ui_print "======================================"
 ui_print "Vui lòng bỏ qua thông báo lỗi mount màu đỏ"
-ui_print "Vui lòng bỏ qua thông báo lỗi mount màu đỏ"
 ui_print "======================================"
-ui_print " "
 ui_print " "
 
 exit 0
