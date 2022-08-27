@@ -3,16 +3,20 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    name: 'Xem hoạt động'
+    name: 'Xem quá trình'
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout
+      - name: 'Kiểm tra thông tin xuất ra'
         uses: actions/checkout@v3
       - name: 'Xem thông báo'
-        shell: bash
         run: |
           chmod -R 777 bin/*
           export PATH="$GITHUB_WORKSPACE/bin:$PATH"
           chmod -R 777 *.sh
           . Chay.sh
-         
+      - name: 'Tải lên Rom'
+        uses: actions/upload-artifact@v3
+        with:
+          name: Rom_Rebuild
+          path: Lib/Flash_2in1/*
+          retention-days: 2
