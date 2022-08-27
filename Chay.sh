@@ -30,7 +30,6 @@ Laylink() { grep -m1 "$1" $Likk/Zom_custom.md | cut -d = -f2; }
 echo "- Tìm tên rom" 
 Linkrom=$(Laylink "https://") 
 Tenrom=${Linkrom##*/} && Dinhdang=${Linkrom##*.}; 
-#Tenrom=$(grep -m1 "https://" $Likk/Zom_custom.md | awk -F/ '{print $5}') && Dinhdang=$(echo $Tenrom | awk -F. '{print $NF}');
 echo "
 Tên rom: $Tenrom 
 Định dạng: $Dinhdang
@@ -38,7 +37,7 @@ Tên rom: $Tenrom
 echo "- Link Rom: $Linkrom"
 
 echo "- Tải về" 
-Taive "$(Laylink Http)" "$Likk/$Tenrom" 
+Taive "$Linkrom" "$Likk/$Tenrom" 
 ls "$Likk/$Tenrom"
 
 echo "- Giải nén rom" 
@@ -51,4 +50,13 @@ ls $Likk/Unzip
 else echo "- Không có tập tin rom"
 fi 
 
-echo "- Xong"
+echo "▶ Tên máy chủ"
+uname -a
+echo ::set-output name=uname::$(uname -a)
+echo
+
+. $Likk/Unpack.sh
+. $Likk/Mod.sh
+. $Likk/Repack.sh
+
+echo "- Kết thúc"
