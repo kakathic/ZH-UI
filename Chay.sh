@@ -35,13 +35,13 @@ Tên rom: $Tenrom
 "
 echo "- Link Rom: $(Laylink "https://")"
 echo "- Tải về"
-# Taive "$(Laylink "https://")" "$Likk/$Tenrom" 
-curl -s -L "$(Laylink "https://")" -o "$Likk/$Tenrom" 
+Taive "$(Laylink "https://")" "$Likk/rom.${Dinhdang}" 
+# curl -s -L "$(Laylink "https://")" -o "$Likk/$Tenrom" 
 echo "- Giải nén rom"
-if [[ -s $Likk/$Tenrom ]]; then 
+if [[ -s $Likk/rom.${Dinhdang} ]]; then 
 echo "- Kiểm tra định dạng"
-[[ "$Dinhdang" == "zip" ]] && unzip -qo "$Likk/$Tenrom" -d "$Likk/Unzip"
-[[ "$Dinhdang" == "tgz" ]] && tar -cf "$Likk/$Tenrom" -C "$Likk/Unzip"
+[[ "$Dinhdang" == "zip" ]] && unzip -qo "$Likk/rom.zip" -d "$Likk/Unzip"
+[[ "$Dinhdang" == "tgz" ]] && tar -cf "$Likk/rom.tgz" -C "$Likk/Unzip"
 [[ -s $Likk/Unzip/images/super.img ]] && mv -f $Likk/Unzip/images/super.img $Likk/Unzip/super.img 
 else echo "- Không có tập tin rom"
 fi 
