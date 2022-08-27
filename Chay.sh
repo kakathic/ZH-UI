@@ -11,15 +11,15 @@ protobuf<=3.20.1" > requirements.txt
 pip3 install -r requirements.txt > /dev/null
 
 Likk="$GITHUB_WORKSPACE"
-ListTM="tmp
+Danhsach="tmp
 Unpack
 Repapk
 Unzip
 Payload
 Super
 "
-for Vak in $ListTM; do
-mkdir -p $Vak
+for Tao in $Danhsach; do
+mkdir -p $Tao
 done
 
 echo "- Tải tập tin"
