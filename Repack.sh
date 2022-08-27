@@ -49,7 +49,7 @@ Phienban=$(grep 'incremental' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}')
 Mamay=$(grep 'pre-device' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
 
 echo " + Tạo tập tin flash..." 
-[[ "$Khe" = "_a" ]] && cp -af $Likk/Lib/update-binary $Likk/Lib/Flash_2in1/META-INF/com/google/android 2> /dev/null && cp -af $Likk/Lib/windows-install.bat $Likk/Lib/Flash_2in1 2> /dev/null; 
+if [[ "$Khe" = "_a" ]]; then rm -f $Likk/Lib/Flash_2in1/windows_install.bat $Likk/Lib/Flash_2in1/mac_or_linux_install.sh 2> /dev/null; else rm -f $Likk/Lib/Flash_2in1/windows_install_ab.bat $Likk/Lib/Flash_2in1/mac_or_linux_install_ab.sh 2> /dev/null; fi 
 sed -i "s|Device:|Device: $Mamay|; s|ROM: MIUI|ROM: MIUI $Phienban|" $Likk/Lib/Flash_2in1/*/*/*/*/update-binary 2> /dev/null 
 if [[ -s $Likk/tmp/super.img ]]; then 
 zstd -10 $Likk/tmp/super.img -o $Likk/Lib/Flash_2in1/images/super.img.zst 
