@@ -55,7 +55,7 @@ if [[ -s $Likk/tmp/super.img ]]; then
 zstd -10 $Likk/tmp/super.img -o $Likk/Lib/Flash_2in1/images/super.img.zst 
 # rm -f $Likk/Payload/vbmeta.img vbmeta_system${Khe}.img 2> /dev/null 
 [[ -n "$(ls $Likk/Payload)" ]] && mv -f $Likk/Payload/* $Likk/Lib/Flash_2in1/images 
-[[ -n "$(ls $Likk/Unzip/images)" ]] && mv -f $Likk/Unzip/images/* $Likk/Lib/Flash_2in1/images 
-[[ -n "$(ls $Likk/Unzip/firmware-update)" ]] && mv -f $Likk/Unzip/firmware-update/* $Likk/Lib/Flash_2in1/images 
+[[ -d $Likk/Unzip/images ]] && [[ -n "$(ls $Likk/Unzip/images)" ]] && mv -f $Likk/Unzip/images/* $Likk/Lib/Flash_2in1/images 
+[[ -d $Likk/Unzip/firmware-update ]] && [[ -n "$(ls $Likk/Unzip/firmware-update)" ]] && mv -f $Likk/Unzip/firmware-update/* $Likk/Lib/Flash_2in1/images 
 [[ -s $Likk/Lib/Flash_2in1/images/super.img.zst ]] && echo " + Tạo xong"; 
 fi 
