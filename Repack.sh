@@ -2,9 +2,11 @@ echo " + Kiểm tra kích cỡ super..."
 cd $Likk/Super 
 
 # Phiên bản rom
+if [[ -f $Likk/Unzip/META-INF/com/android/metadata ]]; then 
 Phienban=$(grep 'incremental' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
 Mamay=$(grep 'pre-device' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
 Loai=$(grep 'ota-type' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
+fi 
 
 # Chế độ (none/readonly)
 Chedo=none
