@@ -13,6 +13,7 @@ Chedo=none
 
 # Kích cỡ phân vùng super 8.5GB
 Ssize=8.5
+kichcosuper() { Ssuperr=$(echo $Ssize | awk '{print int($Ssize*1024*1024*1024)}'); } 
 
 # Loại phân vùng 
 
