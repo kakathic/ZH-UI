@@ -12,7 +12,7 @@ fi
 Chedo=none
 
 # Kích cỡ phân vùng super 8.5GB
-Ssize=$(grep -m1 "super_size" $Likk/Zom_custom.md | awk '{print $2}')
+Ssize=$(grep -m1 "super_size" $Likk/Zom_custom.md | awk -F= '{print $2}')
 
 # Kiểm tra kích cỡ 
 kichcosuper() { Ssuperr=$(echo $Ssize | awk '{print int($Ssize*1024*1024*1024)}'); } 
