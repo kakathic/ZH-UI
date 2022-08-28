@@ -14,7 +14,7 @@ Chedo=none
 # Kích cỡ phân vùng super 8.5GB
 Ssize=8.5
 kichcosuper() { Ssuperr=$(echo $Ssize | awk '{print int($Ssize*1024*1024*1024)}'); } 
-
+kichcosuper 
 # Loại phân vùng 
 
 if [[ -f $Likk/Payload/modem.img ]] || [[ -f $Likk/Unzip/images/modem.img ]] || [[ -f $Likk/Unzip/firmware-update/modem.img ]]; then 
