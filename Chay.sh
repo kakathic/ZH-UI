@@ -1,3 +1,7 @@
+echo "▶ Tên máy chủ"
+uname -a
+echo ::set-output name=uname::$(uname -a)
+echo
 echo "▶ Kiểm thử"
 
 echo "- Cập nhật thư viện"
@@ -50,9 +54,6 @@ ls $Likk/Unzip
 else echo "- Không có tập tin rom"
 fi 
 
-echo "▶ Tên máy chủ"
-uname -a
-echo ::set-output name=uname::$(uname -a)
 echo
 
 . $Likk/Unpack.sh
