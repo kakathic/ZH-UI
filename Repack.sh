@@ -1,6 +1,11 @@
 echo " + Kiểm tra kích cỡ super..." 
 cd $Likk/Super 
 
+# Phiên bản rom
+Phienban=$(grep 'incremental' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
+Mamay=$(grep 'pre-device' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
+Loai=$(grep 'ota-type' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
+
 # Chế độ (none/readonly)
 Chedo=none
 
@@ -8,9 +13,10 @@ Chedo=none
 Ssize=8.5
 
 # Loại phân vùng 
-if [[ -f $Likk/Super/system_a.img ]]; then 
+if [[ -f $Likk/Payload/modem.img ]] || [[ -f $Likk/Unzip/images/modem.img ]] || [[ -f $Likk/Unzip/firmware-update/modem.img ]]; then 
 Khe='_a'
 Sokhe=3
+touch $Likk/Super/system_b.img $Likk/Super/system_ext_b.img $Likk/Super/vendor_b.img $Likk/Super/product_b.img $Likk/Super/odm_b.img 2> /dev/null; 
 Nhom='qti_dynamic_partitions_a'
 Nhomkhac='--group "qti_dynamic_partitions_b":"0" --partition system_b:"none":"0":"qti_dynamic_partitions_b" --image system_b=system_b.img --partition system_ext_b:"none":"0":"qti_dynamic_partitions_b" --image system_ext_b=system_ext_b.img --partition vendor_b:"none":"0":"qti_dynamic_partitions_b" --image vendor_b=vendor_b.img --partition product_b:"none":"0":"qti_dynamic_partitions_b" --image product_b=product_b.img --partition odm_b:"none":"0":"qti_dynamic_partitions_b" --image odm_b=odm_b.img' 
 else 
@@ -44,16 +50,12 @@ taosuper
 
 if [[ "$Ssuper" -lt "$Ssuperr" ]]; then taosuper; else giamthieu && kichco && ghidoc && tongkichco && echo " Kích cỡ tổng super: $Ssuper" && taosuper; fi 
 
-# Phiên bản rom
-Phienban=$(grep 'incremental' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
-Mamay=$(grep 'pre-device' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
-
 echo " + Tạo tập tin flash..." 
 if [[ "$Khe" == "_a" ]]; then rm -f $Likk/Lib/Flash_2in1/windows_install.bat $Likk/Lib/Flash_2in1/mac_or_linux_install.sh 2> /dev/null; else rm -f $Likk/Lib/Flash_2in1/windows_install_ab.bat $Likk/Lib/Flash_2in1/mac_or_linux_install_ab.sh 2> /dev/null; fi 
 sed -i "s|Device:|Device: $Mamay|; s|ROM: MIUI|ROM: MIUI $Phienban|" $Likk/Lib/Flash_2in1/*/*/*/*/update-binary 2> /dev/null 
 if [[ -s $Likk/tmp/super.img ]]; then 
 zstd -10 $Likk/tmp/super.img -o $Likk/Lib/Flash_2in1/images/super.img.zst 
-# rm -f $Likk/Payload/vbmeta.img vbmeta_system${Khe}.img 2> /dev/null 
+# rm -f $Likk/Payload/vbmeta.img vbmeta_system.img 2> /dev/null 
 [[ -n "$(ls $Likk/Payload)" ]] && mv -f $Likk/Payload/* $Likk/Lib/Flash_2in1/images 
 [[ -d $Likk/Unzip/images ]] && [[ -n "$(ls $Likk/Unzip/images)" ]] && mv -f $Likk/Unzip/images/* $Likk/Lib/Flash_2in1/images 
 [[ -d $Likk/Unzip/firmware-update ]] && [[ -n "$(ls $Likk/Unzip/firmware-update)" ]] && mv -f $Likk/Unzip/firmware-update/* $Likk/Lib/Flash_2in1/images 
