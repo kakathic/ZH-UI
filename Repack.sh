@@ -26,11 +26,11 @@ tongkichco() { Ssuper=$(ls -l $Likk/Super | awk '{Ssuper+=$5} END {print Ssuper}
 if [[ -f $Likk/Payload/modem.img ]] || [[ -f $Likk/Unzip/images/modem.img ]] || [[ -f $Likk/Unzip/firmware-update/modem.img ]]; then 
 for n in system_b.img system_ext_b.img vendor_b.img product_b.img odm_b.img; do touch $Likk/Super/$n 2> /dev/null; done 
 for i in system.img system_ext.img vendor.img product.img odm.img; do mv -f $Likk/Super/$i $Likk/Super/${i//./_a.} 2> /dev/null; done 
-Khe='_a'
+Khe="_a"
 Sokhe=3
-Nhom='qti_dynamic_partitions_a'
+Nhom="qti_dynamic_partitions_a"
 kichcosuper
-Nhomkhac='--group "qti_dynamic_partitions_b":"$Ssuperr" --partition system_b:"none":"0":"qti_dynamic_partitions_b" --image system_b=system_b.img --partition system_ext_b:"none":"0":"qti_dynamic_partitions_b" --image system_ext_b=system_ext_b.img --partition vendor_b:"none":"0":"qti_dynamic_partitions_b" --image vendor_b=vendor_b.img --partition product_b:"none":"0":"qti_dynamic_partitions_b" --image product_b=product_b.img --partition odm_b:"none":"0":"qti_dynamic_partitions_b" --image odm_b=odm_b.img' 
+Nhomkhac="--group qti_dynamic_partitions_b:$Ssuperr --partition system_b:none:0:qti_dynamic_partitions_b --image system_b=system_b.img --partition system_ext_b:none:0:qti_dynamic_partitions_b --image system_ext_b=system_ext_b.img --partition vendor_b:none:0:qti_dynamic_partitions_b --image vendor_b=vendor_b.img --partition product_b:none:0:qti_dynamic_partitions_b --image product_b=product_b.img --partition odm_b:none:0:qti_dynamic_partitions_b --image odm_b=odm_b.img"
 else 
 Khe= 
 Sokhe=1
