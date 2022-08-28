@@ -1,4 +1,4 @@
-echo " + Kiểm tra kích cỡ super..." 
+echo " + Kiểm tra thông tin super..." 
 cd $Likk/Super 
 
 # Phiên bản rom
@@ -51,14 +51,15 @@ taosuper() { lpmake --device super:"$Ssuperr" --metadata-slots "$Sokhe" --metada
 kichcosuper && echo " Kích cỡ phân vùng super: $Ssuperr" 
 giamthieu && tangkichco && ghidoc 
 kichco && echo " Kích cỡ từng phân vùng: 
- - system$khe: $Ssystem 
- - system_ext$khe: $Ssystem_ext 
- - vendor$khe: $Svendor 
- - product$khe: $Sproduct 
- - odm$khe: $Sodm" 
+ - system$Khe: $Ssystem 
+ - system_ext$Khe: $Ssystem_ext 
+ - vendor$Khe: $Svendor 
+ - product$Khe: $Sproduct 
+ - odm$Khe: $Sodm" 
 tongkichco
+echo "--device super:"$Ssuperr" --metadata-slots "$Sokhe" --metadata-size 65536 --super-name super --group "$Nhom":"$Ssuperr" --partition system${Khe}:"$Chedo":"$Ssystem":"$Nhom" --image system${Khe}=system${Khe}.img --partition system_ext${Khe}:"$Chedo":"$Ssystem_ext":"$Nhom" --image system_ext${Khe}=system_ext${Khe}.img --partition vendor${Khe}:"$Chedo":"$Svendor":"$Nhom" --image vendor${Khe}=vendor${Khe}.img --partition product${Khe}:"$Chedo":"$Sproduct":"$Nhom" --image product${Khe}=product${Khe}.img --partition odm${Khe}:"$Chedo":"$Sodm":"$Nhom" --image odm${Khe}=odm${Khe}.img $Nhomkhac"
 
-if [[ "$Ssuper" -lt "$Ssuperr" ]]; then echo " Kích cỡ tổng super: $Ssuper" && taosuper; else giamthieu && ghidoc && kichco && tongkichco && echo " Kích cỡ tổng super: $Ssuper" && taosuper; fi 
+if [[ "$Ssuper" -lt "$Ssuperr" ]]; then echo " Kích cỡ tổng super: $Ssuper" && taosuper; else echo " Tổng kích cỡ lớn hơn kích cỡ phân vùng" && giamthieu && ghidoc && kichco && tongkichco && echo " Kích cỡ tổng super: $Ssuper" && taosuper; fi 
 
 echo " + Tạo tập tin flash..." 
 if [[ "$Khe" == "_a" ]]; then rm -f $Likk/Lib/Flash_2in1/windows_install.bat $Likk/Lib/Flash_2in1/mac_or_linux_install.sh 2> /dev/null; else rm -f $Likk/Lib/Flash_2in1/windows_install_ab.bat $Likk/Lib/Flash_2in1/mac_or_linux_install_ab.sh 2> /dev/null; fi 
