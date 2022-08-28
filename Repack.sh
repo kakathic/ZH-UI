@@ -51,11 +51,15 @@ taosuper() { lpmake --device-size "$Ssuperr" --metadata-slots "$Sokhe" --metadat
 
 kichcosuper && echo " Kích cỡ phân vùng super: $Ssuperr" 
 giamthieu && tangkichco && ghidoc 
-kichco && echo " Kích cỡ system: $Ssystem system_ext: $Ssystem_ext vendor: $Svendor product: $Sproduct odm: $Sodm" 
-tongkichco && echo " Kích cỡ tổng super: $Ssuper"
-taosuper
+kichco && echo " Kích cỡ từng phân vùng: 
+ - system: $Ssystem 
+ - system_ext: $Ssystem_ext 
+ - vendor: $Svendor 
+ - product: $Sproduct 
+ - odm: $Sodm" 
+tongkichco
 
-if [[ "$Ssuper" -lt "$Ssuperr" ]]; then taosuper; else giamthieu && kichco && ghidoc && tongkichco && echo " Kích cỡ tổng super: $Ssuper" && taosuper; fi 
+if [[ "$Ssuper" -lt "$Ssuperr" ]]; then echo " Kích cỡ tổng super: $Ssuper" && taosuper; else giamthieu && ghidoc && kichco && tongkichco && echo " Kích cỡ tổng super: $Ssuper" && taosuper; fi 
 
 echo " + Tạo tập tin flash..." 
 if [[ "$Khe" == "_a" ]]; then rm -f $Likk/Lib/Flash_2in1/windows_install.bat $Likk/Lib/Flash_2in1/mac_or_linux_install.sh 2> /dev/null; else rm -f $Likk/Lib/Flash_2in1/windows_install_ab.bat $Likk/Lib/Flash_2in1/mac_or_linux_install_ab.sh 2> /dev/null; fi 
