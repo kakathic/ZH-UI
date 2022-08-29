@@ -48,7 +48,7 @@ echo "- Giải nén rom"
 if [[ -s $Likk/$Tenrom ]]; then 
 echo "- Kiểm tra định dạng"
 [[ "$Dinhdang" == "zip" ]] && unzip -qo "$Likk/$Tenrom" -d "$Likk/Unzip"
-[[ "$Dinhdang" == "tgz" ]] && tar -cf "$Likk/$Tenrom" -C "$Likk/Unzip"
+[[ "$Dinhdang" == "tgz" ]] && tar -xf "$Likk/$Tenrom" -C "$Likk/Unzip"
 [[ -s $Likk/Unzip/images/super.img ]] && mv -f $Likk/Unzip/images/super.img $Likk/Unzip/super.img 
 ls $Likk/Unzip 
 else echo "- Không có tập tin rom"
