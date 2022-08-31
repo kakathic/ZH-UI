@@ -1,6 +1,30 @@
-echo " + Kiểm tra thông tin super..." 
 cd $Likk/Super 
+umount /s 2> /dev/null 
+mkdir -p /s 2> /dev/null 
+for m in system vendor system_ext product odm system_a vendor_a system_ext_a product_a odm_a; do 
+ [[ -s $m.img ]] && mount -o loop,rw,sync $m.img /s
+ if [[ "$m" == "system" ]] || [[ "$m" == "system_a" ]]; then 
+  if [[ -n "$(ls /s 2> /dev/null)" ]] && [[ -n "$(ls $Likk/Mod)" ]]; then
+  cp -af $Likk/Mod/*ThemeManager.apk /s/system/app/MIUIThemeManager 2> /dev/null
+  cp -af $Likk/Mod/miui.apk /s/system/app/miui 2> /dev/null 
+  cp -af $Likk/Mod/miuisystem.apk /s/system/app/miuisystem 2> /dev/null 
+  cp -af $Likk/Mod/framework.jar /s/system/framework 2> /dev/null
+  cp -af $Likk/Mod/framework-ext-res.apk /s/system/framework/framework-ext-res 2> /dev/null
+  cp -af $Likk/Mod/framework-res.apk /s/system/framework 2> /dev/null
+  cp -af $Likk/Mod/services.jar /s/system/framework 2> /dev/null
+  cp -af $Likk/Mod/M*PackageInstaller.apk /s/system/priv-app/MIUIPackageInstaller 2> /dev/null
+  cp -af $Likk/Mod/core-oj.jar /s/system/framework 2> /dev/null 
+  fi
+ fi 
+ if [[ "$m" == "system_ext" ]] || [[ "$m" == "system_ext_a" ]]; then 
+  if [[ -n "$(ls /s 2> /dev/null)" ]] && [[ -n "$(ls $Likk/Mod)" ]]; then
+  cp -af $Likk/Mod/Settings.apk /s/priv-app/Settings 2> /dev/null
+  cp -af $Likk/Mod/MiuiSystemUI.apk /s/priv-app/MiuiSystemUI 2> /dev/null 
+  fi
+ fi 
+done 
 
+echo " + Kiểm tra thông tin super..." 
 # Phiên bản rom
 if [[ -f $Likk/Unzip/META-INF/com/android/metadata ]]; then 
 Phienban=$(grep 'incremental' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
