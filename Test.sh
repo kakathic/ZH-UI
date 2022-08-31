@@ -26,3 +26,16 @@ rimg2sdat | tee 1.txt
 img2simg | tee 1.txt
 sdat2img | tee 1.txt
 mount --help | tee 1.txt
+
+Likk="$GITHUB_WORKSPACE" 
+echo " Thử ngiệm"
+mkdir -p /s
+echo " Tạo nơi chứa"
+mkdir -p $Likk/tmp
+mkdir -p $Likk/Apk
+touch $Likk/Apk/test.txt
+echo " Tạo ext4"
+make_ext4fs -J -T 0 -l 64M -a system -L test $Likk/tmp/test.img $Likk/Apk
+ls $Likk/tmp/test.img 
+mount -t ext4 -w $Likk/tmp/test.img /s 
+ls /s 
