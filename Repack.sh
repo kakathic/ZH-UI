@@ -1,8 +1,15 @@
+Phanquyen() {
+find $(pwd) -type d -name "*app" -exec chmod -R 755 $1 {} +;
+find $(pwd) -type f -name "*.apk" -exec chmod 644 "$1" {} +; 
+find $(pwd) -type f -name "*.jar" -exec chmod 644 "$1" {} +;
+find $(pwd) -type f -name "*.prop" -exec chmod 600 "$1" {} +;
+}
+
 cd $Likk/Super 
 umount /s 2> /dev/null 
 mkdir -p /s 2> /dev/null 
 for m in system vendor system_ext product odm system_a vendor_a system_ext_a product_a odm_a; do 
- [[ -s $m.img ]] && mount -o loop,rw,sync $m.img /s
+ [[ -s $m.img ]] && mount -o loop,rw,sync $m.img /s && cd /s 
  if [[ "$m" == "system" ]] || [[ "$m" == "system_a" ]]; then 
   if [[ -n "$(ls /s 2> /dev/null)" ]] && [[ -n "$(ls $Likk/Mod)" ]]; then
   cp -af $Likk/Mod/*ThemeManager.apk /s/system/app/MIUIThemeManager 2> /dev/null
@@ -22,9 +29,11 @@ for m in system vendor system_ext product odm system_a vendor_a system_ext_a pro
   cp -af $Likk/Mod/MiuiSystemUI.apk /s/priv-app/MiuiSystemUI 2> /dev/null 
   fi
  fi 
+ Phanquyen; 
 done 
 
 echo " + Kiểm tra thông tin super..." 
+cd $Likk/Super 
 # Phiên bản rom
 if [[ -f $Likk/Unzip/META-INF/com/android/metadata ]]; then 
 Phienban=$(grep 'incremental' $Likk/Unzip/*/*/*/metadata | awk -F= '{print $2}'); 
