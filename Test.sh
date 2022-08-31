@@ -40,4 +40,5 @@ ls $Likk/tmp/test.img
 echo "Mount tập tin"
 su -c mount -t ext4 -w $Likk/tmp/test.img /mnt/s
 echo "Kiểm tra thư mục"
-su -c $(ls /mnt/s)
+ls /mnt/s
+echo " Kết thúc"
