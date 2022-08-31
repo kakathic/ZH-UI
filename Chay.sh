@@ -21,6 +21,8 @@ Repapk
 Unzip
 Payload
 Super
+Apk
+Mod
 "
 for Tao in $Danhsach; do
 mkdir -p $Tao
