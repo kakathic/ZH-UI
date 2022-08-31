@@ -1,1 +1,1 @@
-echo 2
+[[ -z "$(ls $Likk/apk)" ]] && echo "- Không có tập tin nào!"  
