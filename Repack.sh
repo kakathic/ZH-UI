@@ -1,37 +1,3 @@
-Phanquyen() {
-find $(pwd) -type d -name "*app" -exec chmod -R 755 $1 {} +;
-find $(pwd) -type f -name "*.apk" -exec chmod 644 "$1" {} +; 
-find $(pwd) -type f -name "*.jar" -exec chmod 644 "$1" {} +;
-find $(pwd) -type f -name "*.prop" -exec chmod 600 "$1" {} +;
-}
-
-cd $Likk/Super 
-sudo mkdir -p /mnt/s 2> /dev/null 
-for m in system vendor system_ext product odm system_a vendor_a system_ext_a product_a odm_a; do 
- [[ -s $m.img ]] && sudo mount -o rw,loop,sync $m.img /mnt/s && cd /mnt/s 
- if [[ "$m" == "system" ]] || [[ "$m" == "system_a" ]]; then 
-  if [[ -n "$(ls /mnt/s 2> /dev/null)" ]] && [[ -n "$(ls $Likk/Mod)" ]]; then
-  cp -af $Likk/Mod/*ThemeManager.apk /mnt/s/system/app/MIUIThemeManager 2> /dev/null
-  cp -af $Likk/Mod/miui.apk /mnt/s/system/app/miui 2> /dev/null 
-  cp -af $Likk/Mod/miuisystem.apk /mnt/s/system/app/miuisystem 2> /dev/null 
-  cp -af $Likk/Mod/framework.jar /mnt/s/system/framework 2> /dev/null
-  cp -af $Likk/Mod/framework-ext-res.apk /mnt/s/system/framework/framework-ext-res 2> /dev/null
-  cp -af $Likk/Mod/framework-res.apk /mnt/s/system/framework 2> /dev/null
-  cp -af $Likk/Mod/services.jar /mnt/s/system/framework 2> /dev/null
-  cp -af $Likk/Mod/M*PackageInstaller.apk /mnt/s/system/priv-app/MIUIPackageInstaller 2> /dev/null
-  cp -af $Likk/Mod/core-oj.jar /mnt/s/system/framework 2> /dev/null 
-  fi
- fi 
- if [[ "$m" == "system_ext" ]] || [[ "$m" == "system_ext_a" ]]; then 
-  if [[ -n "$(ls /mnt/s 2> /dev/null)" ]] && [[ -n "$(ls $Likk/Mod)" ]]; then
-  cp -af $Likk/Mod/Settings.apk /mnt/s/priv-app/Settings 2> /dev/null
-  cp -af $Likk/Mod/MiuiSystemUI.apk /mnt/s/priv-app/MiuiSystemUI 2> /dev/null 
-  fi
- fi 
- Phanquyen; 
- umount /mnt/s 2> /dev/null 
-done 
-
 echo " + Kiểm tra thông tin super..." 
 cd $Likk/Super 
 # Phiên bản rom
