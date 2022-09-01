@@ -1,18 +1,18 @@
-Xemb() { ls -l $1 | awk '{print $5}'; }
+Phanvung="system system_a system_b vendor vendor_a vendor_b product product_a product_b system_ext system_ext_a system_ext_b odm odm_a odm_b"; 
+Ungdung="ThemeManager.apk miui.apk miuisystem.apk framework.jar framework-ext-res.apk framework-res.apk core-oj.jar miui-services.jar services.jar MiuiSystemUI.apk Settings.apk PackageInstaller.apk"; 
 
 if [[ -s $Likk/Unzip/payload.bin ]]; then 
  echo " + Trích xuất payload.bin" 
  python3 $Likk/Lib/Libpy/payload_dumper.py $Likk/Unzip/payload.bin --out $Likk/Payload > /dev/null 
- for tim in system.img system_a.img system_b.img vendor.img vendor_a.img vendor_b.img product.img product_a.img product_b.img system_ext.img system_ext_a.img system_ext_b.img odm.img odm_a.img odm_b.img; do [[ -f $Likk/Payload/$tim ]] && mv -f $Likk/Payload/$tim $Likk/Super; done 
+ for Ten in $Phanvung; do [[ -f $Likk/Payload/$Ten.img ]] && mv -f $Likk/Payload/$Ten.img $Likk/Super; done 
  [[ -n "$(ls $Likk/Super/*.img)" ]] && echo " + Trích xuất xong!"  
 fi 
 
 if [[ -s $Likk/Unzip/system.new.dat.br ]]; then 
  echo " + Trích xuất new.dat.br"
  cd $Likk/Unzip 
- for ext in system.new.dat.br vendor.new.dat.br product.new.dat.br system_ext.new.dat.br odm.new.dat.br; do 
-  Ten=$(echo "$ext" | awk -F. '{print $1}'); 
-  [[ -s $ext ]] && brotli -df $ext
+ for Ten in $Phanvung; do 
+  [[ -s $Ten.new.dat.br ]] && brotli -df $Ten.new.dat.br
   [[ -s $Ten.new.dat ]] && python3 $Likk/Lib/Libpy/sdat2img.py $Ten.transfer.list $Ten.new.dat $Likk/Super/$Ten.img 
  done 
  [[ -n "$(ls $Likk/Super/*.img)" ]] && echo " + Trích xuất xong!" 
@@ -43,12 +43,10 @@ sudo mkdir -p /mnt/s
 mkdir -p $Likk/Apk
 ls $Likk/Super
 
-for ext in system vendor system_ext product odm system_a vendor_a system_ext_a product_a odm_a; do 
- echo "$Likk/Super/$ext.img"
+for Ten in $Phanvung; do 
+ echo "$Likk/Super/$Ten.img"
  sudo umount /mnt/s 
- [[ -s $Likk/Super/$ext.img ]] && sudo mount -o rw,loop $Likk/Super/$ext.img /mnt/s
- if [[ -n "$(ls /mnt/s)" ]]; then
-  for i in ThemeManager.apk miui.apk miuisystem.apk framework.jar framework-ext-res.apk framework-res.apk core-oj.jar miui-services.jar services.jar MiuiSystemUI.apk Settings.apk PackageInstaller.apk; do find /mnt/s -type -f -name "*$i" -exec cp -af "$1" $Likk/Apk {} +; done
- fi
+ [[ -s $Ten.img ]] && sudo mount -o rw,loop $Likk/Super/$Ten.img /mnt/s
+ [[ -n "$(ls /mnt/s)" ]] && for U in $Ungdung; do find /mnt/s -type -f -name "*$U" -exec cp -af "$1" $Likk/Apk {} +; done
 done 
 echo " Trích app xong" 
