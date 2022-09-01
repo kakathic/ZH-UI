@@ -32,7 +32,8 @@ mount --help | tee 1.txt
 Likk="$GITHUB_WORKSPACE" 
 echo " Thử ngiệm"
 ls /
-su -c mkdir -p /dir
+mkdir -p /mnt/s
+cd /mnt/s
 echo " Tạo nơi chứa"
 mkdir -p $Likk/tmp
 mkdir -p $Likk/Apk
@@ -41,8 +42,8 @@ echo " Tạo ext4"
 make_ext4fs -J -T 0 -l 64M -a system -L test $Likk/tmp/test.img $Likk/Apk
 ls $Likk/tmp/test.img 
 echo "Mount tập tin"
-mount -w $Likk/tmp/test.img /dir
+mount -o rw,loop $Likk/tmp/test.img /mnt/s
 sync 
 echo "Kiểm tra thư mục"
-ls /dir
+ls /mnt/s
 echo " Kết thúc"
