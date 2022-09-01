@@ -239,8 +239,8 @@ if [[ "$m" == "system" ]] || [[ "$m" == "system_a" ]]; then
 cd $Likk/Super 
 sudo mkdir -p $Tam 2> /dev/null 
 for m in system vendor system_ext product odm system_a vendor_a system_ext_a product_a odm_a; do 
- umount $Tam 2> /dev/null 
- [[ -s $m.img ]] && sudo mount -o rw,loop $m.img $Tam && sync && cd $Tam 
+ sudo umount $Tam 2> /dev/null 
+ [[ -s $Likk/Super/$m.img ]] && sudo mount -o rw,loop,sync $Likk/Super/$m.img $Tam && cd $Tam 
  Cheptaptin; 
  Xoataptin; 
  Phanquyen; 
