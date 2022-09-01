@@ -42,7 +42,7 @@ sudo mkdir -p /mnt/s 2> /dev/null
 mkdir -p $Likk/Apk 2> /dev/null 
 for m in system vendor system_ext product odm system_a vendor_a system_ext_a product_a odm_a; do 
 umount /mnt/s 2> /dev/null
-[[ -s $m.img ]] && sudo mount -o rw,loop,sync $m.img /mnt/s
+[[ -s $m.img ]] && sudo mount -o rw,loop $m.img /mnt/s && sync
 if [[ -n "$(ls /mnt/s 2> /dev/null)" ]]; then
  for i in ThemeManager.apk miui.apk miuisystem.apk framework.jar framework-ext-res.apk framework-res.apk core-oj.jar miui-services.jar services.jar MiuiSystemUI.apk Settings.apk PackageInstaller.apk; do 
   find /mnt/s -type -f -name "*$i" -exec cp -af "$1" $Likk/Apk {} +;
