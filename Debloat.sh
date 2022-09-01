@@ -225,7 +225,7 @@ if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then
   cp -af $Likk/Mod/services.jar $Tam/system/framework 2> /dev/null
   cp -af $Likk/Mod/miui-services.jar $Tam/system/framework 2> /dev/null
   cp -af $Likk/Mod/M*PackageInstaller.apk $Tam/system/priv-app/MIUIPackageInstaller 2> /dev/null
-  cp -af $Likk/Mod/core-oj.jar $Tam/system/apex/com.android.runtime.release/javalib 2> /dev/null 
+  cp -af $Likk/Mod/core-oj.jar $Tam/system/framework 2> /dev/null 
   fi
  fi 
  if [[ "$Ten" == "system_ext" ]] || [[ "$Ten" == "system_ext_a" ]]; then 
@@ -239,10 +239,12 @@ if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then
 cd $Likk/Super 
 for Ten in $Phanvung; do 
  Tam=$Nha/$Ten
- sudo mkdir -p $Tam 2> /dev/null 
- sudo umount $Tam 2> /dev/null 
- [[ -s $Likk/Super/$Ten.img ]] && sudo mount -o rw,loop,sync $Likk/Super/$Ten.img $Tam && cd $Tam 
- Cheptaptin 
- Xoataptin 
- Phanquyen 
+ if [[ -s $Likk/Super/$Ten.img ]]; then 
+  sudo mkdir -p $Tam 2> /dev/null 
+  sudo umount $Tam 2> /dev/null 
+  sudo mount -o rw,loop,sync $Likk/Super/$Ten.img $Tam && cd $Tam 
+  Cheptaptin 
+  Xoataptin 
+  Phanquyen 
+ fi 
 done 
