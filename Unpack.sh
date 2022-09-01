@@ -45,9 +45,8 @@ ls $Likk/Super
 for Ten in $Phanvung; do 
  echo "$Likk/Super/$Ten.img"
  if [[ -s $Ten.img ]]; then 
-  sudo umount /mnt/$Ten
-  sudo mkdir -p /mnt/$Ten
-  sudo mount -o rw,loop,sync $Likk/Super/$Ten.img /mnt/$Ten
+  [[ ! -e /mnt/$Ten ]] && sudo mkdir -p /mnt/$Ten
+  [[ -n "$(ls /mnt/$Ten)" ]] && sudo umount /mnt/$Ten && sudo mount -o rw,loop,sync $Likk/Super/$Ten.img /mnt/$Ten
   [[ -n "$(ls /mnt/$Ten)" ]] && for UD in $Ungdung; do find /mnt/$Ten -type -f -name "*$UD" -exec cp -af "$1" $Likk/Apk {} +; done
  fi
 done 
