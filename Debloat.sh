@@ -1,5 +1,5 @@
+Phanvung="system system_a system_b vendor vendor_a vendor_b product product_a product_b system_ext system_ext_a system_ext_b odm odm_a odm_b"; 
 Nha=/mnt 
-Tam=/mnt/s
 Danhsachxoa="
 BaiduIME
 MIFinance
@@ -193,14 +193,13 @@ MIUIDeskClockS
 #MIUITouchAssistant
 RideModeAudio
 "
-Xoataptin() {
-cd $Nha
-for Thumuc in s s/system s/system/system_ext s/system/product; do 
-if [[ -e $Nha/$Thumuc ]]; then cd $Nha/$Thumuc; 
-for Ten in data-app app priv-app; do 
-[[ -e $Nha/$Thumuc/$Ten ]] && cd $Nha/$Thumuc/$Ten && for Tim in $Danhsachxoa; do [[ -e $Tim ]] && rm -rf $Tim; done
-done 
-fi
+Xoataptin() { 
+for PV in $Phanvung system/system_ext system/product; do 
+ if [[ -e $Nha/$PV ]]; then
+  for UD in data-app app priv-app; do 
+   [[ -e $Nha/$PV/$UD ]] && for DS in $Danhsachxoa; do [[ -e $Nha/$PV/$UD/$DS ]] && rm -rf $Nha/$PV/$UD/$DS; done
+  done 
+ fi
 done 
 rm -rf $Nha/*recovery* $Tam/system/*/*auto-install*.json $Tam/system/media/theme/dynamicicons $Tam/system/media/theme/miui_mod_icons 2> /dev/null
 }
@@ -215,7 +214,7 @@ find $(pwd) -type f -name "*.prop" -exec chmod 600 "$1" {} +;
 }
 
 Cheptaptin() {
-if [[ "$m" == "system" ]] || [[ "$m" == "system_a" ]]; then 
+if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
   if [[ -n "$(ls $Tam 2> /dev/null)" ]] && [[ -n "$(ls $Likk/Mod)" ]]; then
   cp -af $Likk/Mod/*ThemeManager.apk $Tam/system/app/MIUIThemeManager 2> /dev/null
   cp -af $Likk/Mod/miui.apk $Tam/system/app/miui 2> /dev/null 
@@ -224,11 +223,12 @@ if [[ "$m" == "system" ]] || [[ "$m" == "system_a" ]]; then
   cp -af $Likk/Mod/framework-ext-res.apk $Tam/system/framework/framework-ext-res 2> /dev/null
   cp -af $Likk/Mod/framework-res.apk $Tam/system/framework 2> /dev/null
   cp -af $Likk/Mod/services.jar $Tam/system/framework 2> /dev/null
+  cp -af $Likk/Mod/miui-services.jar $Tam/system/framework 2> /dev/null
   cp -af $Likk/Mod/M*PackageInstaller.apk $Tam/system/priv-app/MIUIPackageInstaller 2> /dev/null
-  cp -af $Likk/Mod/core-oj.jar $Tam/system/framework 2> /dev/null 
+  cp -af $Likk/Mod/core-oj.jar $Tam/system/apex/com.android.runtime.release/javalib 2> /dev/null 
   fi
  fi 
- if [[ "$m" == "system_ext" ]] || [[ "$m" == "system_ext_a" ]]; then 
+ if [[ "$Ten" == "system_ext" ]] || [[ "$Ten" == "system_ext_a" ]]; then 
   if [[ -n "$(ls $Tam 2> /dev/null)" ]] && [[ -n "$(ls $Likk/Mod)" ]]; then
   cp -af $Likk/Mod/Settings.apk $Tam/priv-app/Settings 2> /dev/null
   cp -af $Likk/Mod/MiuiSystemUI.apk $Tam/priv-app/MiuiSystemUI 2> /dev/null 
@@ -237,11 +237,12 @@ if [[ "$m" == "system" ]] || [[ "$m" == "system_a" ]]; then
 } 
 
 cd $Likk/Super 
-sudo mkdir -p $Tam 2> /dev/null 
-for m in system vendor system_ext product odm system_a vendor_a system_ext_a product_a odm_a; do 
+for Ten in $Phanvung; do 
+ Tam=$Nha/$Ten
+ sudo mkdir -p $Tam 2> /dev/null 
  sudo umount $Tam 2> /dev/null 
- [[ -s $Likk/Super/$m.img ]] && sudo mount -o rw,loop,sync $Likk/Super/$m.img $Tam && cd $Tam 
- Cheptaptin; 
- Xoataptin; 
- Phanquyen; 
+ [[ -s $Likk/Super/$Ten.img ]] && sudo mount -o rw,loop,sync $Likk/Super/$Ten.img $Tam && cd $Tam 
+ Cheptaptin 
+ Xoataptin 
+ Phanquyen 
 done 
