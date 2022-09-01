@@ -41,13 +41,15 @@ echo " Trích xuất app"
 cd $Likk/Super 
 sudo mkdir -p /mnt/s
 mkdir -p $Likk/Apk
+ls $Likk/Super
 for m in system vendor system_ext product odm system_a vendor_a system_ext_a product_a odm_a; do 
  umount /mnt/s 2> /dev/null
+ echo "$Likk/Super/$m.img"
  [[ -s $Likk/Super/$m.img ]] && sudo mount -o rw,loop $Likk/Super/$m.img /mnt/s && sync
-if [[ -n "$(ls /mnt/s 2> /dev/null)" ]]; then
+if [[ -n "$(ls /mnt/s)" ]]; then
  for i in ThemeManager.apk miui.apk miuisystem.apk framework.jar framework-ext-res.apk framework-res.apk core-oj.jar miui-services.jar services.jar MiuiSystemUI.apk Settings.apk PackageInstaller.apk; do 
   find /mnt/s -type -f -name "*$i" -exec cp -af "$1" $Likk/Apk {} +;
  done
 fi
 done 
-
+echo " Trích app xong" 
