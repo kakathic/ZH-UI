@@ -60,6 +60,7 @@ echo
 
 . $Likk/Unpack.sh
 . $Likk/Mod.sh
+. $Likk/Debloat.sh
 . $Likk/Repack.sh
 
 echo "- Kết thúc"
