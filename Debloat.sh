@@ -238,10 +238,10 @@ if [[ "$M" == "system" ]] || [[ "$M" == "system_a" ]]; then
 
 cd $Likk/Super 
 sudo mkdir -p $Tam 2> /dev/null 
-for M in system vendor system_ext product odm system_a vendor_a system_ext_a product_a odm_a; do 
- [[ -s $M.img ]] && sudo mount -o rw,loop,sync $M.img $Tam && cd $Tam 
+for m in system vendor system_ext product odm system_a vendor_a system_ext_a product_a odm_a; do 
+ umount $Tam 2> /dev/null 
+ [[ -s $m.img ]] && sudo mount -o rw,loop $m.img $Tam && sync && cd $Tam 
  Cheptaptin; 
  Xoataptin; 
  Phanquyen; 
- umount $Tam 2> /dev/null 
 done 
