@@ -33,13 +33,13 @@ Likk="$GITHUB_WORKSPACE"
 echo " Thử ngiệm"
 ls /
 sudo mkdir -p /mnt/s
-sudo cd /mnt/s
+ls /mnt
 echo " Tạo nơi chứa"
 mkdir -p $Likk/tmp
 mkdir -p $Likk/Apk
 touch $Likk/Apk/test.txt
 echo " Tạo ext4"
-sudo make_ext4fs -J -T 0 -l 64M -a system -L test $Likk/tmp/test.img $Likk/Apk
+make_ext4fs -J -T 0 -l 64M -a system -L test $Likk/tmp/test.img $Likk/Apk
 ls $Likk/tmp/test.img 
 echo "Mount tập tin"
 sudo mount -o rw,loop $Likk/tmp/test.img /mnt/s
