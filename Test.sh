@@ -10,6 +10,7 @@ docopt
 protobuf<=3.20.1" > requirements.txt
 pip3 install -r requirements.txt > /dev/null
 
+Cuphap() { 
 lpmake 
 resize2fs
 e2fsck
@@ -26,13 +27,15 @@ rimg2sdat | tee 1.txt
 img2simg | tee 1.txt
 sdat2img | tee 1.txt
 mount --help | tee 1.txt
+} 
 
 Likk="$GITHUB_WORKSPACE" 
 echo " Thử ngiệm"
+cd ../ 
+cd /mnt 
 echo " Tạo nơi chứa"
 mkdir -p $Likk/tmp
 mkdir -p $Likk/Apk
-mkdir -p $Likk/s
 touch $Likk/Apk/test.txt
 echo " Tạo ext4"
 make_ext4fs -J -T 0 -l 64M -a system -L test $Likk/tmp/test.img $Likk/Apk
