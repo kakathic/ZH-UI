@@ -215,7 +215,7 @@ find $(pwd) -type f -name "*.prop" -exec chmod 600 "$1" {} +;
 }
 
 Cheptaptin() {
-if [[ "$M" == "system" ]] || [[ "$M" == "system_a" ]]; then 
+if [[ "$m" == "system" ]] || [[ "$m" == "system_a" ]]; then 
   if [[ -n "$(ls $Tam 2> /dev/null)" ]] && [[ -n "$(ls $Likk/Mod)" ]]; then
   cp -af $Likk/Mod/*ThemeManager.apk $Tam/system/app/MIUIThemeManager 2> /dev/null
   cp -af $Likk/Mod/miui.apk $Tam/system/app/miui 2> /dev/null 
@@ -228,7 +228,7 @@ if [[ "$M" == "system" ]] || [[ "$M" == "system_a" ]]; then
   cp -af $Likk/Mod/core-oj.jar $Tam/system/framework 2> /dev/null 
   fi
  fi 
- if [[ "$M" == "system_ext" ]] || [[ "$M" == "system_ext_a" ]]; then 
+ if [[ "$m" == "system_ext" ]] || [[ "$m" == "system_ext_a" ]]; then 
   if [[ -n "$(ls $Tam 2> /dev/null)" ]] && [[ -n "$(ls $Likk/Mod)" ]]; then
   cp -af $Likk/Mod/Settings.apk $Tam/priv-app/Settings 2> /dev/null
   cp -af $Likk/Mod/MiuiSystemUI.apk $Tam/priv-app/MiuiSystemUI 2> /dev/null 
