@@ -1,4 +1,5 @@
-
+Nha=/mnt 
+Tam=/mnt/s
 Danhsachxoa="
 BaiduIME
 MIFinance
@@ -193,8 +194,7 @@ MIUIDeskClockS
 RideModeAudio
 "
 Xoataptin() {
-Nha=/mnt
-cd /mnt
+cd $Nha
 for Thumuc in s s/system s/system/system_ext s/system/product; do 
 if [[ -e $Nha/$Thumuc ]]; then cd $Nha/$Thumuc; 
 for Ten in data-app app priv-app; do 
@@ -202,7 +202,7 @@ for Ten in data-app app priv-app; do
 done 
 fi
 done 
-rm -rf $Nha/*recovery* $Nha/s/system/*/*auto-install*.json $Nha/s/system/media/theme/dynamicicons $Nha/s/system/media/theme/miui_mod_icons 2> /dev/null
+rm -rf $Nha/*recovery* $Tam/system/*/*auto-install*.json $Tam/system/media/theme/dynamicicons $Tam/system/media/theme/miui_mod_icons 2> /dev/null
 }
  
 Phanquyen() {
@@ -216,32 +216,32 @@ find $(pwd) -type f -name "*.prop" -exec chmod 600 "$1" {} +;
 
 Cheptaptin() {
 if [[ "$M" == "system" ]] || [[ "$M" == "system_a" ]]; then 
-  if [[ -n "$(ls /mnt/s 2> /dev/null)" ]] && [[ -n "$(ls $Likk/Mod)" ]]; then
-  cp -af $Likk/Mod/*ThemeManager.apk /mnt/s/system/app/MIUIThemeManager 2> /dev/null
-  cp -af $Likk/Mod/miui.apk /mnt/s/system/app/miui 2> /dev/null 
-  cp -af $Likk/Mod/miuisystem.apk /mnt/s/system/app/miuisystem 2> /dev/null 
-  cp -af $Likk/Mod/framework.jar /mnt/s/system/framework 2> /dev/null
-  cp -af $Likk/Mod/framework-ext-res.apk /mnt/s/system/framework/framework-ext-res 2> /dev/null
-  cp -af $Likk/Mod/framework-res.apk /mnt/s/system/framework 2> /dev/null
-  cp -af $Likk/Mod/services.jar /mnt/s/system/framework 2> /dev/null
-  cp -af $Likk/Mod/M*PackageInstaller.apk /mnt/s/system/priv-app/MIUIPackageInstaller 2> /dev/null
-  cp -af $Likk/Mod/core-oj.jar /mnt/s/system/framework 2> /dev/null 
+  if [[ -n "$(ls $Tam 2> /dev/null)" ]] && [[ -n "$(ls $Likk/Mod)" ]]; then
+  cp -af $Likk/Mod/*ThemeManager.apk $Tam/system/app/MIUIThemeManager 2> /dev/null
+  cp -af $Likk/Mod/miui.apk $Tam/system/app/miui 2> /dev/null 
+  cp -af $Likk/Mod/miuisystem.apk $Tam/system/app/miuisystem 2> /dev/null 
+  cp -af $Likk/Mod/framework.jar $Tam/system/framework 2> /dev/null
+  cp -af $Likk/Mod/framework-ext-res.apk $Tam/system/framework/framework-ext-res 2> /dev/null
+  cp -af $Likk/Mod/framework-res.apk $Tam/system/framework 2> /dev/null
+  cp -af $Likk/Mod/services.jar $Tam/system/framework 2> /dev/null
+  cp -af $Likk/Mod/M*PackageInstaller.apk $Tam/system/priv-app/MIUIPackageInstaller 2> /dev/null
+  cp -af $Likk/Mod/core-oj.jar $Tam/system/framework 2> /dev/null 
   fi
  fi 
  if [[ "$M" == "system_ext" ]] || [[ "$M" == "system_ext_a" ]]; then 
-  if [[ -n "$(ls /mnt/s 2> /dev/null)" ]] && [[ -n "$(ls $Likk/Mod)" ]]; then
-  cp -af $Likk/Mod/Settings.apk /mnt/s/priv-app/Settings 2> /dev/null
-  cp -af $Likk/Mod/MiuiSystemUI.apk /mnt/s/priv-app/MiuiSystemUI 2> /dev/null 
+  if [[ -n "$(ls $Tam 2> /dev/null)" ]] && [[ -n "$(ls $Likk/Mod)" ]]; then
+  cp -af $Likk/Mod/Settings.apk $Tam/priv-app/Settings 2> /dev/null
+  cp -af $Likk/Mod/MiuiSystemUI.apk $Tam/priv-app/MiuiSystemUI 2> /dev/null 
   fi
  fi 
 } 
 
 cd $Likk/Super 
-sudo mkdir -p /mnt/s 2> /dev/null 
+sudo mkdir -p $Tam 2> /dev/null 
 for M in system vendor system_ext product odm system_a vendor_a system_ext_a product_a odm_a; do 
- [[ -s $M.img ]] && sudo mount -o rw,loop,sync $M.img /mnt/s && cd /mnt/s 
+ [[ -s $M.img ]] && sudo mount -o rw,loop,sync $M.img $Tam && cd $Tam 
  Cheptaptin; 
  Xoataptin; 
  Phanquyen; 
- umount /mnt/s 2> /dev/null 
+ umount $Tam 2> /dev/null 
 done 
