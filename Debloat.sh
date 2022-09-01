@@ -240,9 +240,9 @@ cd $Likk/Super
 for Ten in $Phanvung; do 
  Tam=$Nha/$Ten
  if [[ -s $Likk/Super/$Ten.img ]]; then 
-  sudo mkdir -p $Tam 2> /dev/null 
-  sudo umount $Tam 2> /dev/null 
-  sudo mount -o rw,loop,sync $Likk/Super/$Ten.img $Tam && cd $Tam 
+  [[ ! -e $Tam ]] && sudo mkdir -p $Tam
+  [[ -n "$(ls $Tam)" ]] && sudo umount $Tam && sudo mount -o rw,loop,sync $Likk/Super/$Ten.img $Tam
+  cd $Tam 
   Cheptaptin 
   Xoataptin 
   Phanquyen 
