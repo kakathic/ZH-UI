@@ -39,14 +39,16 @@ fi
 
 echo " Trích xuất app" 
 cd $Likk/Super 
-sudo mkdir -p /mnt/s
 mkdir -p $Likk/Apk
 ls $Likk/Super
 
 for Ten in $Phanvung; do 
  echo "$Likk/Super/$Ten.img"
- sudo umount /mnt/s 
- [[ -s $Ten.img ]] && sudo mount -o rw,loop $Likk/Super/$Ten.img /mnt/s
- [[ -n "$(ls /mnt/s)" ]] && for U in $Ungdung; do find /mnt/s -type -f -name "*$U" -exec cp -af "$1" $Likk/Apk {} +; done
+ if [[ -s $Ten.img ]]; then 
+  sudo umount /mnt/$Ten
+  sudo mkdir -p /mnt/$Ten
+  sudo mount -o rw,loop,sync $Likk/Super/$Ten.img /mnt/$Ten
+  [[ -n "$(ls /mnt/$Ten)" ]] && for UD in $Ungdung; do find /mnt/$Ten -type -f -name "*$UD" -exec cp -af "$1" $Likk/Apk {} +; done
+ fi
 done 
 echo " Trích app xong" 
