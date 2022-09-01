@@ -45,8 +45,8 @@ ls $Likk/Super
 
 for ext in system vendor system_ext product odm system_a vendor_a system_ext_a product_a odm_a; do 
  echo "$Likk/Super/$ext.img"
- sudo umount /mnt/s 2> /dev/null
- [[ -s $Likk/Super/$ext.img ]] && sudo mount -o rw,loop $Likk/Super/$ext.img /mnt/s && sync
+ sudo umount /mnt/s 
+ [[ -s $Likk/Super/$ext.img ]] && sudo mount -o rw,loop $Likk/Super/$ext.img /mnt/s
  if [[ -n "$(ls /mnt/s)" ]]; then
   for i in ThemeManager.apk miui.apk miuisystem.apk framework.jar framework-ext-res.apk framework-res.apk core-oj.jar miui-services.jar services.jar MiuiSystemUI.apk Settings.apk PackageInstaller.apk; do find /mnt/s -type -f -name "*$i" -exec cp -af "$1" $Likk/Apk {} +; done
  fi
