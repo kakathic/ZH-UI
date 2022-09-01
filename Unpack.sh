@@ -37,6 +37,7 @@ if [[ -s $Likk/Unzip/imgages/super.img.zst ]]; then
  [[ -n "$(ls $Likk/Super/*.img)" ]] && echo " + Trích xuất xong!" 
 fi 
 
+echo " Trích xuất app" 
 cd $Likk/Super 
 sudo mkdir -p /mnt/s 2> /dev/null 
 mkdir -p $Likk/Apk 2> /dev/null 
