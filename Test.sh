@@ -42,8 +42,9 @@ echo " Tạo ext4"
 make_ext4fs -J -T 0 -l 64M -a system -L test $Likk/tmp/test.img $Likk/Apk
 ls $Likk/tmp/test.img 
 echo "Mount tập tin"
-sudo mount -o rw,loop $Likk/tmp/test.img /mnt/s
-sync 
+sudo mount -o rw,loop,sync $Likk/tmp/test.img /mnt/s
+echo "Bỏ mount"
+sudo umount /mnt/s
 echo "Kiểm tra thư mục"
 ls /mnt/s
 echo " Kết thúc"
