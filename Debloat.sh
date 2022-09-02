@@ -205,8 +205,8 @@ rm -rf $Nha/*recovery* $Tam/system/*/*auto-install*.json $Tam/system/media/theme
 }
  
 Phanquyen() {
-find $(pwd) -type f -exec chmod -R 644 "$1" {} +;
-find $(pwd) -type d -exec chmod -R 755 "$1" {} +;
+find $(pwd)/system/media -type f -exec chmod -R 644 "$1" {} +;
+find $(pwd)/system/media -type d -exec chmod -R 755 "$1" {} +;
 find $(pwd) -type d -name "*app" -exec chmod -R 755 "$1" {} +;
 find $(pwd) -type f -name "*.apk" -exec chmod 644 "$1" {} +; 
 find $(pwd) -type f -name "*.jar" -exec chmod 644 "$1" {} +;
@@ -243,8 +243,11 @@ for Ten in $Phanvung; do
   [[ ! -e $Tam ]] && sudo mkdir -p $Tam
   [[ -n "$(ls $Tam)" ]] && sudo umount $Tam && sudo mount -o rw,loop,sync $Likk/Super/$Ten.img $Tam
   cd $Tam 
+echo "Chép"
   Cheptaptin 
+echo "Xoá"
   Xoataptin 
+echo "Phân quyền" 
   Phanquyen 
  fi 
 done 
