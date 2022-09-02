@@ -42,7 +42,8 @@ echo " Tạo ext4"
 make_ext4fs -J -T 0 -l 64M -a system -L test $TOME/tmp/test.img $TOME/Apk
 ls $TOME/tmp/test.img 
 echo "Mount tập tin"
-sudo mount -o rw,loop,sync $TOME/tmp/test.img /mnt/s
+sudo mount -t ext4 -w $TOME/tmp/test.img /mnt/s
+ls /mnt/s
 echo "Bỏ mount"
 sudo umount /mnt/s
 echo "Kiểm tra thư mục"
