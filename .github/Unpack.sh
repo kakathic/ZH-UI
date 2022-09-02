@@ -42,13 +42,15 @@ cd $TOME/Super
 mkdir -p $TOME/Apk
 ls $TOME/Super
 
-for Ten in $Phanvung; do 
+for Ten in system system_a system_ext system_ext_a; do 
  echo "$TOME/Super/$Ten.img"
  if [[ -s $TOME/Super/$Ten.img ]]; then 
   [[ ! -e /mnt/$Ten ]] && sudo mkdir -p /mnt/$Ten
-  [[ -n "$(ls /mnt/$Ten)" ]] && sudo umount /mnt/$Ten && sudo mount -o rw,loop,sync $TOME/Super/$Ten.img /mnt/$Ten
+  [[ -n "$(ls /mnt/$Ten)" ]] && sudo umount /mnt/$Ten
+  [[ -z "$(ls /mnt/$Ten)" ]] && sudo mount -o rw,loop,sync $TOME/Super/$Ten.img /mnt/$Ten
+ls /mnt/$Ten 
   [[ -n "$(ls /mnt/$Ten)" ]] && for UD in $Ungdung; do find /mnt/$Ten -type -f -name "*$UD" -exec cp -af "$1" $TOME/Apk {} +; done
+ls $TOME/Apk
  fi
 done 
 echo " Trích app xong" 
-ls $TOME/Apk
