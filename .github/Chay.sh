@@ -1,8 +1,8 @@
-echo "▶ Tên máy chủ"
+echo "▼ Tên máy chủ"
 uname -a
 echo ::set-output name=uname::$(uname -a)
 echo
-echo "▶ Kiểm thử"
+echo "▼ Kiểm thử"
 
 echo "- Cập nhật thư viện"
 sudo apt-get update > /dev/null
