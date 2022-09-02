@@ -243,7 +243,8 @@ for Ten in $Phanvung; do
  Tam=$Nha/$Ten
  if [[ -s $TOME/Super/$Ten.img ]]; then 
   [[ ! -e $Tam ]] && sudo mkdir -p $Tam
-  [[ -n "$(ls $Tam)" ]] && sudo umount $Tam && sudo mount -o rw,loop,sync $TOME/Super/$Ten.img $Tam
+  [[ -n "$(ls $Tam)" ]] && sudo umount $Tam 
+  [[ -z "$(ls $Tam)" ]] && sudo mount -o rw,loop,sync $TOME/Super/$Ten.img $Tam
   cd $Tam 
 echo "Chép"
   Cheptaptin 
