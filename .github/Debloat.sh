@@ -205,8 +205,10 @@ rm -rf $Nha/*recovery* $Tam/system/*/*auto-install*.json $Tam/system/media/theme
 }
  
 Phanquyen() {
-find $(pwd)/system/media -type f -exec chmod -R 644 "$1" {} +;
-find $(pwd)/system/media -type d -exec chmod -R 755 "$1" {} +;
+if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
+find $(pwd)/system/media -type f -exec chmod 644 "$1" {} +;
+find $(pwd)/system/media -type d -exec chmod 755 "$1" {} +;
+fi 
 find $(pwd) -type d -name "*app" -exec chmod -R 755 "$1" {} +;
 find $(pwd) -type f -name "*.apk" -exec chmod 644 "$1" {} +; 
 find $(pwd) -type f -name "*.jar" -exec chmod 644 "$1" {} +;
