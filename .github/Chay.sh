@@ -59,8 +59,8 @@ fi
 echo
 
 . $TOME/.github/Unpack.sh
-. $TOME/.github/Debloat.sh
 . $TOME/.github/Mod.sh
+. $TOME/.github/Debloat.sh
 . $TOME/.github/Repack.sh
 
 echo "- Kết thúc"
