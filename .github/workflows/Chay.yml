@@ -14,12 +14,13 @@ jobs:
           export PATH="$GITHUB_WORKSPACE/.github/bin:$PATH"
           chmod -R 777 .github/*.sh
           . .github/Chay.sh
-      - name: 'Tải lên Rom'
-        uses: actions/upload-artifact@v3
+      - name: Upload json
+        uses: softprops/action-gh-release@v1
         with:
-          name: Rom_Rebuild
-          path: .github/lib/Flash_2in1/*
-          retention-days: 2
+          token: ${{ github.token }}
+          name: Update
+          tag_name: Up
+          files: *.zip
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
         with:
