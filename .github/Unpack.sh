@@ -54,7 +54,7 @@ for Ten in system system_a system_ext system_ext_a; do
    mv -f $Ten.img ${Ten}s.img && simg2img ${Ten}s.img $Ten.img && sudo python3 $TOME/.github/lib/Libpy/imgextractor.py $Ten.img /mnt/tmp
   else echo "✓ Không biết định dạng!" 
   fi 
-  [[ -n "$(ls /mnt/tmp/$Ten)" ]] && for UD in $Ungdung; do sudo find /mnt/tmp/$Ten -type f -name "*$UD" -exec sudo cp -pf "$1" $TOME/Apk {} +; done
+  [[ -n "$(ls /mnt/tmp/$Ten)" ]] && for UD in $Ungdung; do sudo find /mnt/tmp/$Ten -type f -name "*$UD" -exec sudo cp -f "$1" "$TOME/Apk" {} +; done
  fi
 done 
 [[ -z "$(ls $TOME/Apk)" ]] && echo " Trích app lỗi" || ls $TOME/Apk 
