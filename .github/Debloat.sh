@@ -201,7 +201,7 @@ for PV in $Phanvung system/system_ext system/product; do
   done 
  fi
 done 
-sudo rm -rf $Nha/*recovery* $Tam/system/*/*auto-install*.json $Tam/system/media/theme/dynamicicons $Tam/system/media/theme/miui_mod_icons 2> /dev/null
+sudo rm -f $Nha/*recovery* $Tam/system/*/*auto-install*.json $Tam/system/media/theme/dynamicicons $Tam/system/media/theme/miui_mod_icons 2> /dev/null
 }
  
 Phanquyen() {
@@ -220,22 +220,22 @@ fi
 Cheptaptin() {
 if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
   if [[ -n "$(ls $Tam 2> /dev/null)" ]] && [[ -n "$(ls $TOME/Mod)" ]]; then
-  sudo cp -af $TOME/Mod/*ThemeManager.apk $Tam/system/app/MIUIThemeManager 2> /dev/null
-  sudo cp -af $TOME/Mod/miui.apk $Tam/system/app/miui 2> /dev/null 
-  sudo cp -af $TOME/Mod/miuisystem.apk $Tam/system/app/miuisystem 2> /dev/null 
-  sudo cp -af $TOME/Mod/framework.jar $Tam/system/framework 2> /dev/null
-  sudo cp -af $TOME/Mod/framework-ext-res.apk $Tam/system/framework/framework-ext-res 2> /dev/null
-  sudo cp -af $TOME/Mod/framework-res.apk $Tam/system/framework 2> /dev/null
-  sudo cp -af $TOME/Mod/services.jar $Tam/system/framework 2> /dev/null
-  sudo cp -af $TOME/Mod/miui-services.jar $Tam/system/framework 2> /dev/null
-  sudo cp -af $TOME/Mod/M*PackageInstaller.apk $Tam/system/priv-app/MIUIPackageInstaller 2> /dev/null
-  sudo cp -af $TOME/Mod/core-oj.jar $Tam/system/framework 2> /dev/null 
+  sudo cp -pf $TOME/Mod/*ThemeManager.apk $Tam/system/app/MIUIThemeManager 2> /dev/null
+  sudo cp -pf $TOME/Mod/miui.apk $Tam/system/app/miui 2> /dev/null 
+  sudo cp -pf $TOME/Mod/miuisystem.apk $Tam/system/app/miuisystem 2> /dev/null 
+  sudo cp -pf $TOME/Mod/framework.jar $Tam/system/framework 2> /dev/null
+  sudo cp -pf $TOME/Mod/framework-ext-res.apk $Tam/system/framework/framework-ext-res 2> /dev/null
+  sudo cp -pf $TOME/Mod/framework-res.apk $Tam/system/framework 2> /dev/null
+  sudo cp -pf $TOME/Mod/services.jar $Tam/system/framework 2> /dev/null
+  sudo cp -pf $TOME/Mod/miui-services.jar $Tam/system/framework 2> /dev/null
+  sudo cp -pf $TOME/Mod/M*PackageInstaller.apk $Tam/system/priv-app/MIUIPackageInstaller 2> /dev/null
+  sudo cp -pf $TOME/Mod/core-oj.jar $Tam/system/framework 2> /dev/null 
   fi
  fi 
  if [[ "$Ten" == "system_ext" ]] || [[ "$Ten" == "system_ext_a" ]]; then 
   if [[ -n "$(ls $Tam 2> /dev/null)" ]] && [[ -n "$(ls $TOME/Mod)" ]]; then
-  sudo cp -af $TOME/Mod/Settings.apk $Tam/priv-app/Settings 2> /dev/null
-  sudo cp -af $TOME/Mod/MiuiSystemUI.apk $Tam/priv-app/MiuiSystemUI 2> /dev/null 
+  sudo cp -pf $TOME/Mod/Settings.apk $Tam/priv-app/Settings 2> /dev/null
+  sudo cp -pf $TOME/Mod/MiuiSystemUI.apk $Tam/priv-app/MiuiSystemUI 2> /dev/null 
   fi
  fi 
 } 
