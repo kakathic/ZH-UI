@@ -14,7 +14,7 @@ jobs:
           chmod -R 777 .github/bin/*
           export PATH="$GITHUB_WORKSPACE/.github/bin:$PATH"
           chmod -R 777 .github/*.sh
-          . .github/Test.sh
+          sudo source .github/Test.sh
       - name: 'Upload Rom'
         uses: actions/upload-artifact@v3
         with:
