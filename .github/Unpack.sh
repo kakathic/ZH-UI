@@ -49,10 +49,10 @@ for Ten in system system_a system_ext system_ext_a; do
    fsck.erofs --extract=/mnt/tmp/$Ten --force --overwrite --preserve $Ten.img 
   elif [[ -n "$(hexdump -n 4000 $Ten.img | grep 'ef53')" ]]; then 
    echo "✓ $Ten.img là ext4 raw" 
-   python3 $TOME/lib/Libpy/imgextractor.py $Ten.img /mnt/tmp/$Ten 
+   python3 $TOME/.github/lib/Libpy/imgextractor.py $Ten.img /mnt/tmp/$Ten 
   elif [[ -n "$(hexdump -n 4 $Ten.img | grep 'ff3a')" ]]; then 
    echo "✓ $Ten.img là ext4 sparse" 
-   mv -f $Ten.img ${Ten}s.img && simg2img ${Ten}s.img $Ten.img && python3 $TOME/lib/Libpy/imgextractor.py $Ten.img /mnt/tmp/$Ten 
+   mv -f $Ten.img ${Ten}s.img && simg2img ${Ten}s.img $Ten.img && python3 $TOME/.github/lib/Libpy/imgextractor.py $Ten.img /mnt/tmp/$Ten 
   else echo "✓ Không biết định dạng!" 
   fi 
   [[ -n "$(ls /mnt/tmp/$Ten)" ]] && for UD in $Ungdung; do find /mnt/tmp/$Ten -type -f -name "*$UD" -exec cp -af "$1" $TOME/Apk {} +; done
