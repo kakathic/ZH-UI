@@ -202,7 +202,7 @@ for PV in $Phanvung system/system_ext system/product; do
   done 
  fi
 done 
-sudo rm -f $Nha/*recovery* $Tam/system/*/*auto-install*.json $Tam/system/media/theme/dynamicicons $Tam/system/media/theme/miui_mod_icons 2> /dev/null
+sudo rm -f $Nha/*recovery* $New/system/*/*auto-install*.json $New/system/media/theme/dynamicicons $New/system/media/theme/miui_mod_icons 2> /dev/null
 }
  
 Phanquyen() {
@@ -248,9 +248,11 @@ Thaydoi() {
    dd if=/dev/zero of=$TOME/tmp/new.img bs=3k count=1048576 
    mkfs.ext4 $TOME/tmp/new.img 
    tune2fs -c0 -i0 $TOME/tmp/new.img 
-   sudo mount -o loop $TOME/tmp/new.img $New
+   sudo mount -o rw,loop $TOME/tmp/new.img $New
+   ls $New
    sudo mount -o ro $TOME/Super/$Ten.img $Tam
-   cd $Tam 
+   ls $Tam
+   cd $New
    echo "Chép"
    Cheptaptin 
    echo "Xoá"
