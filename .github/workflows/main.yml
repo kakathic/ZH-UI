@@ -1,4 +1,4 @@
-name: REBUILD rom MIUI by CC
+name: REBUILD Rom MIUI by chamchamfy & kakathic
 on: 
   workflow_dispatch:
 jobs:
@@ -13,7 +13,7 @@ jobs:
           chmod -R 777 .github/bin/*
           export PATH="$GITHUB_WORKSPACE/.github/bin:$PATH"
           chmod -R 777 .github/*.sh
-          . .github/install.sh
+          . .github/Chay.sh
       - name: 'Upload Rom'
         uses: actions/upload-artifact@v3
         with:
