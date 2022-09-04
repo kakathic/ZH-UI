@@ -40,18 +40,22 @@ fi
 echo " Trích xuất app" 
 cd $TOME/Super 
 mkdir -p $TOME/Apk
-ls $TOME/Super
 
 for Ten in system system_a system_ext system_ext_a; do 
- echo "$TOME/Super/$Ten.img"
  if [[ -s $TOME/Super/$Ten.img ]]; then 
-  e2fsck -fy $TOME/Super/$Ten.img > /dev/null 2>&1 
-  [[ ! -e /mnt/$Ten ]] && sudo mkdir -p /mnt/$Ten
-  [[ -n "$(ls /mnt/$Ten)" ]] && sudo umount /mnt/$Ten
-  [[ -z "$(ls /mnt/$Ten)" ]] && sudo mount -t auto -o rw $TOME/Super/$Ten.img /mnt/$Ten > $TOME/tmp/t 
-ls /mnt/$Ten
-  [[ -n "$(ls /mnt/$Ten)" ]] && for UD in $Ungdung; do find /mnt/$Ten -type -f -name "*$UD" -exec cp -af "$1" $TOME/Apk {} +; done
-ls $TOME/Apk
+  sudo mkdir -p /mnt/tmp/$Ten 
+  if [[ -n "$(hexdump -n 4000 $Ten.img | grep 'e1e2 e0f5')" ]]; then 
+   echo "✓ $Ten.img là erofs"
+   fsck.erofs --extract=/mnt/tmp/$Ten --force --overwrite --preserve $Ten.img 
+  elif [[ -n "$(hexdump -n 4000 $Ten.img | grep 'ef53')" ]]; then 
+   echo "✓ $Ten.img là ext4 raw" 
+   python3 $TOME/lib/Libpy/imgextractor.py $Ten.img /mnt/tmp/$Ten 
+  elif [[ -n "$(hexdump -n 4 $Ten.img | grep 'ff3a')" ]]; then 
+   echo "✓ $Ten.img là ext4 sparse" 
+   mv -f $Ten.img ${Ten}s.img && simg2img ${Ten}s.img $Ten.img && python3 $TOME/lib/Libpy/imgextractor.py $Ten.img /mnt/tmp/$Ten 
+  else echo "✓ Không biết định dạng!" 
+  fi 
+  [[ -n "$(ls /mnt/tmp/$Ten)" ]] && for UD in $Ungdung; do find /mnt/tmp/$Ten -type -f -name "*$UD" -exec cp -af "$1" $TOME/Apk {} +; done
  fi
 done 
-[[ -z "$(ls $TOME/Apk)" ]] && echo " Trích app lỗi" 
+[[ -z "$(ls $TOME/Apk)" ]] && echo " Trích app lỗi" || ls $TOME/Apk 
