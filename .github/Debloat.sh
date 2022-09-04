@@ -264,7 +264,7 @@ Thaydoi() {
 
 Chinhsua() {
    Size=$(wc < $TOME/Super/$Ten.img)
-   SizeM=$(awk "BEGIN {print int($Size*1024*1024)}") 
+   SizeM=$(awk "BEGIN {print int($Size/1024/1024)}") 
    resize2fs -f $TOME/Super/$Ten.img ${SizeM}M 
    sudo mount -o rw,loop $TOME/Super/$Ten.img $New
    ls $New
