@@ -197,23 +197,23 @@ Xoataptin() {
 for PV in $Phanvung system/system_ext system/product; do 
  if [[ -e $Nha/$PV ]]; then
   for UD in data-app app priv-app; do 
-   [[ -e $Nha/$PV/$UD ]] && for DS in $Danhsachxoa; do [[ -e $Nha/$PV/$UD/$DS ]] && rm -rf $Nha/$PV/$UD/$DS; done
+   [[ -e $Nha/$PV/$UD ]] && for DS in $Danhsachxoa; do [[ -e $Nha/$PV/$UD/$DS ]] && sudo rm -rf $Nha/$PV/$UD/$DS; done
   done 
  fi
 done 
-rm -rf $Nha/*recovery* $Tam/system/*/*auto-install*.json $Tam/system/media/theme/dynamicicons $Tam/system/media/theme/miui_mod_icons 2> /dev/null
+sudo rm -rf $Nha/*recovery* $Tam/system/*/*auto-install*.json $Tam/system/media/theme/dynamicicons $Tam/system/media/theme/miui_mod_icons 2> /dev/null
 }
  
 Phanquyen() {
 if [[ -n "$(ls $Tam 2> /dev/null)" ]]; then 
  if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
-  find $(pwd)/system/media -type f -exec chmod 644 "$1" {} +;
-  find $(pwd)/system/media -type d -exec chmod 755 "$1" {} +;
+  sudo find $(pwd)/system/media -type f -exec sudo chmod 644 "$1" {} +;
+  sudo find $(pwd)/system/media -type d -exec sudo chmod 755 "$1" {} +;
  fi 
- find $(pwd) -type d -name "*app" -exec chmod -R 755 "$1" {} +;
- find $(pwd) -type f -name "*.apk" -exec chmod 644 "$1" {} +; 
- find $(pwd) -type f -name "*.jar" -exec chmod 644 "$1" {} +;
- find $(pwd) -type f -name "*.prop" -exec chmod 600 "$1" {} +;
+ sudo find $(pwd) -type d -name "*app" -exec sudo chmod -R 755 "$1" {} +;
+ sudo find $(pwd) -type f -name "*.apk" -exec sudo chmod 644 "$1" {} +; 
+ sudo find $(pwd) -type f -name "*.jar" -exec sudo chmod 644 "$1" {} +;
+ sudo find $(pwd) -type f -name "*.prop" -exec sudo chmod 600 "$1" {} +;
 fi 
 }
 
