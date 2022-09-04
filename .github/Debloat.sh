@@ -247,7 +247,7 @@ for Ten in $Phanvung; do
   e2fsck -fy $TOME/Super/$Ten.img
   [[ ! -e $Tam ]] && sudo mkdir -p $Tam
   [[ -n "$(ls $Tam)" ]] && sudo umount $Tam 
-  [[ -z "$(ls $Tam)" ]] && sudo mount -t auto -o rw $TOME/Super/$Ten.img $Tam 2> $TOME/tmp/t && loop=$(cat $TOME/tmp/t | awk -F' '{print $2}') && [[ -n "$loop" ]] && sudo mount $loop $Tam 
+  [[ -z "$(ls $Tam)" ]] && sudo mount -t auto -o rw $TOME/Super/$Ten.img $Tam 2> $TOME/tmp/t && loop=$(cat $TOME/tmp/t | awk -F"'" '{print $2}') && [[ -n "$loop" ]] && sudo mount $loop $Tam   
   cd $Tam 
 echo "Chép"
   Cheptaptin 
