@@ -220,16 +220,15 @@ fi
 Cheptaptin() {
 if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
   if [[ -n "$(ls $Tam 2> /dev/null)" ]] && [[ -n "$(ls $TOME/Mod)" ]]; then
-  sudo cp -pf $TOME/Mod/*ThemeManager.apk $Tam/system/app/MIUIThemeManager 2> /dev/null
-  sudo cp -pf $TOME/Mod/miui.apk $Tam/system/app/miui 2> /dev/null 
-  sudo cp -pf $TOME/Mod/miuisystem.apk $Tam/system/app/miuisystem 2> /dev/null 
-  sudo cp -pf $TOME/Mod/framework.jar $Tam/system/framework 2> /dev/null
-  sudo cp -pf $TOME/Mod/framework-ext-res.apk $Tam/system/framework/framework-ext-res 2> /dev/null
-  sudo cp -pf $TOME/Mod/framework-res.apk $Tam/system/framework 2> /dev/null
-  sudo cp -pf $TOME/Mod/services.jar $Tam/system/framework 2> /dev/null
-  sudo cp -pf $TOME/Mod/miui-services.jar $Tam/system/framework 2> /dev/null
-  sudo cp -pf $TOME/Mod/M*PackageInstaller.apk $Tam/system/priv-app/MIUIPackageInstaller 2> /dev/null
-  sudo cp -pf $TOME/Mod/core-oj.jar $Tam/system/framework 2> /dev/null 
+  sudo cp $TOME/Mod/*ThemeManager.apk $Tam/system/app/MIUIThemeManager 
+  sudo cp $TOME/Mod/miui.apk $Tam/system/app/miui 
+  sudo cp $TOME/Mod/miuisystem.apk $Tam/system/app/miuisystem 
+  sudo cp $TOME/Mod/framework.jar $Tam/system/framework 
+  sudo cp $TOME/Mod/framework-ext-res.apk $Tam/system/framework/framework-ext-res 
+  sudo cp $TOME/Mod/framework-res.apk $Tam/system/framework 
+  sudo cp $TOME/Mod/services.jar $Tam/system/framework 
+  sudo cp $TOME/Mod/miui-services.jar $Tam/system/framework 
+  sudo cp $TOME/Mod/M*PackageInstaller.apk $Tam/system/priv-app/MIUIPackageInstaller
   fi
  fi 
  if [[ "$Ten" == "system_ext" ]] || [[ "$Ten" == "system_ext_a" ]]; then 
