@@ -220,21 +220,21 @@ fi
 Cheptaptin() {
 if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
   if [[ -n "$(ls $Tam 2> /dev/null)" ]] && [[ -n "$(ls $TOME/Mod)" ]]; then
-  sudo cp $TOME/Mod/*ThemeManager.apk $Tam/system/app/MIUIThemeManager 
-  sudo cp $TOME/Mod/miui.apk $Tam/system/app/miui 
-  sudo cp $TOME/Mod/miuisystem.apk $Tam/system/app/miuisystem 
-  sudo cp $TOME/Mod/framework.jar $Tam/system/framework 
-  sudo cp $TOME/Mod/framework-ext-res.apk $Tam/system/framework/framework-ext-res 
-  sudo cp $TOME/Mod/framework-res.apk $Tam/system/framework 
-  sudo cp $TOME/Mod/services.jar $Tam/system/framework 
-  sudo cp $TOME/Mod/miui-services.jar $Tam/system/framework 
-  sudo cp $TOME/Mod/M*PackageInstaller.apk $Tam/system/priv-app/MIUIPackageInstaller
+  sudo cp -frp $TOME/Mod/*ThemeManager.apk $Tam/system/app/MIUIThemeManager 
+  sudo cp -frp $TOME/Mod/miui.apk $Tam/system/app/miui 
+  sudo cp -frp $TOME/Mod/miuisystem.apk $Tam/system/app/miuisystem 
+  sudo cp -frp $TOME/Mod/framework.jar $Tam/system/framework 
+  sudo cp -frp $TOME/Mod/framework-ext-res.apk $Tam/system/framework/framework-ext-res 
+  sudo cp -frp $TOME/Mod/framework-res.apk $Tam/system/framework 
+  sudo cp -frp $TOME/Mod/services.jar $Tam/system/framework 
+  sudo cp -frp $TOME/Mod/miui-services.jar $Tam/system/framework 
+  sudo cp -frp $TOME/Mod/M*PackageInstaller.apk $Tam/system/priv-app/MIUIPackageInstaller
   fi
  fi 
  if [[ "$Ten" == "system_ext" ]] || [[ "$Ten" == "system_ext_a" ]]; then 
   if [[ -n "$(ls $Tam 2> /dev/null)" ]] && [[ -n "$(ls $TOME/Mod)" ]]; then
-  sudo cp -pf $TOME/Mod/Settings.apk $Tam/priv-app/Settings 2> /dev/null
-  sudo cp -pf $TOME/Mod/MiuiSystemUI.apk $Tam/priv-app/MiuiSystemUI 2> /dev/null 
+  sudo cp -frp $TOME/Mod/Settings.apk $Tam/priv-app/Settings 2> /dev/null
+  sudo cp -frp $TOME/Mod/MiuiSystemUI.apk $Tam/priv-app/MiuiSystemUI 2> /dev/null 
   fi
  fi 
 } 
@@ -260,7 +260,7 @@ for Ten in $Phanvung; do
    [[ -s $TOME/tmp/$Ten.img ]] && sudo mv -f $TOME/tmp/$Ten.img $TOME/Super 
   elif [[ -n "$(hexdump -n 4000 $Ten.img | grep 'ef53')" ]]; then 
    echo "✓ $Ten.img là ext4 raw" 
-   [[ -z "$(ls $Tam)" ]] && sudo mount -o rw $TOME/Super/$Ten.img $Tam 
+   [[ -z "$(ls $Tam)" ]] && sudo mount $TOME/Super/$Ten.img $Tam 
    cd $Tam 
    echo "Chép"
    Cheptaptin 
@@ -271,7 +271,7 @@ for Ten in $Phanvung; do
   elif [[ -n "$(hexdump -n 4 $Ten.img | grep 'ff3a')" ]]; then 
    echo "✓ $Ten.img là ext4 sparse" 
    mv -f $Ten.img ${Ten}s.img && simg2img ${Ten}s.img $Ten.img
-   [[ -z "$(ls $Tam)" ]] && sudo mount -o rw $TOME/Super/$Ten.img $Tam 
+   [[ -z "$(ls $Tam)" ]] && sudo mount $TOME/Super/$Ten.img $Tam 
    cd $Tam 
    echo "Chép"
    Cheptaptin 
