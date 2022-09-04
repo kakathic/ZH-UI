@@ -22,7 +22,6 @@ if [[ -s $TOME/Unzip/imgages/super.img ]]; then
  echo " + Trích xuất super.img" 
  mv -f $TOME/Unzip/imgages/super.img $TOME/Unzip; 
  cd $TOME/Unzip 
- #Hexf=$(hexdump -n 4 super.img | cut -c 8-12); 
  [[ -n "$(echo $(hexdump -n 4 super.img) | grep 'ff3a')" ]] && mv -f super.img supers.img && simg2img supers.img super.img 
  python3 $TOME/.github/lib/Libpy/lpunpack.py super.img $TOME/Super > /dev/null 
  [[ -n "$(ls $TOME/Super/*.img)" ]] && echo " + Trích xuất xong!" 
@@ -55,7 +54,7 @@ for Ten in system system_a system_ext system_ext_a; do
    mv -f $Ten.img ${Ten}s.img && simg2img ${Ten}s.img $Ten.img && sudo python3 $TOME/.github/lib/Libpy/imgextractor.py $Ten.img /mnt/tmp/$Ten 
   else echo "✓ Không biết định dạng!" 
   fi 
-  [[ -n "$(ls /mnt/tmp/$Ten)" ]] && for UD in $Ungdung; do find /mnt/tmp/$Ten -type -f -name "*$UD" -exec cp -af "$1" $TOME/Apk {} +; done
+  [[ -n "$(ls /mnt/tmp/$Ten)" ]] && for UD in $Ungdung; do sudo find /mnt/tmp/$Ten -type f -name "*$UD" -exec sudo cp -af "$1" $TOME/Apk {} +; done
  fi
 done 
 [[ -z "$(ls $TOME/Apk)" ]] && echo " Trích app lỗi" || ls $TOME/Apk 
