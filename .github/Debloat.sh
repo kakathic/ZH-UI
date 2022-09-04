@@ -247,7 +247,7 @@ for Ten in $Phanvung; do
   e2fsck -fy $TOME/Super/$Ten.img
   [[ ! -e $Tam ]] && sudo mkdir -p $Tam
   [[ -n "$(ls $Tam)" ]] && sudo umount $Tam 
-  sudo losetup /dev/loop0
+  sudo losetup /dev/loop3
   [[ -z "$(ls $Tam)" ]] && sudo mount -t ext4 -o rw,loop $TOME/Super/$Ten.img $Tam
   cd $Tam 
 echo "Chép"
