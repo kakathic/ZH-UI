@@ -220,22 +220,22 @@ fi
 Cheptaptin() {
 if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
   if [[ -n "$(ls $Tam 2> /dev/null)" ]] && [[ -n "$(ls $TOME/Mod)" ]]; then
-  cp -af $TOME/Mod/*ThemeManager.apk $Tam/system/app/MIUIThemeManager 2> /dev/null
-  cp -af $TOME/Mod/miui.apk $Tam/system/app/miui 2> /dev/null 
-  cp -af $TOME/Mod/miuisystem.apk $Tam/system/app/miuisystem 2> /dev/null 
-  cp -af $TOME/Mod/framework.jar $Tam/system/framework 2> /dev/null
-  cp -af $TOME/Mod/framework-ext-res.apk $Tam/system/framework/framework-ext-res 2> /dev/null
-  cp -af $TOME/Mod/framework-res.apk $Tam/system/framework 2> /dev/null
-  cp -af $TOME/Mod/services.jar $Tam/system/framework 2> /dev/null
-  cp -af $TOME/Mod/miui-services.jar $Tam/system/framework 2> /dev/null
-  cp -af $TOME/Mod/M*PackageInstaller.apk $Tam/system/priv-app/MIUIPackageInstaller 2> /dev/null
-  cp -af $TOME/Mod/core-oj.jar $Tam/system/framework 2> /dev/null 
+  sudo cp -af $TOME/Mod/*ThemeManager.apk $Tam/system/app/MIUIThemeManager 2> /dev/null
+  sudo cp -af $TOME/Mod/miui.apk $Tam/system/app/miui 2> /dev/null 
+  sudo cp -af $TOME/Mod/miuisystem.apk $Tam/system/app/miuisystem 2> /dev/null 
+  sudo cp -af $TOME/Mod/framework.jar $Tam/system/framework 2> /dev/null
+  sudo cp -af $TOME/Mod/framework-ext-res.apk $Tam/system/framework/framework-ext-res 2> /dev/null
+  sudo cp -af $TOME/Mod/framework-res.apk $Tam/system/framework 2> /dev/null
+  sudo cp -af $TOME/Mod/services.jar $Tam/system/framework 2> /dev/null
+  sudo cp -af $TOME/Mod/miui-services.jar $Tam/system/framework 2> /dev/null
+  sudo cp -af $TOME/Mod/M*PackageInstaller.apk $Tam/system/priv-app/MIUIPackageInstaller 2> /dev/null
+  sudo cp -af $TOME/Mod/core-oj.jar $Tam/system/framework 2> /dev/null 
   fi
  fi 
  if [[ "$Ten" == "system_ext" ]] || [[ "$Ten" == "system_ext_a" ]]; then 
   if [[ -n "$(ls $Tam 2> /dev/null)" ]] && [[ -n "$(ls $TOME/Mod)" ]]; then
-  cp -af $TOME/Mod/Settings.apk $Tam/priv-app/Settings 2> /dev/null
-  cp -af $TOME/Mod/MiuiSystemUI.apk $Tam/priv-app/MiuiSystemUI 2> /dev/null 
+  sudo cp -af $TOME/Mod/Settings.apk $Tam/priv-app/Settings 2> /dev/null
+  sudo cp -af $TOME/Mod/MiuiSystemUI.apk $Tam/priv-app/MiuiSystemUI 2> /dev/null 
   fi
  fi 
 } 
@@ -257,8 +257,8 @@ for Ten in $Phanvung; do
    echo "Phân quyền" 
    Phanquyen
    echo "Tạo $Ten.img" 
-   mkfs.erofs -zlz4hc $TOME/tmp/$Ten.img $Tam
-   [[ -s $TOME/tmp/$Ten.img ]] && mv -f $TOME/tmp/$Ten.img $TOME/Super 
+   sudo mkfs.erofs -zlz4hc $TOME/tmp/$Ten.img $Tam
+   [[ -s $TOME/tmp/$Ten.img ]] && sudo mv -f $TOME/tmp/$Ten.img $TOME/Super 
   elif [[ -n "$(hexdump -n 4000 $Ten.img | grep 'ef53')" ]]; then 
    echo "✓ $Ten.img là ext4 raw" 
    [[ -z "$(ls $Tam)" ]] && sudo mount -o rw $TOME/Super/$Ten.img $Tam 
