@@ -1,3 +1,4 @@
+#chamchamfy
 Phanvung="system system_a system_b vendor vendor_a vendor_b product product_a product_b system_ext system_ext_a system_ext_b odm odm_a odm_b"; 
 Nha=/mnt
 Danhsachxoa="
@@ -205,7 +206,7 @@ sudo rm -f $Nha/*recovery* $Tam/system/*/*auto-install*.json $Tam/system/media/t
 }
  
 Phanquyen() {
-if [[ -n "$(ls $Tam 2> /dev/null)" ]]; then 
+if [[ -n "$(ls $New 2> /dev/null)" ]]; then 
  if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
   if [[ -e $(pwd)/system/media ]]; then 
    sudo find $(pwd)/system/media -type f -exec sudo chmod 644 "$1" {} +;
@@ -221,38 +222,58 @@ fi
 
 Cheptaptin() {
 if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
-  if [[ -n "$(ls $Tam 2> /dev/null)" ]] && [[ -n "$(ls $TOME/Mod)" ]]; then
-  sudo cp -frp $TOME/Mod/*ThemeManager.apk $Tam/system/app/MIUIThemeManager 
-  sudo cp -frp $TOME/Mod/miui.apk $Tam/system/app/miui 
-  sudo cp -frp $TOME/Mod/miuisystem.apk $Tam/system/app/miuisystem 
-  sudo cp -frp $TOME/Mod/framework.jar $Tam/system/framework 
-  sudo cp -frp $TOME/Mod/framework-ext-res.apk $Tam/system/framework/framework-ext-res 
-  sudo cp -frp $TOME/Mod/framework-res.apk $Tam/system/framework 
-  sudo cp -frp $TOME/Mod/services.jar $Tam/system/framework 
-  sudo cp -frp $TOME/Mod/miui-services.jar $Tam/system/framework 
-  sudo cp -frp $TOME/Mod/M*PackageInstaller.apk $Tam/system/priv-app/MIUIPackageInstaller
+  if [[ -n "$(ls $New 2> /dev/null)" ]] && [[ -n "$(ls $TOME/Mod)" ]]; then
+  sudo cp -frp $Tam/system/* $New 
+  sudo cp -frp $TOME/Mod/*ThemeManager.apk $New/system/app/MIUIThemeManager/MIUIThemeManager.apk
+  sudo cp -frp $TOME/Mod/miui.apk $New/system/app/miui 
+  sudo cp -frp $TOME/Mod/miuisystem.apk $New/system/app/miuisystem 
+  sudo cp -frp $TOME/Mod/framework.jar $New/system/framework 
+  sudo cp -frp $TOME/Mod/framework-ext-res.apk $New/system/framework/framework-ext-res 
+  sudo cp -frp $TOME/Mod/framework-res.apk $New/system/framework 
+  sudo cp -frp $TOME/Mod/services.jar $New/system/framework 
+  sudo cp -frp $TOME/Mod/miui-services.jar $New/system/framework 
+  sudo cp -frp $TOME/Mod/M*PackageInstaller.apk $New/system/priv-app/MIUIPackageInstaller/MIUIPackageInstaller.apk
   fi
  fi 
  if [[ "$Ten" == "system_ext" ]] || [[ "$Ten" == "system_ext_a" ]]; then 
-  if [[ -n "$(ls $Tam 2> /dev/null)" ]] && [[ -n "$(ls $TOME/Mod)" ]]; then
-  sudo cp -frp $TOME/Mod/Settings.apk $Tam/priv-app/Settings 2> /dev/null
-  sudo cp -frp $TOME/Mod/MiuiSystemUI.apk $Tam/priv-app/MiuiSystemUI 2> /dev/null 
+  if [[ -n "$(ls $New 2> /dev/null)" ]] && [[ -n "$(ls $TOME/Mod)" ]]; then
+  sudo cp -frp $Tam/* $New 
+  sudo cp -frp $TOME/Mod/Settings.apk $New/priv-app/Settings 2> /dev/null
+  sudo cp -frp $TOME/Mod/MiuiSystemUI.apk $New/priv-app/MiuiSystemUI 2> /dev/null 
   fi
  fi 
+} 
+
+Thaydoi() {
+   dd if=/dev/zero of=$TOME/tmp/new.img bs=3k count=1048576 
+   mkfs.ext4 $TOME/tmp/new.img 
+   tune2fs -c0 -i0 $TOME/tmp/new.img 
+   sudo mount -o loop $TOME/tmp/new.img $New
+   sudo mount -o ro $TOME/Super/$Ten.img $Tam
+   cd $Tam 
+   echo "Chép"
+   Cheptaptin 
+   echo "Xoá"
+   Xoataptin 
+   echo "Phân quyền" 
+   Phanquyen
+   sudo sync
 } 
 
 cd $TOME/Super 
 for Ten in $Phanvung; do 
  Tam=$Nha/$Ten
  Chua=$Nha/tmp/$Ten
+ New=$Nha/new
  if [[ -s $TOME/Super/$Ten.img ]]; then 
   e2fsck -fy $TOME/Super/$Ten.img
   [[ ! -e $Tam ]] && sudo mkdir -p $Tam
+  [[ ! -e $New ]] && sudo mkdir -p $New
   [[ -n "$(ls $Tam)" ]] && sudo umount $Tam 
   if [[ -n "$(hexdump -n 4000 $Ten.img | grep 'e1e2 e0f5')" ]]; then 
    echo "✓ $Ten.img là erofs"
-   Tam=$Chua 
-   cd $Tam 
+   New=$Chua 
+   cd $New
    echo "Chép"
    Cheptaptin 
    echo "Xoá"
@@ -260,31 +281,17 @@ for Ten in $Phanvung; do
    echo "Phân quyền" 
    Phanquyen
    echo "Tạo $Ten.img" 
-   sudo mkfs.erofs -zlz4hc $TOME/tmp/$Ten.img $Tam
+   sudo mkfs.erofs -zlz4hc $TOME/tmp/$Ten.img $New
    [[ -s $TOME/tmp/$Ten.img ]] && sudo mv -f $TOME/tmp/$Ten.img $TOME/Super 
   elif [[ -n "$(hexdump -n 4000 $Ten.img | grep 'ef53')" ]]; then 
    echo "✓ $Ten.img là ext4 raw" 
-   [[ -z "$(ls $Tam)" ]] && sudo mount $TOME/Super/$Ten.img $Tam
-   cd $Tam 
-   echo "Chép"
-   Cheptaptin 
-   echo "Xoá"
-   Xoataptin 
-   echo "Phân quyền" 
-   Phanquyen
+   Thaydoi 
   elif [[ -n "$(hexdump -n 4 $Ten.img | grep 'ff3a')" ]]; then 
    echo "✓ $Ten.img là ext4 sparse" 
    mv -f $Ten.img ${Ten}s.img && simg2img ${Ten}s.img $Ten.img
-   [[ -z "$(ls $Tam)" ]] && sudo mount $TOME/Super/$Ten.img $Tam 
-   cd $Tam 
-   echo "Chép"
-   Cheptaptin 
-   echo "Xoá"
-   Xoataptin 
-   echo "Phân quyền" 
-   Phanquyen
+   Thaydoi
   else echo "✓ Không biết định dạng!" 
   fi 
-  [[ -n "$(ls $Tam)" ]] && sudo umount $Tam 
+  [[ -n "$(ls $Tam)" ]] && sudo umount $Tam $New
  fi 
 done 
