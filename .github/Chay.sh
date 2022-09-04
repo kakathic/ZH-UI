@@ -63,4 +63,7 @@ echo
 . $TOME/.github/Debloat.sh
 . $TOME/.github/Repack.sh
 
+cd $TOME/.github/lib/Flash_2in1
+zip -qr $TOME/rom.zip *
+
 echo "- Kết thúc"
