@@ -250,7 +250,7 @@ Thaydoi() {
    tune2fs -c0 -i0 $TOME/tmp/new.img 
    sudo mount -o rw,loop $TOME/tmp/new.img $New
    ls $New
-   sudo mount -o ro $TOME/Super/$Ten.img $Tam
+   sudo mount -o rw,loop $TOME/Super/$Ten.img $Tam
    ls $Tam
    cd $New
    echo "Chép"
