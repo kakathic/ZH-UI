@@ -205,14 +205,16 @@ rm -rf $Nha/*recovery* $Tam/system/*/*auto-install*.json $Tam/system/media/theme
 }
  
 Phanquyen() {
-if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
-find $(pwd)/system/media -type f -exec chmod 644 "$1" {} +;
-find $(pwd)/system/media -type d -exec chmod 755 "$1" {} +;
+if [[ -n "$(ls /mnt/$Ten 2> /dev/null)" ]]; then 
+ if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
+  find $(pwd)/system/media -type f -exec chmod 644 "$1" {} +;
+  find $(pwd)/system/media -type d -exec chmod 755 "$1" {} +;
+ fi 
+ find $(pwd) -type d -name "*app" -exec chmod -R 755 "$1" {} +;
+ find $(pwd) -type f -name "*.apk" -exec chmod 644 "$1" {} +; 
+ find $(pwd) -type f -name "*.jar" -exec chmod 644 "$1" {} +;
+ find $(pwd) -type f -name "*.prop" -exec chmod 600 "$1" {} +;
 fi 
-find $(pwd) -type d -name "*app" -exec chmod -R 755 "$1" {} +;
-find $(pwd) -type f -name "*.apk" -exec chmod 644 "$1" {} +; 
-find $(pwd) -type f -name "*.jar" -exec chmod 644 "$1" {} +;
-find $(pwd) -type f -name "*.prop" -exec chmod 600 "$1" {} +;
 }
 
 Cheptaptin() {
@@ -245,7 +247,7 @@ for Ten in $Phanvung; do
   e2fsck -fy $TOME/Super/$Ten.img
   [[ ! -e $Tam ]] && sudo mkdir -p $Tam
   [[ -n "$(ls $Tam)" ]] && sudo umount $Tam 
-  sudo losetup /dev/block/loop3
+  sudo losetup /dev/loop0
   [[ -z "$(ls $Tam)" ]] && sudo mount -t ext4 -o rw,loop $TOME/Super/$Ten.img $Tam
   cd $Tam 
 echo "Chép"
