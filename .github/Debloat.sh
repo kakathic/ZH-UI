@@ -266,7 +266,7 @@ Chinhsua() {
    Size=$(wc -c < $TOME/Super/$Ten.img)
    SizeM=$(awk "BEGIN {print int($Size/1024/1024)}")M
    resize2fs -f $TOME/Super/$Ten.img ${SizeM} 
-   sudo mount -o rw,loop $TOME/Super/$Ten.img $New
+   sudo mount -o default $TOME/Super/$Ten.img $New
    ls $New
    cd $New
    echo "Chép"
