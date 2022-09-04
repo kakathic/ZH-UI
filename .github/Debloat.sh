@@ -242,9 +242,10 @@ cd $TOME/Super
 for Ten in $Phanvung; do 
  Tam=$Nha/$Ten
  if [[ -s $TOME/Super/$Ten.img ]]; then 
+  e2fsck -fy $TOME/Super/$Ten.img
   [[ ! -e $Tam ]] && sudo mkdir -p $Tam
   [[ -n "$(ls $Tam)" ]] && sudo umount $Tam 
-  [[ -z "$(ls $Tam)" ]] && sudo mount -t ext4 -w $TOME/Super/$Ten.img $Tam
+  [[ -z "$(ls $Tam)" ]] && sudo losetup /dev/block/loop0 && sudo mount -t ext4 -o rw,loop $TOME/Super/$Ten.img $Tam
   cd $Tam 
 echo "Chép"
   Cheptaptin 
