@@ -46,13 +46,13 @@ for Ten in system system_a system_ext system_ext_a; do
   sudo mkdir -p /mnt/tmp/$Ten 
   if [[ -n "$(hexdump -n 4000 $Ten.img | grep 'e1e2 e0f5')" ]]; then 
    echo "✓ $Ten.img là erofs"
-   fsck.erofs --extract=/mnt/tmp/$Ten --force --overwrite --preserve $Ten.img 
+   sudo fsck.erofs --extract=/mnt/tmp/$Ten --force --overwrite --preserve $Ten.img 
   elif [[ -n "$(hexdump -n 4000 $Ten.img | grep 'ef53')" ]]; then 
    echo "✓ $Ten.img là ext4 raw" 
-   python3 $TOME/.github/lib/Libpy/imgextractor.py $Ten.img /mnt/tmp/$Ten 
+   sudo python3 $TOME/.github/lib/Libpy/imgextractor.py $Ten.img /mnt/tmp/$Ten 
   elif [[ -n "$(hexdump -n 4 $Ten.img | grep 'ff3a')" ]]; then 
    echo "✓ $Ten.img là ext4 sparse" 
-   mv -f $Ten.img ${Ten}s.img && simg2img ${Ten}s.img $Ten.img && python3 $TOME/.github/lib/Libpy/imgextractor.py $Ten.img /mnt/tmp/$Ten 
+   mv -f $Ten.img ${Ten}s.img && simg2img ${Ten}s.img $Ten.img && sudo python3 $TOME/.github/lib/Libpy/imgextractor.py $Ten.img /mnt/tmp/$Ten 
   else echo "✓ Không biết định dạng!" 
   fi 
   [[ -n "$(ls /mnt/tmp/$Ten)" ]] && for UD in $Ungdung; do find /mnt/tmp/$Ten -type -f -name "*$UD" -exec cp -af "$1" $TOME/Apk {} +; done
