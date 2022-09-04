@@ -189,7 +189,7 @@ MIUIScreenRecorderLite
 MIUISoundRecorderTargetSdk30
 MIUIXiaoAiSpeechEngine-matisse
 ThirdAppAssistant
-MIUIDeskClockS
+#MIUIDeskClockS
 #MIUITouchAssistant
 RideModeAudio
 "
