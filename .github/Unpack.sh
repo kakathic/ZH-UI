@@ -48,10 +48,11 @@ for Ten in system system_a system_ext system_ext_a; do
   e2fsck -fy $TOME/Super/$Ten.img
   [[ ! -e /mnt/$Ten ]] && sudo mkdir -p /mnt/$Ten
   [[ -n "$(ls /mnt/$Ten)" ]] && sudo umount /mnt/$Ten
-  [[ -z "$(ls /mnt/$Ten)" ]] && sudo mount -t auto -o rw $TOME/Super/$Ten.img /mnt/$Ten 2> $TOME/tmp/t && loop=$(cat $TOME/tmp/t | awk -F"'" '{print $2}') && [[ -n "$loop" ]] && sudo mount $loop /mnt/$Ten
+  [[ -z "$(ls /mnt/$Ten)" ]] && sudo mount -t auto -o rw $TOME/Super/$Ten.img /mnt/$Ten
+  sudo mount /dev/loop3 /mnt/$Ten
 ls /mnt/$Ten 
   [[ -n "$(ls /mnt/$Ten)" ]] && for UD in $Ungdung; do find /mnt/$Ten -type -f -name "*$UD" -exec cp -af "$1" $TOME/Apk {} +; done
 ls $TOME/Apk
  fi
 done 
-echo " Trích app xong" 
+[[ -z "$(ls $TOME/Apk)" ]] && echo " Trích app lỗi" 
