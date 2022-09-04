@@ -14,11 +14,11 @@ jobs:
           export PATH="$GITHUB_WORKSPACE/.github/bin:$PATH"
           chmod -R 777 .github/*.sh
           . .github/Chay.sh
-      - name: Upload json
+      - name: Upload rom
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ github.token }}
-          name: Update
+          name: Up
           tag_name: Up
           files: *.zip
       - name: Delete workflow runs
