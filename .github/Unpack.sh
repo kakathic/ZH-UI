@@ -48,7 +48,7 @@ for Ten in system system_a system_ext system_ext_a; do
   e2fsck -fy $TOME/Super/$Ten.img
   [[ ! -e /mnt/$Ten ]] && sudo mkdir -p /mnt/$Ten
   [[ -n "$(ls /mnt/$Ten)" ]] && sudo umount /mnt/$Ten
-  sudo losetup /dev/loop0
+  sudo losetup /dev/loop3
   [[ -z "$(ls /mnt/$Ten)" ]] && sudo mount -t ext4 -o rw,loop $TOME/Super/$Ten.img /mnt/$Ten
 ls /mnt/$Ten 
   [[ -n "$(ls /mnt/$Ten)" ]] && for UD in $Ungdung; do find /mnt/$Ten -type -f -name "*$UD" -exec cp -af "$1" $TOME/Apk {} +; done
