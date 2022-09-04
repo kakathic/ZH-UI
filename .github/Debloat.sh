@@ -267,6 +267,8 @@ Chinhsua() {
    SizeM=$(du -m $TOME/Super/$Ten.img | awk '{print int($S1+200)}')M
    #resize2fs -f $TOME/Super/$Ten.img ${SizeM} 
    sudo mount -o ro,loop $TOME/Super/$Ten.img $New
+   sudo umount -l $New
+   sudo mount -o rw,loop $TOME/Super/$Ten.img $New
    ls $New
    cd $New
    echo "Chép"
