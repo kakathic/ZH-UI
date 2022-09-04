@@ -45,13 +45,12 @@ ls $TOME/Super
 for Ten in system system_a system_ext system_ext_a; do 
  echo "$TOME/Super/$Ten.img"
  if [[ -s $TOME/Super/$Ten.img ]]; then 
-  e2fsck -fy $TOME/Super/$Ten.img
-  [[ ! -e /mnt/$Ten ]] && sudo mkdir -p /mnt/$Ten
-  [[ -n "$(ls /mnt/$Ten)" ]] && sudo umount /mnt/$Ten
-  [[ -z "$(ls /mnt/$Ten)" ]] && sudo mount -t auto -o rw $TOME/Super/$Ten.img /mnt/$Ten
-  sudo mount /dev/loop3 /mnt/$Ten
-ls /mnt/$Ten 
-  [[ -n "$(ls /mnt/$Ten)" ]] && for UD in $Ungdung; do find /mnt/$Ten -type -f -name "*$UD" -exec cp -af "$1" $TOME/Apk {} +; done
+  e2fsck -fy $TOME/Super/$Ten.img > /dev/null 
+  [[ ! -e /mnt/s ]] && sudo mkdir -p /mnt/s
+  [[ -n "$(ls /mnt/s)" ]] && sudo umount /mnt/s
+  [[ -z "$(ls /mnt/s)" ]] && sudo mount -t auto -o rw $TOME/Super/$Ten.img /mnt/s 2> /dev/null
+ls /mnt/s
+  [[ -n "$(ls /mnt/s)" ]] && for UD in $Ungdung; do find /mnt/s -type -f -name "*$UD" -exec cp -af "$1" $TOME/Apk {} +; done
 ls $TOME/Apk
  fi
 done 
