@@ -1,5 +1,5 @@
 Phanvung="system system_a system_b vendor vendor_a vendor_b product product_a product_b system_ext system_ext_a system_ext_b odm odm_a odm_b"; 
-Nha=/mnt 
+Nha=/mnt/tmp
 Danhsachxoa="
 BaiduIME
 MIFinance
@@ -205,7 +205,7 @@ rm -rf $Nha/*recovery* $Tam/system/*/*auto-install*.json $Tam/system/media/theme
 }
  
 Phanquyen() {
-if [[ -n "$(ls /mnt/$Ten 2> /dev/null)" ]]; then 
+if [[ -n "$(ls $Tam 2> /dev/null)" ]]; then 
  if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
   find $(pwd)/system/media -type f -exec chmod 644 "$1" {} +;
   find $(pwd)/system/media -type d -exec chmod 755 "$1" {} +;
@@ -247,13 +247,41 @@ for Ten in $Phanvung; do
   e2fsck -fy $TOME/Super/$Ten.img
   [[ ! -e $Tam ]] && sudo mkdir -p $Tam
   [[ -n "$(ls $Tam)" ]] && sudo umount $Tam 
-  [[ -z "$(ls $Tam)" ]] && sudo mount -t auto -o rw $TOME/Super/$Ten.img $Tam > $TOME/tmp/t
-  cd $Tam 
-echo "Chép"
-  Cheptaptin 
-echo "Xoá"
-  Xoataptin 
-echo "Phân quyền" 
-  Phanquyen
+  if [[ -n "$(hexdump -n 4000 $Ten.img | grep 'e1e2 e0f5')" ]]; then 
+   echo "✓ $Ten.img là erofs"
+   cd $Tam 
+   echo "Chép"
+   Cheptaptin 
+   echo "Xoá"
+   Xoataptin 
+   echo "Phân quyền" 
+   Phanquyen
+   echo "Tạo $Ten.img" 
+   mkfs.erofs -zlz4hc $TOME/tmp/$Ten.img $Tam
+   [[ -s $TOME/tmp/$Ten.img ]] && mv -f $TOME/tmp/$Ten.img $TOME/Super 
+  elif [[ -n "$(hexdump -n 4000 $Ten.img | grep 'ef53')" ]]; then 
+   echo "✓ $Ten.img là ext4 raw" 
+   [[ -z "$(ls $Tam)" ]] && sudo mount -o rw $TOME/Super/$Ten.img $Tam 
+   cd $Tam 
+   echo "Chép"
+   Cheptaptin 
+   echo "Xoá"
+   Xoataptin 
+   echo "Phân quyền" 
+   Phanquyen
+  elif [[ -n "$(hexdump -n 4 $Ten.img | grep 'ff3a')" ]]; then 
+   echo "✓ $Ten.img là ext4 sparse" 
+   mv -f $Ten.img ${Ten}s.img && simg2img ${Ten}s.img $Ten.img
+   [[ -z "$(ls $Tam)" ]] && sudo mount -o rw $TOME/Super/$Ten.img $Tam 
+   cd $Tam 
+   echo "Chép"
+   Cheptaptin 
+   echo "Xoá"
+   Xoataptin 
+   echo "Phân quyền" 
+   Phanquyen
+  else echo "✓ Không biết định dạng!" 
+  fi 
+  [[ -n "$(ls $Tam)" ]] && sudo umount $Tam 
  fi 
 done 
