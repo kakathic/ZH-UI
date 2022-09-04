@@ -223,7 +223,7 @@ fi
 Cheptaptin() {
 if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
   if [[ -n "$(ls $New 2> /dev/null)" ]] && [[ -n "$(ls $TOME/Mod)" ]]; then
-  sudo cp -frp $Tam/system/* $New 
+  #sudo cp -frp $Tam/system/* $New 
   sudo cp -frp $TOME/Mod/*ThemeManager.apk $New/system/app/MIUIThemeManager/MIUIThemeManager.apk
   sudo cp -frp $TOME/Mod/miui.apk $New/system/app/miui 
   sudo cp -frp $TOME/Mod/miuisystem.apk $New/system/app/miuisystem 
@@ -237,7 +237,7 @@ if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then
  fi 
  if [[ "$Ten" == "system_ext" ]] || [[ "$Ten" == "system_ext_a" ]]; then 
   if [[ -n "$(ls $New 2> /dev/null)" ]] && [[ -n "$(ls $TOME/Mod)" ]]; then
-  sudo cp -frp $Tam/* $New 
+  #sudo cp -frp $Tam/* $New 
   sudo cp -frp $TOME/Mod/Settings.apk $New/priv-app/Settings 2> /dev/null
   sudo cp -frp $TOME/Mod/MiuiSystemUI.apk $New/priv-app/MiuiSystemUI 2> /dev/null 
   fi
@@ -262,16 +262,32 @@ Thaydoi() {
    sudo sync
 } 
 
+Chinhsua() {
+   Size=$(wc < $TOME/Super/$Ten.img)
+   SizeM=$(awk "BEGIN {print int($Size*1024*1024)}") 
+   resize2fs -f $TOME/Super/$Ten.img ${SizeM}M 
+   sudo mount -o rw,loop $TOME/Super/$Ten.img $New
+   ls $New
+   cd $New
+   echo "Chép"
+   Cheptaptin 
+   echo "Xoá"
+   Xoataptin 
+   echo "Phân quyền" 
+   Phanquyen
+   sudo sync
+} 
+
 cd $TOME/Super 
 for Ten in $Phanvung; do 
  Tam=$Nha/$Ten
  Chua=$Nha/tmp/$Ten
- New=$Nha/new
+ New=$Nha/$Ten
  if [[ -s $TOME/Super/$Ten.img ]]; then 
   e2fsck -fy $TOME/Super/$Ten.img
   [[ ! -e $Tam ]] && sudo mkdir -p $Tam
   [[ ! -e $New ]] && sudo mkdir -p $New
-  [[ -n "$(ls $Tam)" ]] && sudo umount $Tam 
+  [[ -n "$(ls $New)" ]] && sudo umount -l $Tam $New
   if [[ -n "$(hexdump -n 4000 $Ten.img | grep 'e1e2 e0f5')" ]]; then 
    echo "✓ $Ten.img là erofs"
    New=$Chua 
@@ -287,13 +303,14 @@ for Ten in $Phanvung; do
    [[ -s $TOME/tmp/$Ten.img ]] && sudo mv -f $TOME/tmp/$Ten.img $TOME/Super 
   elif [[ -n "$(hexdump -n 4000 $Ten.img | grep 'ef53')" ]]; then 
    echo "✓ $Ten.img là ext4 raw" 
-   Thaydoi 
+   Chinhsua
   elif [[ -n "$(hexdump -n 4 $Ten.img | grep 'ff3a')" ]]; then 
    echo "✓ $Ten.img là ext4 sparse" 
    mv -f $Ten.img ${Ten}s.img && simg2img ${Ten}s.img $Ten.img
-   Thaydoi
+   Chinhsua
   else echo "✓ Không biết định dạng!" 
   fi 
-  [[ -n "$(ls $Tam)" ]] && sudo umount $Tam $New
+  cd $TOME/Super 
+  [[ -n "$(ls $New)" ]] && sudo umount -l $Tam $New
  fi 
 done 
