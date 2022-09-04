@@ -45,6 +45,7 @@ ls $TOME/Super
 for Ten in system system_a system_ext system_ext_a; do 
  echo "$TOME/Super/$Ten.img"
  if [[ -s $TOME/Super/$Ten.img ]]; then 
+  e2fsck -fy $TOME/Super/$Ten.img
   [[ ! -e /mnt/$Ten ]] && sudo mkdir -p /mnt/$Ten
   [[ -n "$(ls /mnt/$Ten)" ]] && sudo umount /mnt/$Ten
   [[ -z "$(ls /mnt/$Ten)" ]] && sudo losetup /dev/block/loop0 && sudo mount -t ext4 -o rw,loop $TOME/Super/$Ten.img /mnt/$Ten
