@@ -1,5 +1,5 @@
 Phanvung="system system_a system_b vendor vendor_a vendor_b product product_a product_b system_ext system_ext_a system_ext_b odm odm_a odm_b"; 
-Nha=/mnt/tmp
+Nha=/mnt
 Danhsachxoa="
 BaiduIME
 MIFinance
@@ -207,10 +207,12 @@ sudo rm -f $Nha/*recovery* $Tam/system/*/*auto-install*.json $Tam/system/media/t
 Phanquyen() {
 if [[ -n "$(ls $Tam 2> /dev/null)" ]]; then 
  if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
-  sudo find $(pwd)/system/media -type f -exec sudo chmod 644 "$1" {} +;
-  sudo find $(pwd)/system/media -type d -exec sudo chmod 755 "$1" {} +;
+  if [[ -e $(pwd)/system/media ]]; then 
+   sudo find $(pwd)/system/media -type f -exec sudo chmod 644 "$1" {} +;
+   sudo find $(pwd)/system/media -type d -exec sudo chmod 755 "$1" {} +;
+  fi 
  fi 
- sudo find $(pwd) -type d -name "*app" -exec sudo chmod -R 755 "$1" {} +;
+ sudo find $(pwd) -type d -name "*app" -exec sudo chmod 755 "$1" {} +;
  sudo find $(pwd) -type f -name "*.apk" -exec sudo chmod 644 "$1" {} +; 
  sudo find $(pwd) -type f -name "*.jar" -exec sudo chmod 644 "$1" {} +;
  sudo find $(pwd) -type f -name "*.prop" -exec sudo chmod 600 "$1" {} +;
@@ -242,12 +244,14 @@ if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then
 cd $TOME/Super 
 for Ten in $Phanvung; do 
  Tam=$Nha/$Ten
+ Chua=$Nha/tmp/$Ten
  if [[ -s $TOME/Super/$Ten.img ]]; then 
   e2fsck -fy $TOME/Super/$Ten.img
   [[ ! -e $Tam ]] && sudo mkdir -p $Tam
   [[ -n "$(ls $Tam)" ]] && sudo umount $Tam 
   if [[ -n "$(hexdump -n 4000 $Ten.img | grep 'e1e2 e0f5')" ]]; then 
    echo "✓ $Ten.img là erofs"
+   Tam=$Chua 
    cd $Tam 
    echo "Chép"
    Cheptaptin 
@@ -260,7 +264,7 @@ for Ten in $Phanvung; do
    [[ -s $TOME/tmp/$Ten.img ]] && sudo mv -f $TOME/tmp/$Ten.img $TOME/Super 
   elif [[ -n "$(hexdump -n 4000 $Ten.img | grep 'ef53')" ]]; then 
    echo "✓ $Ten.img là ext4 raw" 
-   [[ -z "$(ls $Tam)" ]] && sudo mount $TOME/Super/$Ten.img $Tam 
+   [[ -z "$(ls $Tam)" ]] && sudo mount $TOME/Super/$Ten.img $Tam
    cd $Tam 
    echo "Chép"
    Cheptaptin 
