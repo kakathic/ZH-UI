@@ -20,7 +20,7 @@ jobs:
           token: ${{ github.token }}
           name: Up
           tag_name: Up
-          files: *.zip
+          files: rom.zip
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
         with:
