@@ -39,7 +39,7 @@ mkdir -p $TOME/tmp
 mkdir -p $TOME/Apk
 touch $TOME/Apk/test.txt
 echo " Tạo ext4"
-make_ext4fs -J -T 0 -l 4G -a system -L test $TOME/tmp/test.img $TOME/Apk
+make_ext4fs -J -T 0 -l 4532M -a system -L test $TOME/tmp/test.img $TOME/Apk
 ls $TOME/tmp/test.img 
 echo "Mount tập tin"
 sudo mount -o rw,loop $TOME/tmp/test.img /mnt/s
