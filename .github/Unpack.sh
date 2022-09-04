@@ -1,5 +1,5 @@
 Phanvung="system system_a system_b vendor vendor_a vendor_b product product_a product_b system_ext system_ext_a system_ext_b odm odm_a odm_b"; 
-Ungdung="ThemeManager.apk miui.apk miuisystem.apk framework.jar framework-ext-res.apk framework-res.apk core-oj.jar miui-services.jar services.jar MiuiSystemUI.apk Settings.apk PackageInstaller.apk"; 
+Ungdung="ThemeManager.apk MIUIThemeManager.apk miui.apk miuisystem.apk framework.jar framework-ext-res.apk framework-res.apk miui-services.jar services.jar MiuiSystemUI.apk Settings.apk MiuiPackageInstaller.apk MIUIPackageInstaller.apk"; 
 
 if [[ -s $TOME/Unzip/payload.bin ]]; then 
  echo " + Trích xuất payload.bin" 
@@ -54,7 +54,7 @@ for Ten in system system_a system_ext system_ext_a; do
    mv -f $Ten.img ${Ten}s.img && simg2img ${Ten}s.img $Ten.img && sudo python3 $TOME/.github/lib/Libpy/imgextractor.py $Ten.img /mnt/tmp
   else echo "✓ Không biết định dạng!" 
   fi 
-  [[ -n "$(ls /mnt/tmp/$Ten)" ]] && for UD in $Ungdung; do TM=$(sudo find /mnt/tmp/$Ten -type f -name "*${UD}") && sudo cp -af "$TM" "$TOME/Apk"; done
+  [[ -n "$(ls /mnt/tmp/$Ten)" ]] && for Ud in $Ungdung; do TM=$(sudo find /mnt/tmp/$Ten -type f -name "$Ud") && sudo cp -af "$TM" "$TOME/Apk"; done
  fi
 done 
 [[ -z "$(ls $TOME/Apk)" ]] && echo " Trích app lỗi" || ls $TOME/Apk 
