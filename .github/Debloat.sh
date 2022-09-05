@@ -256,6 +256,7 @@ Thaydoi() {
    dd if=/dev/zero of=$TOME/tmp/$Ten.img bs=3k count=1048576 
    mkfs.ext4 $TOME/tmp/$Ten.img 
    tune2fs -c0 -i0 $TOME/tmp/$Ten.img 
+   resize2fs -f $TOME/tmp/$Ten.img $SizeM
    sudo mount -o rw,loop $TOME/tmp/$Ten.img $New
    sudo mount -o ro,loop $TOME/Super/$Ten.img $Tam
    cd $New
@@ -266,8 +267,7 @@ Thaydoi() {
    echo "Phân quyền" 
    Phanquyen
    sudo sync
-   ls $New
-   resize2fs -f $TOME/tmp/$Ten.img $SizeM
+   ls $New 
    cd $TOME/Super 
    sudo umount -l $Tam $New
 } 
@@ -353,5 +353,5 @@ for Ten in $Phanvung; do
  fi 
 done 
 
-echo "Chỉnh boot"
+echo "- Chỉnh boot"
 #Bootm
