@@ -1,5 +1,5 @@
 #chamchamfy
-Phanvung="system system_a system_b vendor vendor_a vendor_b product product_a product_b system_ext system_ext_a system_ext_b odm odm_a odm_b"; 
+Phanvung="system vendor product system_ext"; 
 Nha=/mnt
 Danhsachxoa="
 BaiduIME
@@ -207,7 +207,7 @@ sudo rm -f $Nha/*recovery* $New/system/*/*auto-install*.json $New/system/media/t
  
 Phanquyen() {
 if [[ -n "$(ls $New 2> /dev/null)" ]]; then 
- if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
+ if [[ "$Ten" == "system" ]]; then 
   if [[ -e $(pwd)/system/media ]]; then 
    sudo find $(pwd)/system/media -type f -exec sudo chmod 644 "$1" {} +;
    sudo find $(pwd)/system/media -type d -exec sudo chmod 755 "$1" {} +;
@@ -221,9 +221,9 @@ fi
 }
 
 Cheptaptin() {
-if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then 
+sudo cp -frp $Tam/* $New 
+if [[ "$Ten" == "system" ]]; then 
   if [[ -n "$(ls $New 2> /dev/null)" ]] && [[ -n "$(ls $TOME/Mod)" ]]; then
-  sudo cp -frp $Tam/system/* $New 
   sudo cp -frp $TOME/Mod/*ThemeManager.apk $New/system/app/MIUIThemeManager/MIUIThemeManager.apk
   sudo cp -frp $TOME/Mod/miui.apk $New/system/app/miui 
   sudo cp -frp $TOME/Mod/miuisystem.apk $New/system/app/miuisystem 
@@ -235,9 +235,8 @@ if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then
   sudo cp -frp $TOME/Mod/M*PackageInstaller.apk $New/system/priv-app/MIUIPackageInstaller/MIUIPackageInstaller.apk
   fi
  fi 
- if [[ "$Ten" == "system_ext" ]] || [[ "$Ten" == "system_ext_a" ]]; then 
+ if [[ "$Ten" == "system_ext" ]]; then 
   if [[ -n "$(ls $New 2> /dev/null)" ]] && [[ -n "$(ls $TOME/Mod)" ]]; then
-  sudo cp -frp $Tam/* $New 
   sudo cp -frp $TOME/Mod/Settings.apk $New/priv-app/Settings 2> /dev/null
   sudo cp -frp $TOME/Mod/MiuiSystemUI.apk $New/priv-app/MiuiSystemUI 2> /dev/null 
   fi
@@ -245,13 +244,14 @@ if [[ "$Ten" == "system" ]] || [[ "$Ten" == "system_a" ]]; then
 } 
 
 Thaydoi() {
-   [[ -n "$(ls $New)" ]] && sudo umount -l $Tam $New
-   dd if=/dev/zero of=$TOME/tmp/new.img bs=3k count=1048576 
-   mkfs.ext4 $TOME/tmp/new.img 
-   tune2fs -c0 -i0 $TOME/tmp/new.img 
-   sudo mount -o rw,loop $TOME/tmp/new.img $New
+   Size=$(wc -c < $TOME/Super/$Ten.img)
+   SizeM=$(du -m $TOME/Super/$Ten.img | awk '{print int($1+200)}')M
+   [[ -n "$(ls $Tam)" ]] && sudo umount -l $Tam $New
+   dd if=/dev/zero of=$TOME/tmp/$Ten.img bs=3k count=1048576 
+   mkfs.ext4 $TOME/tmp/$Ten.img 
+   tune2fs -c0 -i0 $TOME/tmp/$Ten.img 
+   sudo mount -o rw,loop $TOME/tmp/$Ten.img $New
    sudo mount -o ro,loop $TOME/Super/$Ten.img $Tam
-   ls $Tam
    cd $New
    echo "Chép"
    Cheptaptin 
@@ -261,18 +261,9 @@ Thaydoi() {
    Phanquyen
    sudo sync
    ls $New
-} 
-
-Chinhsua() {
-   sudo mount -o ro,loop $TOME/Super/$Ten.img $New
-   cd $New
-   echo "Chép"
-   Cheptaptin 
-   echo "Xoá"
-   Xoataptin 
-   echo "Phân quyền" 
-   Phanquyen
-   sudo sync
+   resize2fs -f $TOME/tmp/$Ten.img $SizeM
+   cd $TOME/Super 
+   sudo umount -l $Tam $New
 } 
 
 cd $TOME/Super 
@@ -296,7 +287,6 @@ for Ten in $Phanvung; do
    Phanquyen
    echo "Tạo $Ten.img" 
    sudo mkfs.erofs -zlz4hc $TOME/tmp/$Ten.img $New
-   [[ -s $TOME/tmp/$Ten.img ]] && sudo mv -f $TOME/tmp/$Ten.img $TOME/Super 
   elif [[ -n "$(hexdump -n 4000 $Ten.img | grep 'ef53')" ]]; then 
    echo "✓ $Ten.img là ext4 raw" 
    Thaydoi
@@ -306,7 +296,6 @@ for Ten in $Phanvung; do
    Thaydoi
   else echo "✓ Không biết định dạng!" 
   fi 
-  cd $TOME/Super 
-  [[ -n "$(ls $New)" ]] && sudo umount -l $Tam $New
+  [[ -s $TOME/tmp/$Ten.img ]] && sudo mv -f $TOME/tmp/$Ten.img $TOME/Super 
  fi 
 done 
