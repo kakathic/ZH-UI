@@ -195,15 +195,9 @@ ThirdAppAssistant
 RideModeAudio
 "
 Xoataptin() { 
-for PV in new new/system new/system/system_ext new/system/product; do 
- if [[ -e $Nha/$PV ]]; then
-  for UD in data-app app priv-app; do 
-   [[ -e $Nha/$PV/$UD ]] && for DS in $Danhsachxoa; do [[ -e $Nha/$PV/$UD/$DS ]] && sudo rm -rf $Nha/$PV/$UD/$DS; done
-  done 
- fi
-done 
+for DS in $Danhsachxoa; do Tim=$(find $New -type d -name "$DS") && [[ -e $Tim ]] && sudo rm -rf $Tim; done
 
-sudo rm -f $New/*recovery* $New/system/*/*auto-install*.json $New/system/media/theme/dynamicicons $New/system/media/theme/miui_mod_icons 2> /dev/null
+sudo rm -f $New/*recovery* $New/system/*/*auto-install*.json $New/system/media/theme/dynamicicons $New/system/media/theme/miui_mod_icons > /dev/null 2>&1 
 }
  
 Phanquyen() {
