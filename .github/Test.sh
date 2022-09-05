@@ -29,6 +29,9 @@ sdat2img | tee 1.txt
 mount --help | tee 1.txt
 } 
 
+magiskboot | tee 1.txt
+magiskboot --help | tee 1.txt
+
 TOME="$GITHUB_WORKSPACE" 
 echo " Thử ngiệm"
 ls /
