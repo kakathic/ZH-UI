@@ -41,7 +41,9 @@ echo " Trích xuất app"
 cd $TOME/Super 
 mkdir -p $TOME/Apk
 
-for Ten in system system_a system_ext system_ext_a; do 
+for Doi in $Phanvung; do [[ -s $TOME/Super/$Doi ]] && mv -f $TOME/Super/$Doi $TOME/Super/${Doi//_a.img/.img}; done
+
+for Ten in system system_ext; do 
  if [[ -s $TOME/Super/$Ten.img ]]; then 
   sudo mkdir -p /mnt/tmp/$Ten 
   if [[ -n "$(hexdump -n 4000 $Ten.img | grep 'e1e2 e0f5')" ]]; then 
