@@ -43,8 +43,9 @@ cd $TOME/Super
 mkdir -p $TOME/Apk
 
 for K in $Boot; do find $TOME/Unzip -type f -name "$K" -exec mv -f $1 $TOME/tmp/${K//_a.img/.img} {} +; done 
-
-for Doi in $Phanvung; do [[ -s $TOME/Super/$Doi.img ]] && mv -f $TOME/Super/$Doi.img $TOME/Super/${Doi//_a/}; done 
+ls $TOME/tmp
+for Doi in $Phanvung; do [[ -s $TOME/Super/$Doi.img ]] && mv -f $TOME/Super/$Doi.img $TOME/Super/$(echo $Doi | sed 's#_a##g').img; done 
+ls $TOME/Super 
 
 for Ten in system system_ext; do 
  if [[ -s $TOME/Super/$Ten.img ]]; then 
