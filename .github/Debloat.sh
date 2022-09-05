@@ -241,6 +241,12 @@ if [[ "$Ten" == "system" ]]; then
   sudo cp -frp $TOME/Mod/MiuiSystemUI.apk $New/priv-app/MiuiSystemUI 2> /dev/null 
   fi
  fi 
+if [[ "$Ten" == "vendor" ]]; then 
+ Fstab=$New/etc/fstab.qcom 
+ sed -i 's/,avb=vbmeta_system//g; s/=\/avb\///g; s/:\/avb\///g; s/,avb_keysq-gsi.avbpubkeyr-gsi.avbpubkeys-gsi.avbpubkey//g' $Fstab
+ sed -i 's/,verifyatboot//g; s/verifyatboot,//g; s/verifyatboot\b//g; s/,verify//g; s/verify,//g; s/verify\b//g; s/,verify\b//g; s/\bverify,//g; s/\bverify\b//g; s/,verify,/,/g; s/,avb_keys//g; s/avb_keys,//g; s/avb_keys\b//g; s/,avb//g; s/avb,//g; s/avb\b//g; s/,avb\b//g; s/\bavb,//g; s/\bavb\b//g; s/,avb,/,/g; s/,fsverity//g; s/fsverity,//g; s/fsverity\b//g' $Fstab
+ sed -i 's/forceencrypt/encryptable/g; s/forcefdeorfbe/encryptable/g; s/fileencryption/encryptable/g' $Fstab
+fi 
 } 
 
 Thaydoi() {
@@ -264,6 +270,53 @@ Thaydoi() {
    resize2fs -f $TOME/tmp/$Ten.img $SizeM
    cd $TOME/Super 
    sudo umount -l $Tam $New
+} 
+
+Bootm() { 
+Chayboot() { 
+for dt in dtb kernel_dtb extra recovery_dtbo; do
+    [[ -f $dt ]] && $magiskboot dtb $dt patch 
+  done
+[[ -e $KI/ramdisk.cpio ]] && $magiskboot cpio ramdisk.cpio patch; 
+  $magiskboot hexpatch kernel \
+  736B69705F696E697472616D667300 \
+  77616E745F696E697472616D667300 
+ $magiskboot hexpatch kernel \ 49010054011440B93FA00F71E9000054010840B93FA00F7189000054001840B91FA00F7188010054 \  A1020054011440B93FA00F7140020054010840B93FA00F71E0010054001840B91FA00F7181010054 
+if [[ -n "$dtbopart" ]]; then
+  if $magiskboot dtb "$dtbopart" patch $KI/dtbo-new.img; then
+    $magiskboot compress "$dtbopart" $KI/stock_dtbo.img.gz
+    cat $KI/dtbo-new.img /dev/zero > $dtbopart
+    rm -f $KI/dtbo-new.img
+  fi  
+fi
+cd "$KI"; 
+$magiskboot repack "$bootf" "$bootn"; 
+} 
+
+KI=$TOME/KI; 
+magiskboot=$TOME/.github/bin/magiskboot
+bootn=$TOME/KI/image-new.img
+mkdir -p $KI
+
+cd $KI 
+cp -af $TOME/tmp/boot*.img $KI/boot.img 2> /dev/null 
+if [[ -e $KI/boot.img ]]; then 
+ bootf=$KI/boot.img; 
+ $magiskboot unpack -h $bootf; 
+ Chayboot 
+ mv -f $bootn $TOME/.github/lib/Flash_2in1/images/boot.img 2> /dev/null  
+fi 
+$magiskboot cleanup; 
+
+cd $KI 
+cp -af $TOME/tmp/vendor_boot*.img $KI/vendor_boot.img 2> /dev/null 
+if [[ -e $KI/vendor_boot.img ]]; then 
+ bootf=$KI/vendor_boot.img; 
+ $magiskboot unpack -h $bootf; 
+ Chayboot 
+ mv -f $bootn $TOME/.github/lib/Flash_2in1/images/vendor_boot.img 2> /dev/null
+fi 
+$magiskboot cleanup; 
 } 
 
 cd $TOME/Super 
@@ -299,3 +352,6 @@ for Ten in $Phanvung; do
   [[ -s $TOME/tmp/$Ten.img ]] && sudo mv -f $TOME/tmp/$Ten.img $TOME/Super 
  fi 
 done 
+
+echo "Chỉnh boot"
+#Bootm
