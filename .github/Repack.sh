@@ -1,3 +1,4 @@
+#chamchamfy
 echo " + Kiểm tra thông tin super..." 
 cd $TOME/Super 
 # Phiên bản rom
