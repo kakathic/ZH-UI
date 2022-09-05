@@ -7,6 +7,8 @@ if [[ -s $TOME/Unzip/payload.bin ]]; then
  python3 $TOME/.github/lib/Libpy/payload_dumper.py $TOME/Unzip/payload.bin --out $TOME/Payload > /dev/null 
  for Ten in $Phanvung; do [[ -f $TOME/Payload/$Ten.img ]] && mv -f $TOME/Payload/$Ten.img $TOME/Super; done 
  [[ -n "$(ls $TOME/Super/*.img)" ]] && echo " + Trích xuất xong!"  
+ mv -f $TOME/Payload/boot*.img $ $TOME/tmp/boot.img 2> /dev/null 
+ mv -f $TOME/Payload/vendor_boot*.img $ $TOME/tmp/vendor_boot.img 2> /dev/null 
 fi 
 
 if [[ -s $TOME/Unzip/system.new.dat.br ]]; then 
@@ -17,24 +19,30 @@ if [[ -s $TOME/Unzip/system.new.dat.br ]]; then
   [[ -s $Ten.new.dat ]] && python3 $TOME/.github/lib/Libpy/sdat2img.py $Ten.transfer.list $Ten.new.dat $TOME/Super/$Ten.img 
  done 
  [[ -n "$(ls $TOME/Super/*.img)" ]] && echo " + Trích xuất xong!" 
+ mv -f $TOME/Unzip/boot*.img $ $TOME/tmp/boot.img 2> /dev/null 
+ mv -f $TOME/firmware-update/vendor_boot*.img $ $TOME/tmp/vendor_boot.img 2> /dev/null 
 fi 
 
-if [[ -s $TOME/Unzip/imgages/super.img ]]; then 
+if [[ -s $TOME/Unzip/images/super.img ]]; then 
  echo " + Trích xuất super.img" 
- mv -f $TOME/Unzip/imgages/super.img $TOME/Unzip; 
+ mv -f $TOME/Unzip/images/super.img $TOME/Unzip; 
  cd $TOME/Unzip 
  [[ -n "$(echo $(hexdump -n 4 super.img) | grep 'ff3a')" ]] && mv -f super.img supers.img && simg2img supers.img super.img 
  python3 $TOME/.github/lib/Libpy/lpunpack.py super.img $TOME/Super > /dev/null 
  [[ -n "$(ls $TOME/Super/*.img)" ]] && echo " + Trích xuất xong!" 
+ mv -f $TOME/Unzip/images/boot*.img $ $TOME/tmp/boot.img 2> /dev/null 
+ mv -f $TOME/Unzip/images/vendor_boot*.img $ $TOME/tmp/vendor_boot.img 2> /dev/null 
 fi 
 
-if [[ -s $TOME/Unzip/imgages/super.img.zst ]]; then 
+if [[ -s $TOME/Unzip/images/super.img.zst ]]; then 
  echo " + Trích xuất super.img.zst" 
- mv -f $TOME/Unzip/imgages/super.img.zst $TOME/Unzip; 
+ mv -f $TOME/Unzip/images/super.img.zst $TOME/Unzip; 
  cd $TOME/Unzip 
  zstd -d super.img.zst -o $TOME/Unzip >/dev/null
  python3 $TOME/.github/lib/Libpy/lpunpack.py super.img $TOME/Super > /dev/null 
  [[ -n "$(ls $TOME/Super/*.img)" ]] && echo " + Trích xuất xong!" 
+ mv -f $TOME/Unzip/images/boot*.img $ $TOME/tmp/boot.img 2> /dev/null 
+ mv -f $TOME/Unzip/images/vendor_boot*.img $ $TOME/tmp/vendor_boot.img 2> /dev/null 
 fi 
 
 echo " Trích xuất app" 
