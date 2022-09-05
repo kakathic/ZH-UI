@@ -251,7 +251,7 @@ fi
 
 Thaydoi() {
    Size=$(wc -c < $TOME/Super/$Ten.img)
-   SizeM=$(du -m $TOME/Super/$Ten.img | awk '{print int($1+200)}')M
+   SizeM=$(du -m $TOME/Super/$Ten.img | awk '{print int($1+500)}')M
    [[ -n "$(ls $Tam)" ]] && sudo umount -l $Tam $New
    dd if=/dev/zero of=$TOME/tmp/$Ten.img bs=3k count=1048576 
    mkfs.ext4 $TOME/tmp/$Ten.img 
