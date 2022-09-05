@@ -1,55 +1,50 @@
 #chamchamfy
 Phanvung="system system_a system_b vendor vendor_a vendor_b product product_a product_b system_ext system_ext_a system_ext_b odm odm_a odm_b"; 
 Ungdung="ThemeManager.apk MIUIThemeManager.apk miui.apk miuisystem.apk framework.jar framework-ext-res.apk framework-res.apk miui-services.jar services.jar MiuiSystemUI.apk Settings.apk MiuiPackageInstaller.apk MIUIPackageInstaller.apk"; 
+Boot="boot.img boot_a.img vendor_boot.img vendor_boot_a.img"; 
 
 if [[ -s $TOME/Unzip/payload.bin ]]; then 
- echo " + Trích xuất payload.bin" 
+ echo "- Trích xuất payload.bin" 
  python3 $TOME/.github/lib/Libpy/payload_dumper.py $TOME/Unzip/payload.bin --out $TOME/Payload > /dev/null 
  for Ten in $Phanvung; do [[ -f $TOME/Payload/$Ten.img ]] && mv -f $TOME/Payload/$Ten.img $TOME/Super; done 
- [[ -n "$(ls $TOME/Super/*.img)" ]] && echo " + Trích xuất xong!"  
- mv -f $TOME/Payload/boot*.img $ $TOME/tmp/boot.img 2> /dev/null 
- mv -f $TOME/Payload/vendor_boot*.img $ $TOME/tmp/vendor_boot.img 2> /dev/null 
+ [[ -n "$(ls $TOME/Super/*.img)" ]] && echo "- Trích xuất xong!"  
 fi 
 
 if [[ -s $TOME/Unzip/system.new.dat.br ]]; then 
- echo " + Trích xuất new.dat.br"
+ echo "- Trích xuất new.dat.br"
  cd $TOME/Unzip 
  for Ten in $Phanvung; do 
   [[ -s $Ten.new.dat.br ]] && brotli -df $Ten.new.dat.br
   [[ -s $Ten.new.dat ]] && python3 $TOME/.github/lib/Libpy/sdat2img.py $Ten.transfer.list $Ten.new.dat $TOME/Super/$Ten.img 
  done 
- [[ -n "$(ls $TOME/Super/*.img)" ]] && echo " + Trích xuất xong!" 
- mv -f $TOME/Unzip/boot*.img $ $TOME/tmp/boot.img 2> /dev/null 
- mv -f $TOME/firmware-update/vendor_boot*.img $ $TOME/tmp/vendor_boot.img 2> /dev/null 
+ [[ -n "$(ls $TOME/Super/*.img)" ]] && echo "- Trích xuất xong!" 
 fi 
 
 if [[ -s $TOME/Unzip/images/super.img ]]; then 
- echo " + Trích xuất super.img" 
+ echo "- Trích xuất super.img" 
  mv -f $TOME/Unzip/images/super.img $TOME/Unzip; 
  cd $TOME/Unzip 
  [[ -n "$(echo $(hexdump -n 4 super.img) | grep 'ff3a')" ]] && mv -f super.img supers.img && simg2img supers.img super.img 
  python3 $TOME/.github/lib/Libpy/lpunpack.py super.img $TOME/Super > /dev/null 
- [[ -n "$(ls $TOME/Super/*.img)" ]] && echo " + Trích xuất xong!" 
- mv -f $TOME/Unzip/images/boot*.img $ $TOME/tmp/boot.img 2> /dev/null 
- mv -f $TOME/Unzip/images/vendor_boot*.img $ $TOME/tmp/vendor_boot.img 2> /dev/null 
+ [[ -n "$(ls $TOME/Super/*.img)" ]] && echo "- Trích xuất xong!" 
 fi 
 
 if [[ -s $TOME/Unzip/images/super.img.zst ]]; then 
- echo " + Trích xuất super.img.zst" 
+ echo "- Trích xuất super.img.zst" 
  mv -f $TOME/Unzip/images/super.img.zst $TOME/Unzip; 
  cd $TOME/Unzip 
  zstd -d super.img.zst -o $TOME/Unzip >/dev/null
  python3 $TOME/.github/lib/Libpy/lpunpack.py super.img $TOME/Super > /dev/null 
- [[ -n "$(ls $TOME/Super/*.img)" ]] && echo " + Trích xuất xong!" 
- mv -f $TOME/Unzip/images/boot*.img $ $TOME/tmp/boot.img 2> /dev/null 
- mv -f $TOME/Unzip/images/vendor_boot*.img $ $TOME/tmp/vendor_boot.img 2> /dev/null 
+ [[ -n "$(ls $TOME/Super/*.img)" ]] && echo "- Trích xuất xong!" 
 fi 
 
-echo " Trích xuất app" 
+echo "- Trích xuất app" 
 cd $TOME/Super 
 mkdir -p $TOME/Apk
 
-for Doi in $Phanvung; do [[ -s $TOME/Super/$Doi ]] && mv -f $TOME/Super/$Doi $TOME/Super/${Doi//_a.img/.img}; done
+for K in $Boot; do find $TOME/Unzip -type f -name "$K" -exec mv -f $1 $TOME/tmp/${K//_a.img/.img} {} +; done 
+
+for Doi in $Phanvung; do [[ -s $TOME/Super/$Doi.img ]] && mv -f $TOME/Super/$Doi.img $TOME/Super/${Doi//_a/}; done 
 
 for Ten in system system_ext; do 
  if [[ -s $TOME/Super/$Ten.img ]]; then 
@@ -68,4 +63,4 @@ for Ten in system system_ext; do
   [[ -n "$(ls /mnt/tmp/$Ten)" ]] && for Ud in $Ungdung; do Tim=$(sudo find /mnt/tmp/$Ten -type f -name "$Ud") && [[ -s $Tim ]] && sudo cp -af $Tim $TOME/Apk; done
  fi
 done 
-[[ -z "$(ls $TOME/Apk)" ]] && echo " Trích app lỗi" || ls $TOME/Apk 
+[[ -z "$(ls $TOME/Apk)" ]] && echo "- Trích app lỗi" || ls $TOME/Apk 
