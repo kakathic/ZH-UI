@@ -238,9 +238,9 @@ if [[ "$Ten" == "system" ]]; then
  fi 
 if [[ "$Ten" == "vendor" ]]; then 
  Fstab=$New/etc/fstab.qcom 
- sed -i 's/,avb=vbmeta_system//g; s/=\/avb\///g; s/:\/avb\///g; s/,avb_keysq-gsi.avbpubkeyr-gsi.avbpubkeys-gsi.avbpubkey//g' $Fstab
- sed -i 's/,verifyatboot//g; s/verifyatboot,//g; s/verifyatboot\b//g; s/,verify//g; s/verify,//g; s/verify\b//g; s/,verify\b//g; s/\bverify,//g; s/\bverify\b//g; s/,verify,/,/g; s/,avb_keys//g; s/avb_keys,//g; s/avb_keys\b//g; s/,avb//g; s/avb,//g; s/avb\b//g; s/,avb\b//g; s/\bavb,//g; s/\bavb\b//g; s/,avb,/,/g; s/,fsverity//g; s/fsverity,//g; s/fsverity\b//g' $Fstab
- sed -i 's/forceencrypt/encryptable/g; s/forcefdeorfbe/encryptable/g; s/fileencryption/encryptable/g' $Fstab
+ sudo sed -i 's/,avb=vbmeta_system//g; s/=\/avb\///g; s/:\/avb\///g; s/,avb_keysq-gsi.avbpubkeyr-gsi.avbpubkeys-gsi.avbpubkey//g' $Fstab
+ sudo sed -i 's/,verifyatboot//g; s/verifyatboot,//g; s/verifyatboot\b//g; s/,verify//g; s/verify,//g; s/verify\b//g; s/,verify\b//g; s/\bverify,//g; s/\bverify\b//g; s/,verify,/,/g; s/,avb_keys//g; s/avb_keys,//g; s/avb_keys\b//g; s/,avb//g; s/avb,//g; s/avb\b//g; s/,avb\b//g; s/\bavb,//g; s/\bavb\b//g; s/,avb,/,/g; s/,fsverity//g; s/fsverity,//g; s/fsverity\b//g' $Fstab
+ sudo sed -i 's/forceencrypt/encryptable/g; s/forcefdeorfbe/encryptable/g; s/fileencryption/encryptable/g' $Fstab
 fi 
 } 
 
