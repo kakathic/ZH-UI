@@ -200,17 +200,18 @@ for TT in recovery auto-install miui_mod_icons dynamicicons; do T=$(sudo find $N
 }
  
 Phanquyen() {
+cd $New 
 if [[ -n "$(ls $New 2> /dev/null)" ]]; then 
  if [[ "$Ten" == "system" ]]; then 
   if [[ -e $(pwd)/system/media ]]; then 
-   sudo find $(pwd)/system/media -type f -exec sudo chmod 644 "$1" {} +;
-   sudo find $(pwd)/system/media -type d -exec sudo chmod 755 "$1" {} +;
+   sudo find $(pwd)/system/media -type f -exec sudo chmod 644 {} +;
+   sudo find $(pwd)/system/media -type d -exec sudo chmod 755 {} +;
   fi 
  fi 
- sudo find $(pwd) -type d -name "*app" -exec sudo chmod 755 "$1" {} +;
- sudo find $(pwd) -type f -name "*.apk" -exec sudo chmod 644 "$1" {} +; 
- sudo find $(pwd) -type f -name "*.jar" -exec sudo chmod 644 "$1" {} +;
- sudo find $(pwd) -type f -name "*.prop" -exec sudo chmod 600 "$1" {} +;
+ sudo find $(pwd) -type d -name "*app*" -exec sudo chmod 755 {} +;
+ sudo find $(pwd) -type f -name "*.apk" -exec sudo chmod 644 {} +; 
+ sudo find $(pwd) -type f -name "*.jar" -exec sudo chmod 644 {} +;
+ sudo find $(pwd) -type f -name "*.prop" -exec sudo chmod 600 {} +;
 fi 
 }
 
