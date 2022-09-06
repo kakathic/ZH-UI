@@ -195,9 +195,8 @@ ThirdAppAssistant
 RideModeAudio
 "
 Xoataptin() { 
-for DS in $Danhsachxoa; do Tim=$(sudo find $New -type d -name "$DS") && [[ -e $Tim ]] && sudo rm -rf $Tim; done
-
-sudo rm -f $New/*recovery* $New/system/*/*auto-install*.json $New/system/media/theme/dynamicicons $New/system/media/theme/miui_mod_icons > /dev/null 2>&1 
+for DS in $Danhsachxoa; do Tim=$(sudo find $New -type d -name "$DS") && [[ -e $Tim ]] && sudo rm -rf $Tim; done 
+for TT in recovery auto-install miui_mod_icons dynamicicons; do T=$(sudo find $New -name "*${TT}*") && [[ -e $T ]] && sudo rm -rf $T; done 
 }
  
 Phanquyen() {
