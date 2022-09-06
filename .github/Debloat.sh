@@ -241,8 +241,8 @@ if [[ "$Ten" == "vendor" ]]; then
  Mfs=',avb ,avb_keys ,quota ,inlinecrypt ,wrappedkey ,verifyatboot ,fsverify ,verify verify,'
  Mfe='forceencrypt= forcefdeorfbe= fileencryption= encryptable= metadata_encryption= keydirectory= avb= avb_keys='
 
- for i in $Mfs; do [[ -n "$(sudo grep "$i" $Fstab)" ]] && sudo sed -i "s|$i||g" $Fstab done 
- for i in $Mfe; do [[ -n "$(sudo grep "$i" $Fstab)" ]] && sudo sed -i "s|$i|=|g" $Fstab done 
+ for i in $Mfs; do [[ -n "$(sudo grep "$i" $Fstab)" ]] && sudo sed -i "s|$i||g" $Fstab; done 
+ for i in $Mfe; do [[ -n "$(sudo grep "$i" $Fstab)" ]] && sudo sed -i "s|$i|=|g" $Fstab; done 
 fi 
 } 
 
