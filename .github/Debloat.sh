@@ -237,11 +237,12 @@ if [[ "$Ten" == "system" ]]; then
   fi
  fi 
 if [[ "$Ten" == "vendor" ]]; then 
- Mfs=',avb=vbmeta_system =/avb/ :avb ,avb_keysq-gsi.avbpubkeyr-gsi.avbpubkeys-gsi.avbpubkey verifyatboot ,verifyatboot verifyatboot, verify ,verify verify, fsverity ,fsverity fsverity,'
- Mfe='forceencrypt forcefdeorfbe fileencryption'
+ Fstab=$New/etc/fstab.qcom 
+ Mfs=',avb ,avb_keys ,quota ,inlinecrypt ,wrappedkey ,verifyatboot ,fsverify ,verify verify,'
+ Mfe='forceencrypt= forcefdeorfbe= fileencryption= encryptable= metadata_encryption= keydirectory= avb= avb_keys='
 
- for i in $Mfs; do sudo sed -i "s|$i||g" $New/etc/fstab.qcom done 
- for n in $Mfe; do sudo sed -i "s|$n|encryptable|g" $New/etc/fstab.qcom done 
+ for i in $Mfs; do [[ -n "$(sudo grep "$i" $Fstab)" ]] && sudo sed -i "s|$i||g" $Fstab done 
+ for i in $Mfe; do [[ -n "$(sudo grep "$i" $Fstab)" ]] && sudo sed -i "s|$i|=|g" $Fstab done 
 fi 
 } 
 
