@@ -28,11 +28,11 @@ img2simg | tee 1.txt
 sdat2img | tee 1.txt
 mount --help | tee 1.txt
 } 
-
-magiskboot | tee 1.txt
-magiskboot --help | tee 1.txt
+magiskboot | tee 1.txt 
 
 TOME="$GITHUB_WORKSPACE" 
+
+Taotaptin() { 
 echo " Thử ngiệm"
 ls /
 sudo mkdir -p /mnt/s
@@ -53,3 +53,4 @@ sudo umount /mnt/s
 echo "Kiểm tra thư mục"
 ls /mnt/s
 echo " Kết thúc"
+} 
