@@ -27,8 +27,8 @@ rimg2sdat | tee 1.txt
 img2simg | tee 1.txt
 sdat2img | tee 1.txt
 mount --help | tee 1.txt
-} 
 magiskboot 2>&1 | tee 1.txt 
+}
 
 TOME="$GITHUB_WORKSPACE" 
 
