@@ -59,13 +59,13 @@ fi
 echo
 
 #. $TOME/.github/Unpack.sh
-exec $TOME/.github/bin/Unpack
+exec $TOME/.github/bin/Unpack; 
 . $TOME/.github/Mod.sh
 #exec $TOME/.github/bin/Mod
 #. $TOME/.github/Debloat.sh
-exec $TOME/.github/bin/Debloat
+exec $TOME/.github/bin/Debloat; 
 #. $TOME/.github/Repack.sh
-exec $TOME/.github/bin/Repack
+exec $TOME/.github/bin/Repack; 
 
 cd $TOME/.github/lib/Flash_2in1
 zip -qr $TOME/$Tenrom.zip *
