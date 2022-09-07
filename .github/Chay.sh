@@ -68,6 +68,6 @@ exec $TOME/.github/bin/Unpack
 exec $TOME/.github/bin/Repack
 
 cd $TOME/.github/lib/Flash_2in1
-zip -qr $TOME/rom.zip *
+zip -qr $TOME/$Tenrom.zip *
 
 echo "- Kết thúc"
