@@ -1,195 +1,8 @@
-#chamchamfy
+#!/bin/bash
+TOME="$GITHUB_WORKSPACE"
 Phanvung="system vendor product system_ext"; 
 Nha=/mnt
-Danhsachxoa="
-#AndroidAutoStub
-#BTProductionLineTool
-#BlockedNumberProvider
-#BookmarkProvider
-#BuiltInPrintService
-#Calculator
-#Calendar
-#CameraTools
-#CatchLog
-#Cit
-#CleanMaster 
-#CompanionDeviceManager
-#DeviceInfo
-#DynamicSystemInstallationService
-#EmergencyInfo
-#FM
-#GoogleTTS
-#Health 
-#LiveWallpapersPicker
-#MIPlayClient
-#MIShare
-#MIUIAod
-#MIUICalculator
-#MIUICalendar
-#MIUICleanMaster 
-#MIUIDeskClockS
-#MIUIMusic
-#MIUINotes
-#MIUIPersonalAssistant
-#MIUIScreenRecorderLite
-#MIUISoundRecorderTargetSdk30
-#MIUISuperMarket
-#MIUITouchAssistant
-#MIUIYellowPage
-#MiLink
-#MiRadio 
-#MiuiAod
-#MiuiAudioMonitor
-#MiuiBiometric
-#MiuiBugReport
-#MiuiCamera
-#MiuiPersonalAssistant
-#MiuiPlayClient
-#MiuiSuperMarket
-#MiuiWeather 
-#MiuiYellowPage
-#Music 
-#NQNfcNci
-#Notes
-#PersonalAssistant
-#QColor
-#QdcmFF
-#SimContact 
-#Updater
-#Weather 
-#WebViewGoogle
-#com.xiaomi.macro
-AiAsstVision
-AnalyticsCore
-AutoRegistration
-BaiduIME
-BasicDreams
-Browser 
-Chrome
-CloudPrint2 
-CtsShimPrebuilt
-DMRegService
-DiracAudioControlService
-Email 
-FusedLocationProvider
-GameCenter
-Gmail2
-GoogleCalendarSyncAdapter
-GoogleFeedback 
-GoogleLocationHistory 
-GoogleOneTimeInitializer 
-HybridAccessory
-HybridPlatform
-Joyose
-KSICibaEngine
-Lens 
-MIFinance
-MIService
-MIUIBrowser
-MIUICompass
-MIUIDriveMode
-MIUIDuokanReader
-MIUIEmail 
-MIUIGameCenter
-MIUIHuanji
-MIUINewHome
-MIUIQuickSearchBox
-MIUIScanner
-MIUIVideo
-MIUIVipAccount
-MIUIVipService
-MIUIVirtualSim
-MIUIWallpaper_SnowMountain 
-MIUIXiaoAiSpeechEngine-matisse
-MIUIYoupin
-MIUIgreenguard
-MIpay
-MSA
-ManagedProvisioning
-Maps
-MarkupGoogle 
-MiBrowser
-MiBrowserGlobal 
-MiCreditInStub
-MiGalleryLockscreen
-MiGameCenterSDKService
-MiGameService
-MiLiveAssistant 
-MiMobileNoti 
-MiMover
-MiService
-MiShop
-Mirror
-MiuiCompass
-MiuiContentExtension
-MiuiDaemon
-MiuiPrintSpoolerBeta
-MiuiScanner
-MiuiVideoGlobal 
-MiuiVipService
-Miuigreenguard
-ModemTestBox
-NewHome
-NextPay
-ONS
-PacProcessor
-PaymentService
-PhotoTable
-PlatformNetworkPermissionConfig
-PlayAutoInstallStubApp
-PrintRecommendationService
-PrintSpooler
-Protips
-ProxyHandler
-QuickSearchBox
-RideModeAudio
-SecureElement
-SimAppDialog
-SmartHome
-SmartTravel
-SogouInput
-SoundPickerGoogle 
-Stk
-SystemAppUpdater
-SystemHelper
-TSMClient
-Tag
-ThirdAppAssistant
-Traceur
-TranslationService
-UPTsmService
-UserDictionaryProvider
-Velvet 
-VipAccount 
-VirtualSim 
-VoiceAssist
-VoiceTrigger
-VsimCore
-WAPPushManager
-WMService
-WallpaperBackup
-WfdService
-XMCloudEngine
-XMPass 
-XiaoAiSpeechEngine
-YouDaoEngine 
-YouTube
-aiasst_service
-com.iflytek.inputmethod.miui
-com.miui.qr
-dpmserviceapp
-facebook-installer
-facebook-services
-greenguard 
-mab 
-mi_connect_service
-seccamservice
-slaservice 
-talkback
-tv.danmaku.bili_26
-wps-lite 
-xdivert
-"
+Danhsachxoa=$(grep -m1 "Danhsach=" $TOME/Zom_custom.md | awk -F= '{print $2}')
 Xoataptin() { 
 for DS in $Danhsachxoa; do Tim=$(sudo find $New -type d -name "$DS") && [[ -e $Tim ]] && sudo rm -rf $Tim; done 
 for TT in recovery auto-install miui_mod_icons dynamicicons; do T=$(sudo find $New -name "*${TT}*") && [[ -e $T ]] && sudo rm -rf $T; done 
@@ -234,11 +47,13 @@ if [[ "$Ten" == "system" ]]; then
  fi 
 if [[ "$Ten" == "vendor" ]]; then 
  Fstab=$New/etc/fstab.qcom 
- Mfs=",avb ,avb_keys ,quota ,inlinecrypt ,wrappedkey ,verifyatboot ,fsverify ,verify verify,"
- Mfe="forceencrypt= forcefdeorfbe= fileencryption= encryptable= metadata_encryption= keydirectory= avb= avb_keys="
-
- for i in $Mfs; do [[ -n "$(sudo grep "$i" $Fstab)" ]] && sudo sed -i "s|$i||g" $Fstab; done 
- for n in $Mfe; do [[ -n "$(sudo grep "$n" $Fstab)" ]] && sudo sed -i "s|$n|=|g" $Fstab; done 
+ if [[ -f $Fstab ]]; then 
+  Pfs=',avb ,avb_keys ,quota ,inlinecrypt ,wrappedkey ,verifyatboot ,fsverify ,verify'; 
+  Pfe='forceencrypt= forcefdeorfbe= fileencryption= encryptable= metadata_encryption= keydirectory= avb= avb_keys='; 
+  for i in $Pfs; do [[ -n "$(sudo grep "$i" $Fstab)" ]] && sudo sed -i "s|$i||g" $Fstab; done 
+  for k in $Pfe; do tim=$(sudo grep -m1 "$k" $Fstab) && [[ -n "$tim" ]] && doi=${tim#*"$k"} && doi=${k}${doi%%,*} && sudo sed -i "s|,$doi||g" $Fstab; done
+  for k in $Pfe; do tim=$(sudo grep -m2 "$k" $Fstab) && [[ -n "$tim" ]] && doi=${tim#*"$k"} && doi=${k}${doi%%,*} && sudo sed -i "s|,$doi||g" $Fstab; done  
+ fi 
 fi 
 } 
 
@@ -348,4 +163,4 @@ for Ten in $Phanvung; do
 done 
 
 echo "- Chỉnh boot"
-#Bootm
+Bootm
