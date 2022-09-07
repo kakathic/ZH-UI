@@ -61,7 +61,9 @@ echo
 #. $TOME/.github/Unpack.sh
 exec $TOME/.github/bin/Unpack
 . $TOME/.github/Mod.sh
+#exec $TOME/.github/bin/Mod
 . $TOME/.github/Debloat.sh
+#exec $TOME/.github/bin/Debloat
 #. $TOME/.github/Repack.sh
 exec $TOME/.github/bin/Repack
 
