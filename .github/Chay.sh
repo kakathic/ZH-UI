@@ -15,6 +15,7 @@ protobuf<=3.20.1" > requirements.txt
 pip3 install -r requirements.txt > /dev/null
 
 TOME="$GITHUB_WORKSPACE"
+export TOME
 Danhsach="tmp
 Unpack
 Repapk
