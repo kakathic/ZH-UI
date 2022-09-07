@@ -58,10 +58,12 @@ fi
 
 echo
 
-. $TOME/.github/Unpack.sh
+#. $TOME/.github/Unpack.sh
+$TOME/.github/bin/Unpack
 . $TOME/.github/Mod.sh
 . $TOME/.github/Debloat.sh
-. $TOME/.github/Repack.sh
+#. $TOME/.github/Repack.sh
+$TOME/.github/bin/Repack
 
 cd $TOME/.github/lib/Flash_2in1
 zip -qr $TOME/rom.zip *
