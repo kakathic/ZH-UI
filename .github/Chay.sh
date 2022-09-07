@@ -59,17 +59,16 @@ fi
 
 echo
 
-#. $TOME/.github/Unpack.sh
+#bash $TOME/.github/Unpack.sh
 Unpack; 
 bash $TOME/.github/Mod.sh
-#. $TOME/.github/Mod.sh
 #Mod; 
-#. $TOME/.github/Debloat.sh
+#bash $TOME/.github/Debloat.sh
 Debloat; 
-#. $TOME/.github/Repack.sh
+#bash $TOME/.github/Repack.sh
 Repack; 
 
 cd $TOME/.github/lib/Flash_2in1
-zip -qr $TOME/$Tenrom.zip *
+zip -qr $TOME/rom.zip *
 
 echo "- Kết thúc"
