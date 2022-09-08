@@ -24,7 +24,7 @@ Payload
 Super
 Apk
 Mod
-"
+Up"
 for Tao in $Danhsach; do
 mkdir -p $Tao
 done
@@ -69,6 +69,6 @@ Debloat;
 Repack; 
 
 cd $TOME/.github/lib/Flash_2in1
-zip -qr $TOME/rom.zip *
+zip -qr $TOME/Up/ZH-UI_$Tenrom *
 
 echo "- Kết thúc"
