@@ -31,7 +31,8 @@ Taive() { curl -s -L "$1" -o "$2"; }
 Xem() { curl -s -L -G "$@"; }
 Laylink() { grep -m1 "$1" $TOME/Zom_custom.md | cut -d = -f2; } 
 
-Linkrom=$(Laylink "https://") 
+#Linkrom=$(Laylink "https://") 
+Linkrom=$URL
 Tenrom=${Linkrom##*/} && Dinhdang=${Linkrom##*.}; 
 echo "- Link Rom: $Linkrom"
 echo "
