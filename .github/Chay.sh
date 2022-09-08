@@ -32,16 +32,15 @@ Xem() { curl -s -L -G "$@"; }
 Laylink() { grep -m1 "$1" $TOME/Zom_custom.md | cut -d = -f2; } 
 
 # Linkrom=$(Laylink "https://") 
-Linkrom="$URL"
-Tenrom=${Linkrom##*/} && Dinhdang=${Linkrom##*.}; 
-echo "- Link Rom: $Linkrom"
+Tenrom=${URL##*/} && Dinhdang=${URL##*.}; 
+echo "- Link Rom: $URL"
 echo "
-Tên rom: $Tenrom 
-Định dạng: $Dinhdang
+- Tên rom: $Tenrom 
+- Định dạng: $Dinhdang
 "
 
 echo "- Tải về" 
-Taive "$Linkrom" "$TOME/$Tenrom" 
+Taive "$URL" "$TOME/$Tenrom" 
 
 echo "- Giải nén rom" 
 if [[ -s $TOME/$Tenrom ]]; then 
