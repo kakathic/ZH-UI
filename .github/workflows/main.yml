@@ -3,11 +3,11 @@ on:
   workflow_dispatch:
     inputs:
       URL:
-        description: 'Hãy điền đường dẫn url của link rom để tải xuống.'
+        description: 'Hãy điền đường dẫn url của link rom để tải xuống'
         required: true
         default: 'https://bigota.d.miui.com/V13.0.7.0.SKHCNXM/miui_ALIOTH_V13.0.7.0.SKHCNXM_98b397a7dc_12.0.zip'
       SIZE:
-        description: 'Kích cỡ phân vùng super.'
+        description: 'Kích cỡ phân vùng super'
         required: true
         default: '8.5'
 jobs:
@@ -25,7 +25,7 @@ jobs:
           chmod -R 777 .github/bin/*
           export PATH="$GITHUB_WORKSPACE/.github/bin:$PATH"
           chmod -R 777 .github/*.sh
-          . .github/Chay.sh
+          bash .github/Chay.sh
       - name: Upload rom
         uses: softprops/action-gh-release@v1
         with:
