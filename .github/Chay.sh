@@ -31,8 +31,8 @@ Taive() { curl -s -L "$1" -o "$2"; }
 Xem() { curl -s -L -G "$@"; }
 Laylink() { grep -m1 "$1" $TOME/Zom_custom.md | cut -d = -f2; } 
 
-#Linkrom=$(Laylink "https://") 
-Linkrom=$URL
+# Linkrom=$(Laylink "https://") 
+Linkrom="$URL"
 Tenrom=${Linkrom##*/} && Dinhdang=${Linkrom##*.}; 
 echo "- Link Rom: $Linkrom"
 echo "
@@ -42,7 +42,6 @@ Tên rom: $Tenrom
 
 echo "- Tải về" 
 Taive "$Linkrom" "$TOME/$Tenrom" 
-ls "$TOME/$Tenrom"
 
 echo "- Giải nén rom" 
 if [[ -s $TOME/$Tenrom ]]; then 
