@@ -6,9 +6,12 @@ jobs:
     name: 'Xem quá trình'
     runs-on: ubuntu-22.04
     steps:
-      - name: 'Kiểm tra thông tin xuất ra'
+      - name: Checkout
         uses: actions/checkout@v3
       - name: 'Xem thông báo'
+        env:
+          URL: ${{ inputs.URL }}
+          SIZE: ${{ inputs.SIZE }}
         run: |
           chmod -R 777 .github/bin/*
           export PATH="$GITHUB_WORKSPACE/.github/bin:$PATH"
@@ -18,9 +21,9 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ github.token }}
-          name: Up
+          name: Download rom
           tag_name: Up
-          files: rom.zip
+          files: Up/*
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
         with:
