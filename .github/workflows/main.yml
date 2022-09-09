@@ -26,7 +26,7 @@ jobs:
           export PATH="$GITHUB_WORKSPACE/.github/bin:$PATH"
           chmod -R 777 .github/*.sh >/dev/null
           bash .github/Chay.sh
-      - uses: actions/download-artifact@v3
+      - uses: actions/upload-artifact@v3
         with:
           name: 'Zom'
           path: Up/*
