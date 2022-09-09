@@ -32,17 +32,20 @@ done
 if [ "$NNTV" == "Viet_Nam" ];then
 Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TT.Zip" "$TOME/VH.zip"
 7z x -tzip -y "$TOME/TT.Zip" -p2 -o$TOME/VH >&2
-[ -e /mnt/tmp/product/overlay ] && TMVH=/mnt/tmp/product/overlay || TMVH=/mnt/tmp/vendor/overlay
+[ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
+mkdir -p $TMVH
+mkdir -p $TOME/Mod/system/media/theme/default
 sudo cp -rf $TOME/VH/apk/* $TMVH
-sudo cp -rf $TOME/VH/framework-miui-res /mnt/tmp/system/media/theme/default
+sudo cp -rf $TOME/VH/framework-miui-res $TOME/Mod/system/media/theme/default
 if [ "$Licham" == 0 ];then
 sudo cp -rf $TOME/VH/notamlich/*.apk $TMVH
-sudo cp -rf $TOME/VH/notamlich/framework-miui-res /mnt/tmp/system/media/theme/default
+sudo cp -rf $TOME/VH/notamlich/framework-miui-res $TOME/Mod/system/media/theme/default
 fi
 else
 Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TG.Zip" "$TOME/TG.zip"
 7z x -tzip -y "$TOME/TG.Zip" -p2 -o$TOME/VH >&2
-[ -e /mnt/tmp/product/overlay ] && TMVH=/mnt/tmp/product/overlay || TMVH=/mnt/tmp/vendor/overlay
+[ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
+mkdir -p $TMVH
 sudo cp -rf $TOME/VH/apk/* $TMVH
 fi
 
