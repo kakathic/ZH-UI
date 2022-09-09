@@ -29,7 +29,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: 'Zom'
-          path: Up/*
+          path: .github/lib/Flash_2in1/*
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
         with:
