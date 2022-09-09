@@ -1,3 +1,4 @@
+#kakathic & chamchamfy
 echo "▼ Tên máy chủ"
 uname -a
 echo ::set-output name=uname::$(uname -a)
@@ -29,10 +30,8 @@ done
 
 Taive() { curl -s -L "$1" -o "$2"; }
 Xem() { curl -s -L -G "$@"; }
-Laylink() { grep -m1 "$1" $TOME/Zom_custom.md | cut -d = -f2; } 
 
-# Linkrom=$(Laylink "https://") 
-Tenrom=${URL##*/} && Dinhdang=${URL##*.}; 
+Tenrom=${URL##*/} && Tenr=${Tenrom%.*} && Dinhdang=${URL##*.}; 
 echo "- Link Rom: $URL"
 echo "
 - Tên rom: $Tenrom 
@@ -63,6 +62,6 @@ Debloat;
 Repack; 
 
 cd $TOME/.github/lib/Flash_2in1
-zip -r $TOME/Up/ZH-UI_$Tenrom *
+zip -r $TOME/Up/ZH-UI_$Tenr.zip *
 
 echo "- Kết thúc"
