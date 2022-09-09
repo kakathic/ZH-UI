@@ -1,5 +1,5 @@
-#!/bin/bash
 #kakathic
+
 TOME="$GITHUB_WORKSPACE"
 # Thư mục chứa tập tin: $TOME/Apk
 [[ -z "$(ls $TOME/Apk)" ]] && echo "- Không có tập tin nào!"  
@@ -26,8 +26,12 @@ sed -i -e "/^$1/,/$2/c $(echo "$3" | sed -z 's|\n|\\n|g')" "$Vka"
 done
 }
 
-Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TT.Zip" "$TOME/VH.zip"
+# Cài ngôn ngữ
 
+Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TT.Zip" "$TOME/VH.zip"
+unzip -qo $TOME/VH.zip -d $TOME/VH
+[ -e /mnt/tmp/product/overlay ] && TMVH=/mnt/tmp/product/overlay || TMVH=/mnt/tmp/vendor/overlay
+sudo cp -rf $TOME/VH/apk/* $TMVH
 
 
 
