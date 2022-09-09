@@ -119,7 +119,7 @@ MiuiContentExtension
 MiuiDaemon
 MiuiPrintSpoolerBeta
 MiuiScanner
-MiuiSuperMarket
+#MiuiSuperMarket
 MiuiVideoGlobal 
 MiuiVipService
 Miuigreenguard
