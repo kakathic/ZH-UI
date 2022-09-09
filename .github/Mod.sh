@@ -1,6 +1,8 @@
 #kakathic
 
 TOME="$GITHUB_WORKSPACE"
+bash $TOME/Option.md
+
 # Thư mục chứa tập tin: $TOME/Apk
 [[ -z "$(ls $TOME/Apk)" ]] && echo "- Không có tập tin nào!"  
 # Thư mục chứa apk,jar đã mod: $TOME/Mod
@@ -32,6 +34,12 @@ Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TT.Zip" "$TOME/VH.
 unzip -qo $TOME/VH.zip -d $TOME/VH
 [ -e /mnt/tmp/product/overlay ] && TMVH=/mnt/tmp/product/overlay || TMVH=/mnt/tmp/vendor/overlay
 sudo cp -rf $TOME/VH/apk/* $TMVH
+sudo cp -rf $TOME/VH/framework-miui-res /mnt/tmp/system/media/theme/default
+if [ "$Licham" == 0 ];then
+sudo cp -rf $TOME/VH/notamlich/*.apk $TMVH
+sudo cp -rf $TOME/VH/notamlich/framework-miui-res /mnt/tmp/system/media/theme/default
+fi
+
 
 
 
