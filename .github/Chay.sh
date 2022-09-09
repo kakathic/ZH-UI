@@ -61,7 +61,4 @@ Debloat;
 #bash $TOME/.github/Repack.sh
 Repack; 
 
-cd $TOME/.github/lib/Flash_2in1
-zip -r $TOME/Up/ZH-UI_$Tenr.zip *
-
 echo "- Kết thúc"
