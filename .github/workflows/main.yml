@@ -30,7 +30,7 @@ jobs:
         with:
           name: 'Zom'
           path: .github/lib/Flash_2in1/*
-          retention-days: 5
+          retention-days: 2
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
         with:
