@@ -168,7 +168,7 @@ fi
 # for n in system system_ext vendor product odm; do /system/bin/lptools unmap $n; /system/bin/lptools map $n; done 
 
 # Vá vbmeta 
-for k in vbmeta vbmeta_a vbmeta_a vbmeta_system vbmeta_system_a vbmeta_system_b; do [ -e $blk/$k ] && dd of=$k bs=1 seek=123 count=1 conv=notrunc status=none; done 
+for k in vbmeta vbmeta_a vbmeta_b vbmeta_system vbmeta_system_a vbmeta_system_b; do [ -e $blk/$k ] && dd of=$k bs=1 seek=123 count=1 conv=notrunc status=none; done 
 
 # Kích hoạt khe hoạt động
 [ -n "$khe" ] && /system/bin/bootctl set-active-boot-slot 0
