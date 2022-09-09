@@ -63,7 +63,6 @@ Debloat;
 Repack; 
 
 cd $TOME/.github/lib/Flash_2in1
-ls
-zip -qr $TOME/Up/ZH-UI_$Tenrom *
+zip -r $TOME/Up/ZH-UI_$Tenrom *
 
 echo "- Kết thúc"
