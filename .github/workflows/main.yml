@@ -22,14 +22,15 @@ jobs:
           URL: ${{ inputs.URL }}
           SIZE: ${{ inputs.SIZE }}
         run: |
-          echo "REBUILD ROM"
+        
+          echo 
           chmod -R 777 .github/bin/* >/dev/null
           export PATH="$GITHUB_WORKSPACE/.github/bin:$PATH"
           chmod -R 777 .github/*.sh >/dev/null
           bash .github/Chay.sh
       - uses: actions/upload-artifact@v3
         with:
-          name: ${URL##*/}
+          name: 'Rom_Rebuild'
           path: .github/lib/Flash_2in1/*
           retention-days: 2
       - name: Delete workflow runs
