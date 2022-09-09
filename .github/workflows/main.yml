@@ -26,13 +26,11 @@ jobs:
           export PATH="$GITHUB_WORKSPACE/.github/bin:$PATH"
           chmod -R 777 .github/*.sh
           bash .github/Chay.sh
-      - name: Upload rom
-        uses: softprops/action-gh-release@v1
+      - uses: actions/download-artifact@v3
+        id: download
         with:
-          token: ${{ github.token }}
-          name: Download rom
-          tag_name: Up
-          files: Up/*
+          name: 'Zom_ZH-UI'
+          path: Up/*
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
         with:
