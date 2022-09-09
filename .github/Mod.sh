@@ -29,7 +29,7 @@ done
 }
 
 # Cài ngôn ngữ
-
+if [ "$NNTV" == "Viet_Nam" ];then
 Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TT.Zip" "$TOME/VH.zip"
 7z x -tzip -y "$TOME/TT.Zip" -p2 -o$TOME/VH >&2
 [ -e /mnt/tmp/product/overlay ] && TMVH=/mnt/tmp/product/overlay || TMVH=/mnt/tmp/vendor/overlay
@@ -39,7 +39,12 @@ if [ "$Licham" == 0 ];then
 sudo cp -rf $TOME/VH/notamlich/*.apk $TMVH
 sudo cp -rf $TOME/VH/notamlich/framework-miui-res /mnt/tmp/system/media/theme/default
 fi
-
+else
+Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TG.Zip" "$TOME/TG.zip"
+7z x -tzip -y "$TOME/TG.Zip" -p2 -o$TOME/VH >&2
+[ -e /mnt/tmp/product/overlay ] && TMVH=/mnt/tmp/product/overlay || TMVH=/mnt/tmp/vendor/overlay
+sudo cp -rf $TOME/VH/apk/* $TMVH
+fi
 
 
 
