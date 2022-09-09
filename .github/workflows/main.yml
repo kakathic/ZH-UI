@@ -10,7 +10,7 @@ on:
         description: 'Kích cỡ phân vùng super'
         required: true
         default: '8.5'
-      DEVICE:
+      NNTV:
         description: 'Ngôn ngữ dành riêng cho khu vực'
         required: true
         default: 'Viet_Nam'
@@ -29,6 +29,7 @@ jobs:
         env:
           URL: ${{ inputs.URL }}
           SIZE: ${{ inputs.SIZE }}
+          NNTV: ${{ inputs.NNTV }}
         run: |
           # Rom Rebuild 
           chmod -R 777 .github/bin/* >/dev/null
