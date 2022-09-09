@@ -23,6 +23,7 @@ Payload
 Super
 Apk
 Mod
+VH
 Up"
 for Tao in $Danhsach; do
 mkdir -p $Tao
