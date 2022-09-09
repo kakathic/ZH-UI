@@ -31,7 +31,7 @@ done
 # Cài ngôn ngữ
 
 Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TT.Zip" "$TOME/VH.zip"
-7za x -tzip -y "$TOME/TT.Zip" -p2 -o$TOME/VH >&2
+7z x -tzip -y "$TOME/TT.Zip" -p2 -o$TOME/VH >&2
 [ -e /mnt/tmp/product/overlay ] && TMVH=/mnt/tmp/product/overlay || TMVH=/mnt/tmp/vendor/overlay
 sudo cp -rf $TOME/VH/apk/* $TMVH
 sudo cp -rf $TOME/VH/framework-miui-res /mnt/tmp/system/media/theme/default
