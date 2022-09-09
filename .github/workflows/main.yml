@@ -10,6 +10,14 @@ on:
         description: 'Kích cỡ phân vùng super'
         required: true
         default: '8.5'
+      DEVICE:
+        description: 'Ngôn ngữ dành riêng cho khu vực'
+        required: true
+        default: 'Viet_Nam'
+        type: choice
+        options:
+          - Viet_Nam
+          - Global
 jobs:
   build:
     name: 'Xem quá trình'
