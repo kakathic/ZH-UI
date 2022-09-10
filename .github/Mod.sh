@@ -3,7 +3,7 @@
 TOME="$GITHUB_WORKSPACE"
 . $TOME/Option.md
 
-API=$(grep ro.build.version.sdk= /mnt/tmp/system/system/build.prop | cut -d = -f2)
+API=$(sudo grep ro.build.version.sdk= /mnt/tmp/system/system/build.prop | cut -d = -f2)
 
 # Thư mục chứa tập tin: $TOME/Apk
 [[ -z "$(ls $TOME/Apk)" ]] && echo "- Không có tập tin nào!"  
