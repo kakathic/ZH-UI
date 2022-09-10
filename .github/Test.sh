@@ -10,8 +10,6 @@ docopt
 protobuf<=3.20.1" > requirements.txt
 pip3 install -r requirements.txt > /dev/null
 
-ls /bin
-
 Cuphap() { 
 lpmake 
 resize2fs
@@ -22,7 +20,7 @@ hexdump --help
 tune2fs
 fsck.erofs
 mkfs.erofs
-7z
+7za
 java 
 simg2img | tee 1.txt
 rimg2sdat | tee 1.txt
