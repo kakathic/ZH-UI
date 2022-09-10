@@ -55,7 +55,7 @@ echo
 
 #bash $TOME/.github/Unpack.sh
 Unpack; 
-bash $TOME/.github/Mod.sh
+. $TOME/.github/Mod.sh
 #Mod; 
 #bash $TOME/.github/Debloat.sh
 Debloat; 
