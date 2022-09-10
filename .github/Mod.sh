@@ -18,7 +18,7 @@ Vsmali() {
 for Vka in $(Timkiem "$1" "$4/$5"); do
 #echo "MOD: $(echo "$1" | sed 's|\\||g')"
 sed -i -e "/^$1/,/$2/c $(echo "$3" | sed -z 's|\n|\\n|g')" "$Vka"
-echo "$Vak" >> $4/class
+echo "$Vak" >> $TOME/Apk/$4/class
 done
 }
 
