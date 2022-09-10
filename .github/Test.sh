@@ -10,6 +10,8 @@ docopt
 protobuf<=3.20.1" > requirements.txt
 pip3 install -r requirements.txt > /dev/null
 
+ls /bin
+
 Cuphap() { 
 lpmake 
 resize2fs
