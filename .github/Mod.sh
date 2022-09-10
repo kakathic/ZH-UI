@@ -15,9 +15,10 @@ sudo apt install zipalign >/dev/null
 Timkiem(){ find $TOME/Apk/$2 -name "*.smali" -exec grep -l "$1" {} +; }
 
 Vsmali() {
-for Vka in $(Timkiem "$1" "$4"); do
+for Vka in $(Timkiem "$1" "$4/$5"); do
 #echo "MOD: $(echo "$1" | sed 's|\\||g')"
 sed -i -e "/^$1/,/$2/c $(echo "$3" | sed -z 's|\n|\\n|g')" "$Vka"
+echo "$Vak" >> $4/class
 done
 }
 
@@ -54,30 +55,31 @@ Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TT.Zip" "$TOME/VH.
 [ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
 mkdir -p $TMVH
 mkdir -p $TOME/Mod/system/media/theme/default
-sudo cp -rf $TOME/VH/apk/* $TMVH
-sudo cp -rf $TOME/VH/framework-miui-res $TOME/Mod/system/media/theme/default
+cp -rf $TOME/VH/apk/* $TMVH
+cp -rf $TOME/VH/framework-miui-res $TOME/Mod/system/media/theme/default
 if [ "$Licham" == 0 ];then
-sudo cp -rf $TOME/VH/notamlich/*.apk $TMVH
-sudo cp -rf $TOME/VH/notamlich/framework-miui-res $TOME/Mod/system/media/theme/default
+cp -rf $TOME/VH/notamlich/*.apk $TMVH
+cp -rf $TOME/VH/notamlich/framework-miui-res $TOME/Mod/system/media/theme/default
 fi
 else
 Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TG.Zip" "$TOME/TG.zip"
 7z x -tzip -y "$TOME/TG.Zip" -p2 -o$TOME/VH >&2
 [ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
 mkdir -p $TMVH
-sudo cp -rf $TOME/VH/apk/* $TMVH
+cp -rf $TOME/VH/apk/* $TMVH
 fi
 
-# unpack all
+# Unpack all
 Unpack;
 
+# Xoá Getapps
 Vsmali ".method private checkSystemSelfProtection(Z)V" \
 ".end method" \
 '.method private checkSystemSelfProtection(Z)V
     .locals 1
     return-void
 .end method' \
-"$miui-services/classes*/com/miui/server/*"
+"$miui-services" "classes*/com/miui/server/*"
 
 
 
