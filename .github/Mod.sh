@@ -3,14 +3,16 @@
 TOME="$GITHUB_WORKSPACE"
 . $TOME/Option.md
 
+API=$(grep ro.build.version.sdk= /mnt/tmp/system/system/build.prop | cut -d = -f2)
+
 # Thư mục chứa tập tin: $TOME/Apk
 [[ -z "$(ls $TOME/Apk)" ]] && echo "- Không có tập tin nào!"  
 # Thư mục chứa apk,jar đã mod: $TOME/Mod
 
 Taive() { curl -s -L "$1" -o "$2"; }
 #apktool() { java -Xmx512M -Dfile.encoding=utf-8 -jar $TOME/.github/Tools/kikfox.jar "$@"; }
-baksmali() { java -Xmx4g -jar $TOME/.github/Tools/baksmali-2.3.4.jar d "$@"; }
-smali() { java -Xmx4g -jar $TOME/.github/Tools/smali-2.5.2.jar a "$@"; }
+baksmali() { java -Xmx4g -jar $TOME/.github/Tools/baksmali-2.3.4.jar "$@"; }
+smali() { java -Xmx4g -jar $TOME/.github/Tools/smali-2.5.2.jar "$@"; }
 
 Timkiem() { find $TOME/Apk/$2 -name "*.smali" -exec grep -l "$1" {} +; }
 
@@ -28,24 +30,24 @@ Unpackfile() {
 for vapk in $TOME/Apk/*.*; do
 mkdir -p ${vapk%.*}
 unzip -qo "$vapk" '*.dex' -d ${vapk%.*}
-cd ${vapk%.*} 
-for vsmali in *.dex; do
-baksmali $vsmali -o ${vsmali%.*}
+for vsmali in ${vapk%.*}/*.dex; do
+baksmali d --api $API $vsmali -o ${vsmali%.*}
 done
-ls ${vapk%.*}
 done
 }
 
 # Đóng gói apk
 Repackfile() {
 for bapk in $TOME/Apk/*.*; do
+if [ "${bapk##*.}" == 'apk' ] || [ "${bapk##*.}" == 'jar' ];then
 for bsmali in $(cat ${bapk%.*}/class | sed "s|$TOME/Apk/||g" | cut -d '/' -f2 | sort | uniq); do
 rm -fr "$bsmali".dex
-smali $bsmali -o "$bsmali".dex
+smali a --api $API ${bapk%.*}/$bsmali -o "${bapk%.*}/$bsmali".dex
 done
 cd ${bapk%.*}
-7za u -y -tzip $bapk *.dex >/dev/null 
+zip -qr $bapk '*.dex'
 zipalign -f 4 $bapk $TOME/Mod/${bapk##*/}
+fi
 done
 }
 
