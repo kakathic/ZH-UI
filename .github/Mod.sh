@@ -24,7 +24,7 @@ done
 
 
 # giải nén file
-Unpack(){
+Unpackfile(){
 for vapk in $TOME/Apk/*.*; do
 mkdir -p ${vapk%.*}
 unzip -qo "$vapk" '*.dex' -d ${vapk%.*}
@@ -36,7 +36,7 @@ done
 }
 
 # Đóng gói apk
-Repack(){
+Repackfile(){
 for bapk in $TOME/Apk/*.*; do
 for bsmali in $(cat ${bapk%.*}/class | sed "s|$TOME/Apk/||g" | cut -d '/' -f2 | sort | uniq).dex; do
 rm -fr $bsmali
@@ -70,7 +70,7 @@ cp -rf $TOME/VH/apk/* $TMVH
 fi
 
 # Unpack all
-Unpack;
+Unpackfile;
 
 # Xoá Getapps
 Vsmali ".method private checkSystemSelfProtection(Z)V" \
@@ -86,7 +86,7 @@ Vsmali ".method private checkSystemSelfProtection(Z)V" \
 
 
 
-Repack;
+Repackfile;
 # kết thúc
 
 
