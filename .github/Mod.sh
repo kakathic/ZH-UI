@@ -46,6 +46,7 @@ rm -fr "$bsmali".dex
 smali a --api $API ${bapk%.*}/$bsmali -o "${bapk%.*}/$bsmali".dex
 fi
 done
+unset bsmali
 cd ${bapk%.*}
 zip -qr $bapk '*.dex'
 zipalign -f 4 $bapk $TOME/Mod/${bapk##*/}
