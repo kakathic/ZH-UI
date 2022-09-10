@@ -115,7 +115,7 @@ MiService
 MiShop
 Mirror
 MiuiCompass
-MiuiContentExtension
+#MiuiContentExtension
 MiuiDaemon
 MiuiPrintSpoolerBeta
 MiuiScanner
@@ -149,7 +149,7 @@ SmartTravel
 SogouInput
 SoundPickerGoogle 
 Stk
-SystemAppUpdater
+#SystemAppUpdater
 SystemHelper
 TSMClient
 Tag
