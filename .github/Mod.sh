@@ -71,7 +71,13 @@ fi
 # unpack all
 Unpack;
 
-
+Vsmali ".method private checkSystemSelfProtection(Z)V" \
+".end method" \
+'.method private checkSystemSelfProtection(Z)V
+    .locals 1
+    return-void
+.end method' \
+"$miui-services/classes*/com/miui/server/*"
 
 
 
