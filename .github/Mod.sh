@@ -41,8 +41,10 @@ Repackfile() {
 for bapk in $TOME/Apk/*.*; do
 if [ "${bapk##*.}" == 'apk' ] || [ "${bapk##*.}" == 'jar' ];then
 for bsmali in $(cat ${bapk%.*}/class | sed "s|$TOME/Apk/||g" | cut -d '/' -f2 | sort | uniq); do
+if [ -e "$bsmali".dex ];then
 rm -fr "$bsmali".dex
 smali a --api $API ${bapk%.*}/$bsmali -o "${bapk%.*}/$bsmali".dex
+fi
 done
 cd ${bapk%.*}
 zip -qr $bapk '*.dex'
