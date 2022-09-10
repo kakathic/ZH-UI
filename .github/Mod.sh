@@ -29,7 +29,7 @@ for vapk in $TOME/Apk/*.*; do
 mkdir -p ${vapk%.*}
 unzip -qo "$vapk" '*.dex' -d ${vapk%.*}
 for vsmali in ${vapk%.*}/*.dex; do
-baksmali $vsmali -o ${vsmali%.*}
+baksmali d $vsmali -o ${vsmali%.*}
 done
 ls ${vapk%.*}
 done
@@ -40,7 +40,7 @@ Repackfile(){
 for bapk in $TOME/Apk/*.*; do
 for bsmali in $(cat ${bapk%.*}/class | sed "s|$TOME/Apk/||g" | cut -d '/' -f2 | sort | uniq).dex; do
 rm -fr $bsmali
-smali -o ${bsmali%.*} -o $bsmali
+smali a -o ${bsmali%.*} -o $bsmali
 done
 cd ${bapk%.*}
 zip -qr -0 $bapk *.dex
@@ -51,7 +51,7 @@ done
 # Cài ngôn ngữ
 if [ "$NNTV" == "Viet_Nam" ];then
 Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TT.Zip" "$TOME/VH.zip"
-7z x -tzip -y "$TOME/TT.Zip" -p2 -o$TOME/VH
+7z x -tzip -y "$TOME/TT.Zip" -o $TOME/VH -p2
 [ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
 mkdir -p $TMVH
 mkdir -p $TOME/Mod/system/media/theme/default
