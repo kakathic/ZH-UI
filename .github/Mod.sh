@@ -30,9 +30,9 @@ done
 }
 
 
-# Xử lý apk
+# giải nén file
 Unpack(){
-for vapk in $TOME/Apk/*.apk; do
+for vapk in $TOME/Apk/*.*; do
 mkdir -p ${vapk%.*}
 unzip -qo "$vapk" '*.dex' -d ${vapk%.*}
 for vsmali in ${vapk%.*}/*.dex; do
@@ -44,8 +44,8 @@ done
 
 # Đóng gói apk
 Repack(){
-for bapk in $TOME/Apk/*.apk; do
-for bsmali in $(cat ${bapk%.*}/class).dex; do
+for bapk in $TOME/Apk/*.*; do
+for bsmali in $(cat ${bapk%.*}/class | sed "s|$TOME/Apk/||g" | cut -d '/' -f2 | sort | uniq).dex; do
 rm -fr $bsmali
 smali -o ${bsmali%.*} -o $bsmali
 done
