@@ -38,7 +38,8 @@ done
 # Đóng gói apk
 Repackfile(){
 for bapk in $TOME/Apk/*.*; do
-for bsmali in $(cat ${bapk%.*}/class | sed "s|$TOME/Apk/||g" | cut -d '/' -f2 | sort | uniq).dex; do
+Pathkkd="$(cat ${bapk%.*}/class | sed "s|$TOME/Apk/||g" | cut -d '/' -f2 | sort | uniq).dex"
+for bsmali in $Pathkkd; do
 rm -fr $bsmali
 smali a -o ${bsmali%.*} -o $bsmali
 done
@@ -51,7 +52,7 @@ done
 # Cài ngôn ngữ
 if [ "$NNTV" == "Viet_Nam" ];then
 Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TT.Zip" "$TOME/VH.zip"
-7z x -tzip -y "$TOME/TT.Zip" -o $TOME/VH -p2
+7z x -tzip -y "$TOME/TT.Zip" -o$TOME/VH -p2
 [ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
 mkdir -p $TMVH
 mkdir -p $TOME/Mod/system/media/theme/default
@@ -63,7 +64,7 @@ cp -rf $TOME/VH/notamlich/framework-miui-res $TOME/Mod/system/media/theme/defaul
 fi
 else
 Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TG.Zip" "$TOME/TG.zip"
-7z x -tzip -y "$TOME/TG.Zip" -p2 -o$TOME/VH
+7z x -tzip -y "$TOME/TG.Zip" -o$TOME/VH -p2
 [ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
 mkdir -p $TMVH
 cp -rf $TOME/VH/apk/* $TMVH
