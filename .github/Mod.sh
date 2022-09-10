@@ -44,7 +44,7 @@ smali -o ${bsmali%.*} -o $bsmali
 done
 cd ${bapk%.*}
 zip -qr -0 $bapk *.dex
-zipalign -f 4 $bapk $TOME/${bapk##*/}
+zipalign -f 4 $bapk $TOME/Mod/${bapk##*/}
 done
 }
 
