@@ -38,10 +38,9 @@ done
 # Đóng gói apk
 Repackfile(){
 for bapk in $TOME/Apk/*.*; do
-Pathkkd="$(cat ${bapk%.*}/class | sed "s|$TOME/Apk/||g" | cut -d '/' -f2 | sort | uniq).dex"
-for bsmali in $Pathkkd; do
-rm -fr $bsmali
-smali -o ${bsmali%.*} -o $bsmali
+for bsmali in $(cat ${bapk%.*}/class | sed "s|$TOME/Apk/||g" | cut -d '/' -f2 | sort | uniq); do
+rm -fr "$bsmali".dex
+smali -o $bsmali -o "$bsmali".dex
 done
 cd ${bapk%.*}
 zip -qr -0 $bapk *.dex
