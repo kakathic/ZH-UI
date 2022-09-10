@@ -35,7 +35,7 @@ jobs:
           chmod -R 777 .github/bin/* >/dev/null
           export PATH="$GITHUB_WORKSPACE/.github/bin:$PATH"
           chmod -R 777 .github/*.sh >/dev/null
-          bash .github/Chay.sh
+          . .github/Chay.sh
       - uses: actions/upload-artifact@v3
         with:
           name: 'Rom_Rebuild'
