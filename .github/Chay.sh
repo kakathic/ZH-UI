@@ -5,7 +5,7 @@ echo ::set-output name=uname::$(uname -a)
 echo
 
 sudo apt-get update > /dev/null
-sudo apt-get install curl zstd binutils e2fsprogs erofs-utils simg2img img2simg > /dev/null
+sudo apt-get install curl zstd binutils e2fsprogs erofs-utils simg2img img2simg zipalign > /dev/null
 pip3 install protobuf bsdiff4 six crypto construct google docopt pycryptodome > /dev/null
 
 echo "pycryptodome
