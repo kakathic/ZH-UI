@@ -28,7 +28,8 @@ Unpackfile() {
 for vapk in $TOME/Apk/*.*; do
 mkdir -p ${vapk%.*}
 unzip -qo "$vapk" '*.dex' -d ${vapk%.*}
-for vsmali in ${vapk%.*}/*.dex; do
+cd ${vapk%.*} 
+for vsmali in *.dex; do
 baksmali $vsmali -o ${vsmali%.*}
 done
 ls ${vapk%.*}
@@ -51,7 +52,7 @@ done
 # Cài ngôn ngữ
 if [ "$NNTV" == "Viet_Nam" ];then
 Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TT.Zip" "$TOME/TT.Zip"
-7za x -tzip -y "$TOME/TT.Zip" -o$TOME/VH -p2
+7za x -tzip -y "$TOME/TT.Zip" -o$TOME/VH -p2 >/dev/null
 [ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
 mkdir -p $TMVH
 mkdir -p $TOME/Mod/system/media/theme/default
@@ -63,7 +64,7 @@ cp -af $TOME/VH/notamlich/framework-miui-res $TOME/Mod/system/media/theme/defaul
 fi
 else
 Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TG.Zip" "$TOME/TG.zip"
-7za x -tzip -y "$TOME/TG.Zip" -o$TOME/VH -p2
+7za x -tzip -y "$TOME/TG.Zip" -o$TOME/VH -p2 >/dev/null
 [ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
 mkdir -p $TMVH
 cp -af $TOME/VH/apk/* $TMVH
