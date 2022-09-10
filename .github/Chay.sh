@@ -29,8 +29,10 @@ for Tao in $Danhsach; do
 mkdir -p $Tao
 done
 
-Taive() { curl -s -L "$1" -o "$2"; }
-Xem() { curl -s -L -G "$@"; }
+
+User="User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
+Taive() { curl -s -L 1 -H "$User" "$1" -o "$2"; }
+Xem() { curl -s -L -G -H "$User" "$@"; }
 
 Tenrom=${URL##*/} && Tenr=${Tenrom%.*} && Dinhdang=${URL##*.}; 
 echo "- Link Rom: $URL"
