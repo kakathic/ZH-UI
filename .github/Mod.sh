@@ -7,9 +7,9 @@ bash $TOME/Option.md
 [[ -z "$(ls $TOME/Apk)" ]] && echo "- Không có tập tin nào!"  
 # Thư mục chứa apk,jar đã mod: $TOME/Mod
 
-apktool() { java -Xmx512M -Dfile.encoding=utf-8 -jar $TOME/.github/Tools/kikfox.jar "$@"; }
-baksmali() { java -Xmx512M -Dfile.encoding=utf-8 -jar $TOME/.github/Tools/baksmali-2.3.4.jar d "$@"; }
-smali() { java -Xmx512M -Dfile.encoding=utf-8 -jar $TOME/.github/Tools/smali-2.5.2.jar a "$@"; }
+#apktool() { java -Xmx512M -Dfile.encoding=utf-8 -jar $TOME/.github/Tools/kikfox.jar "$@"; }
+baksmali() { java -Xmx4g -jar $TOME/.github/Tools/baksmali-2.3.4.jar d "$@"; }
+smali() { java -Xmx4g -jar $TOME/.github/Tools/smali-2.5.2.jar a "$@"; }
 sudo apt install zipalign >/dev/null
 
 Timkiem(){ find $TOME/Apk/$2 -name "*.smali" -exec grep -l "$1" {} +; }
