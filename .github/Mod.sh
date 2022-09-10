@@ -79,7 +79,7 @@ Vsmali ".method private checkSystemSelfProtection(Z)V" \
     .locals 1
     return-void
 .end method' \
-''$m'-services' "classes*/com/miui/server/*"
+''$m'services' "classes*/com/miui/server/*"
 
 
 
