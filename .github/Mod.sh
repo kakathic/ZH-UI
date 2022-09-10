@@ -11,9 +11,8 @@ Taive() { curl -s -L "$1" -o "$2"; }
 #apktool() { java -Xmx512M -Dfile.encoding=utf-8 -jar $TOME/.github/Tools/kikfox.jar "$@"; }
 baksmali() { java -Xmx4g -jar $TOME/.github/Tools/baksmali-2.3.4.jar d "$@"; }
 smali() { java -Xmx4g -jar $TOME/.github/Tools/smali-2.5.2.jar a "$@"; }
-sudo apt install zipalign >/dev/null
 
-Timkiem(){ find $TOME/Apk/$2 -name "*.smali" -exec grep -l "$1" {} +; }
+Timkiem() { find $TOME/Apk/$2 -name "*.smali" -exec grep -l "$1" {} +; }
 
 Vsmali() {
 for Vka in $(Timkiem "$1" "$4/$5"); do
@@ -25,7 +24,7 @@ done
 
 
 # giải nén file
-Unpackfile(){
+Unpackfile() {
 for vapk in $TOME/Apk/*.*; do
 mkdir -p ${vapk%.*}
 unzip -qo "$vapk" '*.dex' -d ${vapk%.*}
@@ -37,14 +36,14 @@ done
 }
 
 # Đóng gói apk
-Repackfile(){
+Repackfile() {
 for bapk in $TOME/Apk/*.*; do
 for bsmali in $(cat ${bapk%.*}/class | sed "s|$TOME/Apk/||g" | cut -d '/' -f2 | sort | uniq); do
 rm -fr "$bsmali".dex
-smali -o $bsmali -o "$bsmali".dex
+smali $bsmali -o "$bsmali".dex
 done
 cd ${bapk%.*}
-zip -qr -0 $bapk *.dex
+7za u -y -tzip $bapk *.dex >/dev/null 
 zipalign -f 4 $bapk $TOME/Mod/${bapk##*/}
 done
 }
@@ -56,18 +55,18 @@ Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TT.Zip" "$TOME/VH.
 [ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
 mkdir -p $TMVH
 mkdir -p $TOME/Mod/system/media/theme/default
-cp -rf $TOME/VH/apk/* $TMVH
-cp -rf $TOME/VH/framework-miui-res $TOME/Mod/system/media/theme/default
+cp -af $TOME/VH/apk/* $TMVH
+cp -af $TOME/VH/framework-miui-res $TOME/Mod/system/media/theme/default
 if [ "$Licham" == 0 ];then
-cp -rf $TOME/VH/notamlich/*.apk $TMVH
-cp -rf $TOME/VH/notamlich/framework-miui-res $TOME/Mod/system/media/theme/default
+cp -af $TOME/VH/notamlich/*.apk $TMVH
+cp -af $TOME/VH/notamlich/framework-miui-res $TOME/Mod/system/media/theme/default
 fi
 else
 Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TG.Zip" "$TOME/TG.zip"
 7za x -tzip -y "$TOME/TG.Zip" -o$TOME/VH -p2
 [ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
 mkdir -p $TMVH
-cp -rf $TOME/VH/apk/* $TMVH
+cp -af $TOME/VH/apk/* $TMVH
 fi
 
 # Unpack all
