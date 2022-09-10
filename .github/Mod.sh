@@ -12,19 +12,11 @@ baksmali() { java -Xmx512M -Dfile.encoding=utf-8 -jar $TOME/.github/Tools/baksma
 smali() { java -Xmx512M -Dfile.encoding=utf-8 -jar $TOME/.github/Tools/smali-2.5.2.jar "$@"; }
 sudo apt install zipalign >/dev/null
 
-Timkiem() { grep -Rl "$1" $2; }
-
-Thaythe() {
-Tt1="$(Timkiem "$1" "$3")"
-[[ "$Tt1" ]] && echo "MOD: $1 -> $2" | sed "s|\\\/|/|g"
-for Tt2 in $Tt1; do
-[[ "$Tt2" ]] && sed -i -e "s|$1|$2|g" $Tt2
-done
-}
+Timkiem(){ find $TOME/Apk/$2 -name "*.smali" -exec grep -l "$1" {} +; }
 
 Vsmali() {
 for Vka in $(Timkiem "$1" "$4"); do
-echo "MOD: $(echo "$1" | sed 's|\\||g')"
+#echo "MOD: $(echo "$1" | sed 's|\\||g')"
 sed -i -e "/^$1/,/$2/c $(echo "$3" | sed -z 's|\n|\\n|g')" "$Vka"
 done
 }
