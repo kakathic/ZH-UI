@@ -1,7 +1,7 @@
 #kakathic
 
 TOME="$GITHUB_WORKSPACE"
-bash $TOME/Option.md
+. $TOME/Option.md
 
 # Thư mục chứa tập tin: $TOME/Apk
 [[ -z "$(ls $TOME/Apk)" ]] && echo "- Không có tập tin nào!"  
