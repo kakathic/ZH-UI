@@ -51,7 +51,7 @@ done
 # Cài ngôn ngữ
 if [ "$NNTV" == "Viet_Nam" ];then
 Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TT.Zip" "$TOME/VH.zip"
-7z x -tzip -y "$TOME/TT.Zip" -p2 -o$TOME/VH >&2
+7z x -tzip -y "$TOME/TT.Zip" -p2 -o$TOME/VH
 [ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
 mkdir -p $TMVH
 mkdir -p $TOME/Mod/system/media/theme/default
@@ -63,7 +63,7 @@ cp -rf $TOME/VH/notamlich/framework-miui-res $TOME/Mod/system/media/theme/defaul
 fi
 else
 Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TG.Zip" "$TOME/TG.zip"
-7z x -tzip -y "$TOME/TG.Zip" -p2 -o$TOME/VH >&2
+7z x -tzip -y "$TOME/TG.Zip" -p2 -o$TOME/VH
 [ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
 mkdir -p $TMVH
 cp -rf $TOME/VH/apk/* $TMVH
