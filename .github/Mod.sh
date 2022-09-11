@@ -10,7 +10,7 @@ API=$(sudo grep ro.build.version.sdk= /mnt/tmp/system/system/build.prop | cut -d
 # Thư mục chứa apk,jar đã mod: $TOME/Mod
 
 Taive() { curl -s -L "$1" -o "$2"; }
-#apktool() { java -Xmx512M -Dfile.encoding=utf-8 -jar $TOME/.github/Tools/kikfox.jar "$@"; }
+# apktool() { java -Xmx512M -Dfile.encoding=utf-8 -jar $TOME/.github/Tools/kikfox.jar "$@"; }
 baksmali() { java -Xmx4g -jar $TOME/.github/Tools/baksmali-2.3.4.jar "$@"; }
 smali() { java -Xmx4g -jar $TOME/.github/Tools/smali-2.5.2.jar "$@"; }
 
@@ -20,7 +20,7 @@ Vsmali() {
 for Vka in $(Timkiem "$1" "$4/$5"); do
 #echo "MOD: $(echo "$1" | sed 's|\\||g')"
 sed -i -e "/^$1/,/$2/c $(echo "$3" | sed -z 's|\n|\\n|g')" "$Vka"
-echo "$Vak" >> $TOME/Apk/$4/class
+echo "$Vak" >> $TMPDIR/Apk/$(echo "$4" | sed "s|$TOME/Apk/||g" | cut -d '/' -f1)/class
 done
 }
 
@@ -85,7 +85,7 @@ Vsmali ".method private checkSystemSelfProtection(Z)V" \
     .locals 1
     return-void
 .end method' \
-''$m'services' "classes*/com/miui/server/*"
+''$m'servicesclasses*/com/miui/server/*'
 
 
 
