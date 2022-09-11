@@ -39,7 +39,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: 'Rom_Rebuild'
-          path: .github/lib/Flash_2in1/*
+          path: Mod/*
           retention-days: 2
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
