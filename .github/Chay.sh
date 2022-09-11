@@ -22,7 +22,7 @@ Unzip
 Payload
 Super
 Apk
-Mod
+Mod/tmp
 VH
 Up"
 for Tao in $Danhsach; do
