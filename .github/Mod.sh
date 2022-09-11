@@ -14,20 +14,19 @@ Taive() { curl -s -L "$1" -o "$2"; }
 baksmali() { java -Xmx4g -jar $TOME/.github/Tools/baksmali-2.3.4.jar "$@"; }
 smali() { java -Xmx4g -jar $TOME/.github/Tools/smali-2.5.2.jar "$@"; }
 
-Timkiem() { find $TOME/Apk/$2 -name "*.smali" -exec grep -l "$1" {} +; }
+Timkiem() { find $TOME/Mod/$2 -name "*.smali" -exec grep -l "$1" {} +; }
 
 Vsmali() {
 for Vka in $(Timkiem "$1" "$4/$5"); do
 #echo "MOD: $(echo "$1" | sed 's|\\||g')"
 sed -i -e "/^$1/,/$2/c $(echo "$3" | sed -z 's|\n|\\n|g')" "$Vka"
-echo "$Vak" >> $TMPDIR/Apk/$(echo "$4" | sed "s|$TOME/Apk/||g" | cut -d '/' -f1)/class
+echo "$Vak" >> $TOME/Mod/$(echo "$4" | sed "s|$TOME/Mod/||g" | cut -d '/' -f1)/class
 done
 }
 
-
 # giải nén file
 Unpackfile() {
-for vapk in $TOME/Apk/*.*; do
+for vapk in $TOME/Mod/*.*; do
 mkdir -p ${vapk%.*}
 unzip -qo "$vapk" '*.dex' -d ${vapk%.*}
 for vsmali in ${vapk%.*}/*.dex; do
@@ -38,9 +37,9 @@ done
 
 # Đóng gói apk
 Repackfile() {
-for bapk in $TOME/Apk/*.*; do
+for bapk in $TOME/Mod/*.*; do
 if [ "${bapk##*.}" == 'apk' ] || [ "${bapk##*.}" == 'jar' ];then
-for bsmali in $(cat ${bapk%.*}/class | sed "s|$TOME/Apk/||g" | cut -d '/' -f2 | sort | uniq); do
+for bsmali in $(cat ${bapk%.*}/class | sed "s|$TOME/Mod/||g" | cut -d '/' -f2 | sort | uniq); do
 if [ -e "$bsmali".dex ];then
 rm -fr "$bsmali".dex
 smali a --api $API ${bapk%.*}/$bsmali -o "${bapk%.*}/$bsmali".dex
@@ -49,9 +48,15 @@ done
 unset bsmali
 cd ${bapk%.*}
 zip -qr $bapk '*.dex'
-zipalign -f 4 $bapk $TOME/Mod/${bapk##*/}
+zipalign -f 4 $bapk $TOME/Mod/tmp/${bapk##*/}
+cp -rf $TOME/Mod/tmp/${bapk##*/} $bapk
 fi
 done
+}
+
+# Copy dữ liệu
+Timfile() {
+cp -f $(find /mnt/tmp/* -name "$1") $TOME/Mod
 }
 
 # Cài ngôn ngữ
@@ -75,6 +80,8 @@ mkdir -p $TMVH
 cp -af $TOME/VH/apk/* $TMVH
 fi
 
+Timfile ''$m'services.jar'
+
 # Unpack all
 Unpackfile;
 
@@ -85,12 +92,7 @@ Vsmali ".method private checkSystemSelfProtection(Z)V" \
     .locals 1
     return-void
 .end method' \
-''$m'servicesclasses*/com/miui/server/*'
-
-
-
-
-
+''$m'services/classes*/com/miui/server/*'
 
 Repackfile;
 # kết thúc
