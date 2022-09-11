@@ -17,9 +17,9 @@ Timkiem() { find $TOME/Mod/$2 -name "*.smali" -exec grep -l "$1" {} +; }
 
 Vsmali() {
 for Vka in $(Timkiem "$1" "$4"); do
-#echo "MOD: $(echo "$1" | sed 's|\\||g')"
+echo "MOD: $(echo "$1" | sed 's|\\||g')"
 sed -i -e "/^$1/,/$2/c $(echo "$3" | sed -z 's|\n|\\n|g')" "$Vka"
-echo "$Vak" >> $TOME/Mod/$(echo "$4" | sed "s|$TOME/Mod/||g" | cut -d '/' -f2)/class
+echo "$Vak" >> $TOME/Mod/$(echo "$4" | sed "s|$TOME/Mod/||g" | cut -d '/' -f1)/class
 done
 }
 
