@@ -17,7 +17,7 @@ smali() { java -Xmx4g -jar $TOME/.github/Tools/smali-2.5.2.jar "$@"; }
 Timkiem() { find $TOME/Mod/$2 -name "*.smali" -exec grep -l "$1" {} +; }
 
 Vsmali() {
-for Vka in $(Timkiem "$1" "$4/$5"); do
+for Vka in $(Timkiem "$1" "$4"); do
 #echo "MOD: $(echo "$1" | sed 's|\\||g')"
 sed -i -e "/^$1/,/$2/c $(echo "$3" | sed -z 's|\n|\\n|g')" "$Vka"
 echo "$Vak" >> $TOME/Mod/$(echo "$4" | sed "s|$TOME/Mod/||g" | cut -d '/' -f1)/class
@@ -47,7 +47,7 @@ fi
 done
 unset bsmali
 cd ${bapk%.*}
-zip -qr $bapk '*.dex'
+sudo zip -qr $bapk '*.dex'
 zipalign -f 4 $bapk $TOME/Mod/tmp/${bapk##*/}
 cp -rf $TOME/Mod/tmp/${bapk##*/} $bapk
 fi
