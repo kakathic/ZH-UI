@@ -9,7 +9,6 @@ API=$(sudo grep ro.build.version.sdk= /mnt/tmp/system/system/build.prop | cut -d
 [[ -z "$(ls $TOME/Apk)" ]] && echo "- Không có tập tin nào!"  
 # Thư mục chứa apk,jar đã mod: $TOME/Mod
 
-Taive() { curl -s -L "$1" -o "$2"; }
 # apktool() { java -Xmx512M -Dfile.encoding=utf-8 -jar $TOME/.github/Tools/kikfox.jar "$@"; }
 baksmali() { java -Xmx4g -jar $TOME/.github/Tools/baksmali-2.3.4.jar "$@"; }
 smali() { java -Xmx4g -jar $TOME/.github/Tools/smali-2.5.2.jar "$@"; }
