@@ -55,13 +55,13 @@ fi
 
 echo
 
-#bash $TOME/.github/Unpack.sh
+#. $TOME/.github/Unpack.sh
 Unpack; 
-. $TOME/.github/Mod.sh
-#Mod; 
-#bash $TOME/.github/Debloat.sh
+#. $TOME/.github/Mod.sh
+Mod; 
+#. $TOME/.github/Debloat.sh
 Debloat; 
-#bash $TOME/.github/Repack.sh
+#. $TOME/.github/Repack.sh
 Repack; 
 
 echo "- Kết thúc"
