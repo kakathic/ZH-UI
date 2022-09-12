@@ -57,7 +57,7 @@ ui_print " "
 ui_print "- Cài đặt Magisk(Root)"
 if keyListener; then
   for tim in boot boot_a boot_b; do 
-  [ -e "$blk/$tim" ] && package_extract_file "images/boot_magisk.img" "$blk/$tim"
+   if [ -e "$blk/$tim" ]; then package_extract_file "images/boot_magisk.img" "$blk/$tim"; fi 
   done 
   ui_print "+ Cài đặt hoàn tất Magisk(Root)"
   ui_print " "
@@ -72,7 +72,7 @@ if keyListener; then
   fi
 else
   for tim in boot boot_a boot_b; do 
-  [ -e "$blk/$tim" ] && package_extract_file "images/boot.img" "$blk/$tim"
+   if [ -e "$blk/$tim" ]; then package_extract_file "images/boot.img" "$blk/$tim"; fi 
   done 
   ui_print "+ Không cài đặt Magisk(Root)"
 fi
@@ -158,20 +158,19 @@ fi
 
 ui_print " "
 ui_print "- Cập nhật hệ thống"
-package_extract_file "images/cust.img" "$blk/cust"
-package_extract_zstd "images/super.img.zst" "$blk/super"
-
-if [ -f "images/recovery.img" ] && [ -e "$blk/recovery ]; then
-  package_extract_file "images/recovery.img" "$blk/recovery"
-fi
+if [ -f "images/cust.img" ] && [ -e "$blk/cust" ]; then package_extract_file "images/cust.img" "$blk/cust"; fi 
+if [ -f "images/recovery.img" ] && [ -e "$blk/recovery" ]; then package_extract_file "images/recovery.img" "$blk/recovery"; fi
+if [ -f "images/super.img.zst" ] && [ -e "$blk/super" ]; then package_extract_zstd "images/super.img.zst" "$blk/super"; fi 
 
 # for n in system system_ext vendor product odm; do /system/bin/lptools unmap $n; /system/bin/lptools map $n; done 
 
 # Vá vbmeta 
-for k in vbmeta vbmeta_a vbmeta_b vbmeta_system vbmeta_system_a vbmeta_system_b; do [ -e $blk/$k ] && dd of=$k bs=1 seek=123 count=1 conv=notrunc status=none; done 
+for k in vbmeta vbmeta_a vbmeta_a vbmeta_system vbmeta_system_a vbmeta_system_b; do 
+ if [ -e $blk/$k ]; then dd of=$blk/$k bs=1 seek=123 count=1 conv=notrunc status=none; fi; 
+done 
 
 # Kích hoạt khe hoạt động
-[ -n "$khe" ] && /system/bin/bootctl set-active-boot-slot 0
+if [ -n "$khe" ]; then /system/bin/bootctl set-active-boot-slot 0; fi 
 
 ui_print " "
 ui_print "- Đã flash xong! " 
