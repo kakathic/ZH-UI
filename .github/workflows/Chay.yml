@@ -1,6 +1,23 @@
 name: 'Kiểm thử'
 on: 
   workflow_dispatch:
+    inputs:
+      URL:
+        description: 'Hãy điền đường dẫn url của link rom để tải xuống'
+        required: true
+        default: 'https://bigota.d.miui.com/V13.0.7.0.SKHCNXM/miui_ALIOTH_V13.0.7.0.SKHCNXM_98b397a7dc_12.0.zip'
+      SIZE:
+        description: 'Kích cỡ phân vùng super'
+        required: true
+        default: '8.5'
+      NNTV:
+        description: 'Ngôn ngữ dành riêng cho khu vực'
+        required: true
+        default: 'Viet_Nam'
+        type: choice
+        options:
+          - Viet_Nam
+          - Global
 jobs:
   build:
     name: 'Xem quá trình'
@@ -12,18 +29,13 @@ jobs:
         env:
           URL: ${{ inputs.URL }}
           SIZE: ${{ inputs.SIZE }}
+          NNTV: ${{ inputs.NNTV }}
         run: |
-          chmod -R 777 .github/bin/*
+          # Rom Rebuild 
+          chmod -R 777 .github/bin/* >/dev/null
           export PATH="$GITHUB_WORKSPACE/.github/bin:$PATH"
-          chmod -R 777 .github/*.sh
+          chmod -R 777 .github/*.sh >/dev/null
           . .github/Chay.sh
-      - name: Upload rom
-        uses: softprops/action-gh-release@v1
-        with:
-          token: ${{ github.token }}
-          name: Download rom
-          tag_name: Up
-          files: Up/*
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
         with:
