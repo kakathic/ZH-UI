@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    name: 'Xem quá trình'
+    name: 'Xem quá trình...'
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
