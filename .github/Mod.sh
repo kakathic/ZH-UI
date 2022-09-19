@@ -55,7 +55,7 @@ done
 
 # Copy dữ liệu
 Timfile() {
-sudo cp -f $(sudo find /mnt/tmp/* -name "$1") $TOME/Mod
+sudo cp -f $(find $TOME/tmp/* -name "$1") $TOME/Mod
 }
 
 # Cài ngôn ngữ
