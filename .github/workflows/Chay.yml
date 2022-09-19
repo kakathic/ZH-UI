@@ -2,7 +2,8 @@ name: 'Kiểm thử'
 on: 
   push:
     paths:
-      - '.github/**'
+      - '.github/bin/**'
+      - '.github/**.sh'
   workflow_dispatch:
 jobs:
   build:
