@@ -1,6 +1,6 @@
 name: 'Kiểm thử'
 on: 
-push:
+  push:
     paths:
       - '.github/**'
   workflow_dispatch:
