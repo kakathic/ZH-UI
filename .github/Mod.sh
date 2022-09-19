@@ -62,7 +62,7 @@ sudo cp -f $(sudo find /mnt/tmp/* -name "$1") $TOME/Mod
 if [ "$NNTV" == "Viet_Nam" ];then
 Taive "https://github.com/kakathic/ZH-VN/releases/download/HH/TT.Zip" "$TOME/TT.Zip"
 7za x -tzip -y "$TOME/TT.Zip" -o$TOME/VH -p2 >/dev/null
-[ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
+[ -e $TOME/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
 mkdir -p $TMVH
 mkdir -p $TOME/Mod/system/media/theme/default
 cp -af $TOME/VH/apk/* $TMVH
@@ -74,7 +74,7 @@ fi
 else
 Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TG.Zip" "$TOME/TG.zip"
 7za x -tzip -y "$TOME/TG.Zip" -o$TOME/VH -p2 >/dev/null
-[ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
+[ -e $TOME/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
 mkdir -p $TMVH
 cp -af $TOME/VH/apk/* $TMVH
 fi
