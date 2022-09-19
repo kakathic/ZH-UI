@@ -36,6 +36,7 @@ jobs:
           export PATH="$GITHUB_WORKSPACE/.github/bin:$PATH"
           chmod -R 777 .github/*.sh >/dev/null
           . .github/Chay.sh
+          echo "VS=$VS" >> $GITHUB_ENV
       - uses: actions/upload-artifact@v3
         with:
           name: 'Rom_Rebuild'
