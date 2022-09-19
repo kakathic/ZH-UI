@@ -60,7 +60,7 @@ sudo cp -f $(sudo find /mnt/tmp/* -name "$1") $TOME/Mod
 
 # Cài ngôn ngữ
 if [ "$NNTV" == "Viet_Nam" ];then
-Taive "https://github.com/kakathic/ZH-TT/releases/download/HH/TT.Zip" "$TOME/TT.Zip"
+Taive "https://github.com/kakathic/ZH-VN/releases/download/HH/TT.Zip" "$TOME/TT.Zip"
 7za x -tzip -y "$TOME/TT.Zip" -o$TOME/VH -p2 >/dev/null
 [ -e /mnt/tmp/product/overlay ] && TMVH=$TOME/Mod/product/overlay || TMVH=$TOME/Mod/vendor/overlay
 mkdir -p $TMVH
