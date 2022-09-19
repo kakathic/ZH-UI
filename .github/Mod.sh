@@ -13,7 +13,7 @@ API=$(sudo grep ro.build.version.sdk= $TOME/tmp/system/system/build.prop | cut -
 baksmali() { java -Xmx4g -jar $TOME/.github/Tools/baksmali-2.3.4.jar "$@"; }
 smali() { java -Xmx4g -jar $TOME/.github/Tools/smali-2.5.2.jar "$@"; }
 
-Timkiem() {sudo find $TOME/Mod/$2 -name "*.smali" -exec grep -l "$1" {} +; }
+Timkiem() { sudo find $TOME/Mod/$2 -name "*.smali" -exec grep -l "$1" {} +; }
 
 Vsmali() {
 for Vka in $(Timkiem "$1" "$4"); do
@@ -55,7 +55,7 @@ done
 
 # Copy dữ liệu
 Timfile() {
-sudo cp -f $(find $TOME/tmp/* -name "$1") $TOME/Mod
+sudo cp -f $( sudo find $TOME/tmp/* -name "$1") $TOME/Mod
 }
 
 # Cài ngôn ngữ
