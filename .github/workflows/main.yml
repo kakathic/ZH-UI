@@ -35,7 +35,7 @@ jobs:
           chmod -R 777 .github/bin/* >/dev/null
           export PATH="$GITHUB_WORKSPACE/.github/bin:$PATH"
           chmod -R 777 .github/*.sh >/dev/null
-          . .github/Chay.sh
+          bash .github/Chay.sh
           echo "TENZ=$Tenrom" >> $GITHUB_ENV
       - uses: actions/upload-artifact@v3
         with:
