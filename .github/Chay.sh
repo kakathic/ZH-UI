@@ -1,4 +1,11 @@
 #kakathic & chamchamfy
+
+export TOME="$GITHUB_WORKSPACE"
+
+chmod -R 777 .github/bin/* >/dev/null
+export PATH="$TOME/.github/bin:$PATH"
+chmod -R 777 .github/*.sh >/dev/null
+
 echo "▼ Tên máy chủ"
 uname -a
 echo ::set-output name=uname::$(uname -a)
@@ -13,8 +20,6 @@ docopt
 protobuf<=3.20.1" > requirements.txt
 pip3 install -r requirements.txt > /dev/null
 
-TOME="$GITHUB_WORKSPACE"
-export TOME
 Danhsach="tmp
 Unpack
 Repack
@@ -34,12 +39,13 @@ User="User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firef
 Taive() { curl -s -L -H "$User" "$1" -o "$2"; }
 Xem() { curl -s -L -G -H "$User" "$@"; }
 
-export Tenrom=${URL##*/} && Tenr=${Tenrom%.*} && Dinhdang=${URL##*.}; 
+Tenrom=${URL##*/} && Tenr=${Tenrom%.*} && Dinhdang=${URL##*.}; 
 echo "- Link Rom: $URL"
 echo "
 - Tên rom: $Tenrom 
 - Định dạng: $Dinhdang
 "
+echo "TENZ=${Tenrom//$Dinhdang/}" >> $GITHUB_ENV
 
 echo "- Tải về" 
 Taive "$URL" "$TOME/$Tenrom" 
