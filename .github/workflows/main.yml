@@ -39,7 +39,7 @@ jobs:
           echo "TENZ=$Tenrom" >> $GITHUB_ENV
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.TENZ }}
+          name: 123
           path: .github/lib/Flash_2in1/*
           retention-days: 2
       - name: Delete workflow runs
