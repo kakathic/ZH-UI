@@ -20,20 +20,10 @@ docopt
 protobuf<=3.20.1" > requirements.txt
 pip3 install -r requirements.txt > /dev/null
 
-Danhsach="tmp
-Unpack
-Repack
-Unzip
-Payload
-Super
-Apk
-Mod/tmp
-VH
-Up"
+Danhsach="tmp Unpack Repack Unzip Payload Super Apk Mod/tmp VH Up"
 for Tao in $Danhsach; do
 mkdir -p $Tao
 done
-
 
 User="User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
 Taive() { curl -s -L -H "$User" "$1" -o "$2"; }
