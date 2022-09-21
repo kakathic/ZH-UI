@@ -1,9 +1,8 @@
 #kakathic & chamchamfy
 
 export TOME="$GITHUB_WORKSPACE"
-
-chmod -R 777 .github/bin/* >/dev/null
 export PATH="$TOME/.github/bin:$PATH"
+chmod -R 777 .github/bin/* >/dev/null
 chmod -R 777 .github/*.sh >/dev/null
 
 echo "▼ Tên máy chủ"
