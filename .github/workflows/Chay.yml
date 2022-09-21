@@ -1,6 +1,5 @@
 name: 'Kiểm thử'
 on: 
-  push:
     paths:
       - '.github/bin/**'
       - '.github/**.sh'
