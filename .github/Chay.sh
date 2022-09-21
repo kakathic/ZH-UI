@@ -34,7 +34,7 @@ echo "
 - Tên rom: $Tenrom 
 - Định dạng: $Dinhdang
 "
-echo "TENZ=$Tenrom" >> $GITHUB_ENV
+echo "TENZ=$Tenr" >> $GITHUB_ENV
 
 echo "- Tải về" 
 Taive "$URL" "$TOME/$Tenrom" 
