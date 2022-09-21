@@ -11,13 +11,14 @@ jobs:
       - name: 'Xem thông báo'
         shell: bash
         run: |
-          chmod -R 777 .github/bin/*
-          export PATH="$GITHUB_WORKSPACE/.github/bin:$PATH"
-          chmod -R 777 .github/*.sh
+          # kakathic
           bash .github/Test.sh
+          TENZ="miui_ALIOTH_V13.0.7.0.SKHCNXM_98b397a7dc_12.0.zip"
+          echo "TENZ=$TENZ" >> $GITHUB_ENV
+          echo "TENZ=$TENZ" >> 123.txt
       - name: 'Upload Rom'
         uses: actions/upload-artifact@v3
         with:
-          name: Zom_Edit
-          path: 123.zip
+          name: ${{ env.TENZ }}
+          path: 123.txt
           retention-days: 2
