@@ -158,9 +158,9 @@ fi
 
 ui_print " "
 ui_print "- Cập nhật hệ thống"
-if [ -f "images/cust.img" ] && [ -e "$blk/cust" ]; then package_extract_file "images/cust.img" "$blk/cust"; fi 
-if [ -f "images/recovery.img" ] && [ -e "$blk/recovery" ]; then package_extract_file "images/recovery.img" "$blk/recovery"; fi
-if [ -f "images/super.img.zst" ] && [ -e "$blk/super" ]; then package_extract_zstd "images/super.img.zst" "$blk/super"; fi 
+if [ -e "$blk/cust" ]; then package_extract_file "images/cust.img" "$blk/cust"; fi 
+if [ -e "$blk/recovery" ]; then package_extract_file "images/recovery.img" "$blk/recovery"; fi
+if [ -e "$blk/super" ]; then package_extract_zstd "images/super.img.zst" "$blk/super"; fi 
 
 # for n in system system_ext vendor product odm; do /system/bin/lptools unmap $n; /system/bin/lptools map $n; done 
 
