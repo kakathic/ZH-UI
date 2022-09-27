@@ -13,7 +13,7 @@ Tenfc=$TOME/.github/${Ten}_file_contexts
 SizeM=$((5*1024))
 touch $New/test.txt
 
-  sudo $make_ext4fs -J -T 1230768000 -a '/' -l "$SizeM" -L '/' -S $Tenfc $TOME/tmp/$Ten.img $New/ 
+  sudo $make_ext4fs -J -T 1230768000 -a '/' -l "$SizeM" -L '/' $TOME/tmp/$Ten.img $New/ 
 tune2fs -l $TOME/tmp/$Ten.img
   #sudo mke2fs -O ^has_journal -L / -t ext4 -b 4096 $TOME/tmp/$Ten.img -l 256
   sudo $e2fsdroid -T "1230768000" -a '/' -S "$Tenfc" -f "$New" $TOME/tmp/$Ten.img
