@@ -3,7 +3,7 @@ echo
 TOME="$GITHUB_WORKSPACE"
 chmod -R 777 $TOME/.github/bin
 e2fsdroid=$TOME/.github/bin/e2fsdroid
-mkext4=$TOME/.github/bin/make_ext4fs
+make_ext4fs=$TOME/.github/bin/make_ext4fs
 Ten=system
 Tam=$TOME/tam
 New=$TOME/$Ten
@@ -13,9 +13,9 @@ Tenfc=$TOME/.github/${Ten}_file_contexts
 SizeM=$((4*1024))M
 touch $New/test.txt
 
-  $mkext4 -J -a / -l $SizeM -L / $TOME/tmp/$Ten.img $New/ 
+  exec $make_ext4fs -J -a / -l $SizeM -L / $TOME/tmp/$Ten.img $New/ 
   tune2fs -l $TOME/tmp/$Ten.img 
-  #$e2fsdroid -T 1230768000 -a / -f $New/ $TOME/tmp/$Ten.img
+  #exec $e2fsdroid -T 1230768000 -a / -f $New/ $TOME/tmp/$Ten.img
   #tune2fs -l $TOME/tmp/$Ten.img
   #tune2fs -o +acl -L '/' -M '/' $TOME/tmp/$Ten.img
   #e2fsck -fy $TOME/tmp/$Ten.img 
