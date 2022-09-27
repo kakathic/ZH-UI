@@ -10,10 +10,10 @@ New=$TOME/$Ten
 mkdir -p $Tam 
 mkdir -p $New
 Tenfc=$TOME/.github/${Ten}_file_contexts
-SizeM=$((5*1024))M
+SizeM=$((4*1024))M
 touch $New/test.txt
 
-  sudo $mkext4 -J -a / -l $SizeM -L / $TOME/tmp/$Ten.img $New/ 
+  sudo $mkext4 -J -a / -l 4096M -L / $TOME/tmp/$Ten.img $New/ 
   tune2fs -l $TOME/tmp/$Ten.img 
   sudo $e2fsdroid -T 1230768000 -a / -f $New/ $TOME/tmp/$Ten.img
   tune2fs -l $TOME/tmp/$Ten.img
