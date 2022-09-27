@@ -10,7 +10,7 @@ New=$TOME/$Ten
 mkdir -p $Tam 
 mkdir -p $New
 Tenfc=$TOME/.github/${Ten}_file_contexts
-SizeM=$((5*1024))
+SizeM=$((5*1024*1024*1024))
 Size=$(($SizeM / 4096))
 touch $New/test.txt
 
