@@ -17,9 +17,8 @@ touch $New/test.txt
   tune2fs -l $TOME/tmp/$Ten.img 
   #exec $e2fsdroid -T 1230768000 -a / -f $New/ $TOME/tmp/$Ten.img
   #tune2fs -l $TOME/tmp/$Ten.img
-  tune2fs -o +acl,+user_xattr -L '/' -M '/' $TOME/tmp/$Ten.img
+  tune2fs -o +acl,+user_xattr -L / -M / -E hash_alg=half_md4 -O dir_index,filetype,extent,sparse_super,large_file,huge_file,uninit_bg,dir_nlink,extra_isize -e continue $TOME/tmp/$Ten.img
   #e2fsck -fy $TOME/tmp/$Ten.img 
-  #tune2fs -E hash_alg=half_md4 -O dir_index,filetype,extent,sparse_super,large_file,huge_file,uninit_bg,dir_nlink,extra_isize -e continue $TOME/tmp/$Ten.img 
   sudo mount -o rw,loop $TOME/tmp/$Ten.img $Tam
   ls -l $Tam
   #cd $TOME
