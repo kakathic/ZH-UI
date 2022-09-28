@@ -5,7 +5,7 @@ chmod -R 777 $TOME/.github/bin
 e2fsdroid=$TOME/.github/bin/e2fsdroid
 make_ext4fs=$TOME/.github/bin/make_ext4fs
 Ten=system
-Tam=$TOME/tam
+Tam=$TOME/tmp/tam
 New=$TOME/$Ten
 mkdir -p $Tam 
 mkdir -p $New
