@@ -51,7 +51,7 @@ AnalyticsCore
 AndroidAutoStub
 AutoRegistration
 BTProductionLineTool
-BaiduIME
+#BaiduIME
 BasicDreams
 BookmarkProvider
 Browser 
