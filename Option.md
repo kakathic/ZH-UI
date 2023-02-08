@@ -10,4 +10,4 @@ Licham=1
 Dinhdangphanvung=ext4 
 
 #### Chế độ phân vùng: none hoặc readonly
-Chedo=none 
+Chedo=none
