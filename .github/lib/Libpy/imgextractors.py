@@ -42,6 +42,7 @@ class Extractor(object):
         self.TYPE_IMG = 'system'
         self.context = []
         self.fsconfig = []
+        self.isSAR = False
 
     def __remove(self, path):
         if os.path.isfile(path):
@@ -58,17 +59,42 @@ class Extractor(object):
                     traceback.format_exception(ex.__class__, ex, ex_traceback)]
         return '\n'.join(tb_lines)
 
+    #def __file_name(self,file_path):
+        #name = os.path.basename(file_path).split('.')[0]
+        #name = name.split('-')[0]
+        #name = name.split('_')[0]
+        #name = name.split(' ')[0]
+        #name = name.split('+')[0]
+        #name = name.split('{')[0]
+        #name = name.split('(')[0]
+        #return name
+    
     def __file_name(self,file_path):
-        name = os.path.basename(file_path).split('.')[0]
-        name = name.split('-')[0]
-       # name = name.split('_')[0]
-        name = name.split(' ')[0]
-        name = name.split('+')[0]
-        name = name.split('{')[0]
-        name = name.split('(')[0]
+        #name = os.path.basename(file_path).rsplit('.',1)[0]
+        #name = os.path.basename(file_path).rsplit('.PARTITION',1)[0]
+        name = os.path.basename(file_path).rsplit('.',1)[0]
+        #print(name)
+        #file_exten = os.path.splitext(file_path)
+        #os.path.splitext(file_path)[1] == '.PARTITION'
+        #if os.path.splitext(file_path)[1] == '.PARTITION':
+          #name = file_path
         return name
+        #else:
+          #name = os.path.basename(file_path).rsplit('.',1)[0]
+          #return name
+
+    #def __file_name(self,file_path):
+    #    name = os.path.basename(file_path)
+    #    symb=['.', '-', '_', ' ', '+', '{']
+    #    for ik in symb:
+    #        if ik in name:
+    #            name = name.split(ik)[0]
+    #            break
+    #    return name
 
     def __appendf(self, msg, log_file):
+        if not os.path.isfile(log_file):
+            open(log_file, 'tw', encoding='utf-8').close()
         with open(log_file, 'a', newline='\n') as file:
             print(msg, file=file)
 
@@ -98,9 +124,25 @@ class Extractor(object):
 
     def __ext4extractor(self):
         import ext4, string, struct
-        fs_config_file = self.FileName + '_fs_config'
+        #2021/04/25 -->
+        config_dir = os.path.dirname(self.EXTRACT_DIR) + os.sep+ 'config' + os.sep + self.FileName + os.sep
+        if not os.path.isdir(config_dir):
+            os.makedirs(config_dir)
+        fs_config_file = config_dir  + self.FileName + "_fs_config"
+        contexts = config_dir  + self.FileName + "_file_contexts"
+        pack_sh = config_dir  + self.FileName + "_pack.sh"
+        pack_sparse_sh = config_dir  + self.FileName + "_pack_sparse.sh"
+        size = config_dir  + self.FileName + "_size.txt"
+        name = config_dir  + self.FileName + "_name.txt"
+        spaces_file = config_dir  + self.FileName + "_space.txt"
+        self.__appendf('make_ext4fs -J -T -1 -S ./file_contexts -C ./fs_config -l ' +str(os.path.getsize(self.OUTPUT_IMAGE_FILE))+ ' -a /'+self.FileName+' "$outdir"/'+self.FileName+'.new.img '+self.FileName+'', pack_sh)
+        self.__appendf('make_ext4fs -s -J -T -1 -S ./file_contexts -C ./fs_config -l ' +str(os.path.getsize(self.OUTPUT_IMAGE_FILE))+ ' -a /'+self.FileName+' "$outdir"/'+self.FileName+'.new.img '+self.FileName+'', pack_sparse_sh)
+        self.__appendf(os.path.getsize(self.OUTPUT_IMAGE_FILE), size)
+        self.__appendf(os.path.basename(self.OUTPUT_IMAGE_FILE).rsplit('.',1)[0], name)
+        #<--2021/04/25
+        #fs_config_file = self.FileName + '_fs_config'
         fuking_symbols='\\^$.|?*+(){}[]'
-        contexts = self.CONFING_DIR + os.sep + self.FileName + "_file_contexts" #08.05.18
+        #contexts = self.BASE_MYDIR + 'config' + os.sep + self.FileName + "_file_contexts" #08.05.18
         def scan_dir(root_inode, root_path=""):
             for entry_name, entry_inode_idx, entry_type in root_inode.open_dir():
                 if entry_name in ['.', '..'] or entry_name.endswith(' (2)'):
@@ -123,7 +165,7 @@ class Extractor(object):
                             cap = '' + str(hex(int('%04x%04x%04x' % (raw_cap[3], raw_cap[2], raw_cap[1]), 16)))
                         cap = ' capabilities={cap}'.format(cap=cap)
                 if entry_inode.is_dir:
-                    dir_target = self.EXTRACT_DIR + entry_inode_path.replace(' ','_').replace('"','')
+                    dir_target = self.EXTRACT_DIR + entry_inode_path.replace(' ','_')
                     if not os.path.isdir(dir_target):
                         os.makedirs(dir_target)
                     if os.name == 'posix':
@@ -131,82 +173,90 @@ class Extractor(object):
                         os.chown(dir_target, uid, gid)
                     scan_dir(entry_inode, entry_inode_path)
                     if cap == '' and con == '':
-                        tmppath=self.DIR + entry_inode_path
+                        tmppath=self.FileName + entry_inode_path
                         if (tmppath).find(' ',1,len(tmppath))>0:
-                            spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                            if not os.path.isfile(spaces_file):
-                                f = open(spaces_file, 'tw', encoding='utf-8')
-                                self.__appendf(tmppath, spaces_file)
-                                f.close
-                            else:
-                                self.__appendf(tmppath, spaces_file)
+                            #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                            #if not os.path.isfile(spaces_file):
+                            #    f = open(spaces_file, 'tw', encoding='utf-8')
+                            #    self.__appendf(tmppath, spaces_file)
+                            #    f.close
+                            #else:
+                            self.__appendf(tmppath, spaces_file)
                             tmppath=tmppath.replace(' ', '_')
                             self.fsconfig.append('%s %s %s %s' % (tmppath, uid, gid, mode))
                         else:    
-                            self.fsconfig.append('%s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode))
+                            self.fsconfig.append('%s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode))
                     else:
                         if cap == '':
-                            tmppath=self.DIR + entry_inode_path
+                            tmppath=self.FileName + entry_inode_path
                             if (tmppath).find(' ',1,len(tmppath))>0:
-                                spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                                if not os.path.isfile(spaces_file):
-                                    f = open(spaces_file, 'tw', encoding='utf-8')
-                                    self.__appendf(tmppath, spaces_file)
-                                    f.close
-                                else:
-                                    self.__appendf(tmppath, spaces_file)
+                                #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                                #if not os.path.isfile(spaces_file):
+                                #    f = open(spaces_file, 'tw', encoding='utf-8')
+                                #    self.__appendf(tmppath, spaces_file)
+                                #    f.close
+                                #else:
+                                self.__appendf(tmppath, spaces_file)
                                 tmppath=tmppath.replace(' ', '_')
                                 self.fsconfig.append('%s %s %s %s' % (tmppath, uid, gid, mode))
                             else:    
-                                self.fsconfig.append('%s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode))
+                                self.fsconfig.append('%s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode))
                             for fuk_symb in fuking_symbols:
                                 tmppath=tmppath.replace(fuk_symb, '\\'+fuk_symb)
+                            self.context.append('/%s %s' % (tmppath+"(/.*)?", con))
                             self.context.append('/%s %s' % (tmppath, con))
                         else:
                             if con == '':
-                                tmppath=self.DIR + entry_inode_path
+                                tmppath=self.FileName + entry_inode_path
                                 if (tmppath).find(' ',1,len(tmppath))>0:
-                                    spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                                    if not os.path.isfile(spaces_file):
-                                        f = open(spaces_file, 'tw', encoding='utf-8')
-                                        self.__appendf(tmppath, spaces_file)
-                                        f.close
-                                    else:
-                                        self.__appendf(tmppath, spaces_file)
+                                    #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                                    #if not os.path.isfile(spaces_file):
+                                    #    f = open(spaces_file, 'tw', encoding='utf-8')
+                                    #    self.__appendf(tmppath, spaces_file)
+                                    #    f.close
+                                    #else:
+                                    self.__appendf(tmppath, spaces_file)
                                     tmppath=tmppath.replace(' ', '_')
                                     self.fsconfig.append('%s %s %s %s' % (tmppath, uid, gid, mode + cap))
                                 else:    
-                                    self.fsconfig.append('%s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode + cap))
+                                    self.fsconfig.append('%s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode + cap))
                             else:
-                                tmppath=self.DIR + entry_inode_path
+                                tmppath=self.FileName + entry_inode_path
                                 if (tmppath).find(' ',1,len(tmppath))>0:
-                                    spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                                    if not os.path.isfile(spaces_file):
-                                        f = open(spaces_file, 'tw', encoding='utf-8')
-                                        self.__appendf(tmppath, spaces_file)
-                                        f.close
-                                    else:
-                                        self.__appendf(tmppath, spaces_file)
+                                    #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                                    #if not os.path.isfile(spaces_file):
+                                    #    f = open(spaces_file, 'tw', encoding='utf-8')
+                                    #    self.__appendf(tmppath, spaces_file)
+                                    #    f.close
+                                    #else:
+                                    self.__appendf(tmppath, spaces_file)
                                     tmppath=tmppath.replace(' ', '_')
                                     self.fsconfig.append('%s %s %s %s' % (tmppath, uid, gid, mode + cap))
                                 else:    
-                                    self.fsconfig.append('%s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode + cap))
+                                    self.fsconfig.append('%s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode + cap))
                                 for fuk_symb in fuking_symbols:
                                     tmppath=tmppath.replace(fuk_symb, '\\'+fuk_symb)
+                                self.context.append('/%s %s' % (tmppath+"(/.*)?", con))
                                 self.context.append('/%s %s' % (tmppath, con))
                 elif entry_inode.is_file:
-                    raw = entry_inode.open_read().read()
+                    try:
+                        raw = entry_inode.open_read().read()
+                    except:
+                        continue
                     wdone = None
+                    file_target = self.EXTRACT_DIR + entry_inode_path.replace('/', os.sep).replace(' ','_')
+                    if re.search('/'+self.__file_name(self.FileName)+'/system/build\.prop', file_target): #30.11.2020
+                      self.isSAR = True #30.11.2020
                     if os.name == 'nt':
                         if entry_name.endswith('/'):
                             entry_name = entry_name[:-1]
-                        file_target = self.EXTRACT_DIR + entry_inode_path.replace('/', os.sep).replace(' ','_').replace('"','')
+                        file_target = self.EXTRACT_DIR + entry_inode_path.replace('/', os.sep).replace(' ','_')
                         if not os.path.isdir(os.path.dirname(file_target)):
                             os.makedirs(os.path.dirname(file_target))
                         with open(file_target, 'wb') as out:
                             out.write(raw)
                     if os.name == 'posix':
-                        file_target = self.EXTRACT_DIR + entry_inode_path.replace(' ','_').replace('"','')
+                        file_target = self.EXTRACT_DIR + entry_inode_path.replace(' ','_')
                         if not os.path.isdir(os.path.dirname(file_target)):
                             os.makedirs(os.path.dirname(file_target))
                         with open(file_target, 'wb') as out:
@@ -214,66 +264,66 @@ class Extractor(object):
                         os.chmod(file_target, int(mode, 8))
                         os.chown(file_target, uid, gid)
                     if cap == '' and con == '':
-                        tmppath=self.DIR + entry_inode_path
+                        tmppath=self.FileName + entry_inode_path
                         if (tmppath).find(' ',1,len(tmppath))>0:
-                            spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                            if not os.path.isfile(spaces_file):
-                                f = open(spaces_file, 'tw', encoding='utf-8')
-                                self.__appendf(tmppath, spaces_file)
-                                f.close
-                            else:
-                                self.__appendf(tmppath, spaces_file)
+                            #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                            #if not os.path.isfile(spaces_file):
+                            #    f = open(spaces_file, 'tw', encoding='utf-8')
+                            #    self.__appendf(tmppath, spaces_file)
+                            #    f.close
+                            #else:
+                            self.__appendf(tmppath, spaces_file)
                             tmppath=tmppath.replace(' ', '_')
                             self.fsconfig.append('%s %s %s %s' % (tmppath, uid, gid, mode))
                         else:    
-                            self.fsconfig.append('%s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode))
+                            self.fsconfig.append('%s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode))
                     else:
                         if cap == '':
-                            tmppath=self.DIR + entry_inode_path
+                            tmppath=self.FileName + entry_inode_path
                             if (tmppath).find(' ',1,len(tmppath))>0:
-                                spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                                if not os.path.isfile(spaces_file):
-                                    f = open(spaces_file, 'tw', encoding='utf-8')
-                                    self.__appendf(tmppath, spaces_file)
-                                    f.close
-                                else:
-                                    self.__appendf(tmppath, spaces_file)
+                                #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                                #if not os.path.isfile(spaces_file):
+                                #    f = open(spaces_file, 'tw', encoding='utf-8')
+                                #    self.__appendf(tmppath, spaces_file)
+                                #    f.close
+                                #else:
+                                self.__appendf(tmppath, spaces_file)
                                 tmppath=tmppath.replace(' ', '_')
                                 self.fsconfig.append('%s %s %s %s' % (tmppath, uid, gid, mode))
                             else:    
-                                self.fsconfig.append('%s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode))
+                                self.fsconfig.append('%s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode))
                             for fuk_symb in fuking_symbols:
                                 tmppath=tmppath.replace(fuk_symb, '\\'+fuk_symb)
                             self.context.append('/%s %s' % (tmppath, con))
                         else:
                             if con == '':
-                                tmppath=self.DIR + entry_inode_path
+                                tmppath=self.FileName + entry_inode_path
                                 if (tmppath).find(' ',1,len(tmppath))>0:
-                                    spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                                    if not os.path.isfile(spaces_file):
-                                        f = open(spaces_file, 'tw', encoding='utf-8')
-                                        self.__appendf(tmppath, spaces_file)
-                                        f.close
-                                    else:
-                                        self.__appendf(tmppath, spaces_file)
+                                    #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                                    #if not os.path.isfile(spaces_file):
+                                    #    f = open(spaces_file, 'tw', encoding='utf-8')
+                                    #    self.__appendf(tmppath, spaces_file)
+                                    #    f.close
+                                    #else:
+                                    self.__appendf(tmppath, spaces_file)
                                     tmppath=tmppath.replace(' ', '_')
                                     self.fsconfig.append('%s %s %s %s' % (tmppath, uid, gid, mode + cap))
                                 else:    
-                                    self.fsconfig.append('%s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode + cap))
+                                    self.fsconfig.append('%s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode + cap))
                             else:
-                                tmppath=self.DIR + entry_inode_path
+                                tmppath=self.FileName + entry_inode_path
                                 if (tmppath).find(' ',1,len(tmppath))>0:
-                                    spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                                    if not os.path.isfile(spaces_file):
-                                        f = open(spaces_file, 'tw', encoding='utf-8')
-                                        self.__appendf(tmppath, spaces_file)
-                                        f.close
-                                    else:
-                                        self.__appendf(tmppath, spaces_file)
+                                    #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                                    #if not os.path.isfile(spaces_file):
+                                    #    f = open(spaces_file, 'tw', encoding='utf-8')
+                                    #    self.__appendf(tmppath, spaces_file)
+                                    #    f.close
+                                    #else:
+                                    self.__appendf(tmppath, spaces_file)
                                     tmppath=tmppath.replace(' ', '_')
                                     self.fsconfig.append('%s %s %s %s' % (tmppath, uid, gid, mode + cap))
                                 else:    
-                                    self.fsconfig.append('%s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode + cap))
+                                    self.fsconfig.append('%s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode + cap))
                                 for fuk_symb in fuking_symbols:
                                     tmppath=tmppath.replace(fuk_symb, '\\'+fuk_symb)
                                 self.context.append('/%s %s' % (tmppath, con))
@@ -282,66 +332,66 @@ class Extractor(object):
                         link_target = entry_inode.open_read().read().decode("utf8")
                         target = self.EXTRACT_DIR + entry_inode_path.replace(' ', '_')
                         if cap == '' and con == '':
-                            tmppath=self.DIR + entry_inode_path
+                            tmppath=self.FileName + entry_inode_path
                             if (tmppath).find(' ',1,len(tmppath))>0:
-                                spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                                if not os.path.isfile(spaces_file):
-                                    f = open(spaces_file, 'tw', encoding='utf-8')
-                                    self.__appendf(tmppath, spaces_file)
-                                    f.close
-                                else:
-                                    self.__appendf(tmppath, spaces_file)
+                                #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                                #if not os.path.isfile(spaces_file):
+                                #    f = open(spaces_file, 'tw', encoding='utf-8')
+                                #    self.__appendf(tmppath, spaces_file)
+                                #    f.close
+                                #else:
+                                self.__appendf(tmppath, spaces_file)
                                 tmppath=tmppath.replace(' ', '_')
                                 self.fsconfig.append('%s %s %s %s %s' % (tmppath, uid, gid, mode, link_target))
                             else:    
-                                self.fsconfig.append('%s %s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode, link_target))
+                                self.fsconfig.append('%s %s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode, link_target))
                         else:
                             if cap == '':
-                                tmppath=self.DIR + entry_inode_path
+                                tmppath=self.FileName + entry_inode_path
                                 if (tmppath).find(' ',1,len(tmppath))>0:
-                                    spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                                    if not os.path.isfile(spaces_file):
-                                        f = open(spaces_file, 'tw', encoding='utf-8')
-                                        self.__appendf(tmppath, spaces_file)
-                                        f.close
-                                    else:
-                                        self.__appendf(tmppath, spaces_file)
+                                    #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                                    #if not os.path.isfile(spaces_file):
+                                    #    f = open(spaces_file, 'tw', encoding='utf-8')
+                                    #    self.__appendf(tmppath, spaces_file)
+                                    #    f.close
+                                    #else:
+                                    self.__appendf(tmppath, spaces_file)
                                     tmppath=tmppath.replace(' ', '_')
                                     self.fsconfig.append('%s %s %s %s %s' % (tmppath, uid, gid, mode, link_target))
                                 else:    
-                                    self.fsconfig.append('%s %s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode, link_target))
+                                    self.fsconfig.append('%s %s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode, link_target))
                                 for fuk_symb in fuking_symbols:
                                     tmppath=tmppath=tmppath.replace(fuk_symb, '\\'+fuk_symb)
                                 self.context.append('/%s %s' % (tmppath, con))
                             else:
                                 if con == '':
-                                    tmppath=self.DIR + entry_inode_path
+                                    tmppath=self.FileName + entry_inode_path
                                     if (tmppath).find(' ',1,len(tmppath))>0:
-                                        spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                                        if not os.path.isfile(spaces_file):
-                                            f = open(spaces_file, 'tw', encoding='utf-8')
-                                            self.__appendf(tmppath, spaces_file)
-                                            f.close
-                                        else:
-                                            self.__appendf(tmppath, spaces_file)
+                                        #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                                        #if not os.path.isfile(spaces_file):
+                                        #    f = open(spaces_file, 'tw', encoding='utf-8')
+                                        #    self.__appendf(tmppath, spaces_file)
+                                        #    f.close
+                                        #else:
+                                        self.__appendf(tmppath, spaces_file)
                                         tmppath=tmppath.replace(' ', '_')
                                         self.fsconfig.append('%s %s %s %s %s' % (tmppath, uid, gid, mode + cap, link_target))
                                     else:    
-                                        self.fsconfig.append('%s %s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode + cap, link_target))
+                                        self.fsconfig.append('%s %s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode + cap, link_target))
                                 else:
-                                    tmppath=self.DIR + entry_inode_path
+                                    tmppath=self.FileName + entry_inode_path
                                     if (tmppath).find(' ',1,len(tmppath))>0:
-                                        spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                                        if not os.path.isfile(spaces_file):
-                                            f = open(spaces_file, 'tw', encoding='utf-8')
-                                            self.__appendf(tmppath, spaces_file)
-                                            f.close
-                                        else:
-                                            self.__appendf(tmppath, spaces_file)
+                                        #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                                        #if not os.path.isfile(spaces_file):
+                                        #    f = open(spaces_file, 'tw', encoding='utf-8')
+                                        #    self.__appendf(tmppath, spaces_file)
+                                        #    f.close
+                                        #else:
+                                        self.__appendf(tmppath, spaces_file)
                                         tmppath=tmppath.replace(' ', '_')
                                         self.fsconfig.append('%s %s %s %s %s' % (tmppath, uid, gid, mode + cap, link_target))
                                     else:    
-                                        self.fsconfig.append('%s %s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode + cap, link_target))
+                                        self.fsconfig.append('%s %s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode + cap, link_target))
                                     for fuk_symb in fuking_symbols:
                                         tmppath=tmppath.replace(fuk_symb, '\\'+fuk_symb)
                                     self.context.append('/%s %s' % (tmppath, con))
@@ -369,7 +419,7 @@ class Extractor(object):
                         if entry_inode_path[1:] == entry_name or link_target[1:] == entry_name:
                             self.symlinks.append('%s %s' % (link_target, entry_inode_path[1:]))
                         else:
-                            self.symlinks.append('%s %s' % (link_target, self.DIR + entry_inode_path))
+                            self.symlinks.append('%s %s' % (link_target, self.FileName + entry_inode_path))
                     except:
                         try:
                             link_target_block = int.from_bytes(entry_inode.open_read().read(), "little")
@@ -377,66 +427,66 @@ class Extractor(object):
                             target = self.EXTRACT_DIR + entry_inode_path.replace(' ', '_')
                             if link_target and all(c in string.printable for c in link_target):
                                 if cap == '' and con == '':
-                                    tmppath=self.DIR + entry_inode_path
+                                    tmppath=self.FileName + entry_inode_path
                                     if (tmppath).find(' ',1,len(tmppath))>0:
-                                        spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                                        if not os.path.isfile(spaces_file):
-                                            f = open(spaces_file, 'tw', encoding='utf-8')
-                                            self.__appendf(tmppath, spaces_file)
-                                            f.close
-                                        else:
-                                            self.__appendf(tmppath, spaces_file)
+                                        #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                                        #if not os.path.isfile(spaces_file):
+                                        #    f = open(spaces_file, 'tw', encoding='utf-8')
+                                        #    self.__appendf(tmppath, spaces_file)
+                                        #    f.close
+                                        #else:
+                                        self.__appendf(tmppath, spaces_file)
                                         tmppath=tmppath.replace(' ', '_')
                                         self.fsconfig.append('%s %s %s %s %s' % (tmppath, uid, gid, mode, link_target))
                                     else:    
-                                        self.fsconfig.append('%s %s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode, link_target))
+                                        self.fsconfig.append('%s %s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode, link_target))
                                 else:
                                     if cap == '':
-                                        tmppath=self.DIR + entry_inode_path
+                                        tmppath=self.FileName + entry_inode_path
                                         if (tmppath).find(' ',1,len(tmppath))>0:
-                                            spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                                            if not os.path.isfile(spaces_file):
-                                                f = open(spaces_file, 'tw', encoding='utf-8')
-                                                self.__appendf(tmppath, spaces_file)
-                                                f.close
-                                            else:
-                                                self.__appendf(tmppath, spaces_file)
+                                            #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                                            #if not os.path.isfile(spaces_file):
+                                            #    f = open(spaces_file, 'tw', encoding='utf-8')
+                                            #    self.__appendf(tmppath, spaces_file)
+                                            #    f.close
+                                            #else:
+                                            self.__appendf(tmppath, spaces_file)
                                             tmppath=tmppath.replace(' ', '_')
                                             self.fsconfig.append('%s %s %s %s %s' % (tmppath, uid, gid, mode, link_target))
                                         else:    
-                                            self.fsconfig.append('%s %s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode, link_target))
+                                            self.fsconfig.append('%s %s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode, link_target))
                                         for fuk_symb in fuking_symbols:
                                             tmppath=tmppath.replace(fuk_symb, '\\'+fuk_symb)
                                         self.context.append('/%s %s' % (tmppath, con))
                                     else:
                                         if con == '':
-                                            tmppath=self.DIR + entry_inode_path
+                                            tmppath=self.FileName + entry_inode_path
                                             if (tmppath).find(' ',1,len(tmppath))>0:
-                                                spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                                                if not os.path.isfile(spaces_file):
-                                                    f = open(spaces_file, 'tw', encoding='utf-8')
-                                                    self.__appendf(tmppath, spaces_file)
-                                                    f.close
-                                                else:
-                                                    self.__appendf(tmppath, spaces_file)
+                                                #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                                                #if not os.path.isfile(spaces_file):
+                                                #    f = open(spaces_file, 'tw', encoding='utf-8')
+                                                #    self.__appendf(tmppath, spaces_file)
+                                                #    f.close
+                                                #else:
+                                                self.__appendf(tmppath, spaces_file)
                                                 tmppath=tmppath.replace(' ', '_')
                                                 self.fsconfig.append('%s %s %s %s %s' % (tmppath, uid, gid, mode + cap, link_target))
                                             else:    
-                                                self.fsconfig.append('%s %s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode + cap, link_target))
+                                                self.fsconfig.append('%s %s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode + cap, link_target))
                                         else:
-                                            tmppath=self.DIR + entry_inode_path
+                                            tmppath=self.FileName + entry_inode_path
                                             if (tmppath).find(' ',1,len(tmppath))>0:
-                                                spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
-                                                if not os.path.isfile(spaces_file):
-                                                    f = open(spaces_file, 'tw', encoding='utf-8')
-                                                    self.__appendf(tmppath, spaces_file)
-                                                    f.close
-                                                else:
-                                                    self.__appendf(tmppath, spaces_file)
+                                                #spaces_file=self.BASE_MYDIR + 'config' + os.sep + self.FileName + '_space.txt'
+                                                #if not os.path.isfile(spaces_file):
+                                                #    f = open(spaces_file, 'tw', encoding='utf-8')
+                                                #    self.__appendf(tmppath, spaces_file)
+                                                #    f.close
+                                                #else:
+                                                self.__appendf(tmppath, spaces_file)
                                                 tmppath=tmppath.replace(' ', '_')
                                                 self.fsconfig.append('%s %s %s %s %s' % (tmppath, uid, gid, mode + cap, link_target))
                                             else:    
-                                                self.fsconfig.append('%s %s %s %s %s' % (self.DIR + entry_inode_path, uid, gid, mode + cap, link_target))
+                                                self.fsconfig.append('%s %s %s %s %s' % (self.FileName + entry_inode_path, uid, gid, mode + cap, link_target))
                                             for fuk_symb in fuking_symbols:
                                                 tmppath=tmppath.replace(fuk_symb, '\\'+fuk_symb)
                                             self.context.append('/%s %s' % (tmppath, con))
@@ -454,58 +504,48 @@ class Extractor(object):
                         except:
                             pass
                             
-        dir_my = self.CONFING_DIR + os.sep
-        if not os.path.isdir(dir_my):
-            os.makedirs(dir_my)
-       # f = open(dir_my + self.FileName + '_pack.sh', 'tw', encoding='utf-8')
-       # self.__appendf('make_ext4fs -T -1 -S ./file_contexts -C ./fs_config -l ' +str(os.path.getsize(self.OUTPUT_IMAGE_FILE))+ ' -a /'+self.FileName+' "$outdir"/'+self.FileName+'.new.img '+self.FileName+'', dir_my + self.FileName + '_pack.sh')
-       # f.close()
-       # f = open(dir_my + self.FileName + '_pack_sparse.sh', 'tw', encoding='utf-8')
-       # self.__appendf('make_ext4fs -s -T -1 -S ./file_contexts -C ./fs_config -l ' +str(os.path.getsize(self.OUTPUT_IMAGE_FILE))+ ' -a /'+self.FileName+' "$outdir"/'+self.FileName+'.new.img '+self.FileName+'', dir_my + self.FileName + '_pack_sparse.sh')
-       # f.close()
-        f = open(dir_my + self.FileName + '_size.txt', 'tw', encoding='utf-8')
-        self.__appendf(os.path.getsize(self.OUTPUT_IMAGE_FILE), dir_my + self.FileName + '_size.txt')
-        f.close()
-       # f = open(dir_my + self.FileName + '_name.txt', 'tw', encoding='utf-8')
-       # self.__appendf(os.path.basename(self.OUTPUT_IMAGE_FILE).replace(".img", ""), dir_my + self.FileName + '_name.txt')
-       # f.close()
+        #dir_my = self.BASE_MYDIR + 'config' + os.sep
+        #if not os.path.isdir(dir_my):
+        #    os.mkdir(dir_my)
+        #f = open(dir_my + self.FileName + '_pack.sh', 'tw', encoding='utf-8')
+        #self.__appendf('make_ext4fs -J -T -1 -S ./file_contexts -C ./fs_config -l ' +str(os.path.getsize(self.OUTPUT_IMAGE_FILE))+ ' -a /'+self.FileName+' "$outdir"/'+self.FileName+'.new.img '+self.FileName+'', dir_my + self.FileName + '_pack.sh')
+        #f.close()
+        #f = open(dir_my + self.FileName + '_pack_sparse.sh', 'tw', encoding='utf-8')
+        #self.__appendf('make_ext4fs -s -J -T -1 -S ./file_contexts -C ./fs_config -l ' +str(os.path.getsize(self.OUTPUT_IMAGE_FILE))+ ' -a /'+self.FileName+' "$outdir"/'+self.FileName+'.new.img '+self.FileName+'', dir_my + self.FileName + '_pack_sparse.sh')
+        #f.close()
+        #f = open(dir_my + self.FileName + '_size.txt', 'tw', encoding='utf-8')
+        #self.__appendf(os.path.getsize(self.OUTPUT_IMAGE_FILE), dir_my + self.FileName + '_size.txt')
+        #f.close()
+        #f = open(dir_my + self.FileName + '_name.txt', 'tw', encoding='utf-8')
+        #self.__appendf(os.path.basename(self.OUTPUT_IMAGE_FILE).replace(".img", ""), dir_my + self.FileName + '_name.txt')
+        #f.close()
         with open(self.OUTPUT_IMAGE_FILE, 'rb') as file:
             root = ext4.Volume(file).root
             dirlist = []
             for file_name, inode_idx, file_type in root.open_dir():
                 dirlist.append(file_name)
-            dirr = self.__file_name(os.path.basename(self.OUTPUT_IMAGE_FILE).split('.')[0]) #11.05.18
+            #dirr = self.__file_name(os.path.basename(self.FileName)) #11.05.18
+            dirr = re.sub('(\.)','\\.' , self.FileName)
             setattr(self, 'DIR', dirr)
-            scan_dir(root)          
-            for c in self.fsconfig:
-                if dirr == 'vendor':
-                    self.fsconfig.insert(0, '/' + ' 0 2000 0755')
-                    self.fsconfig.insert(1, dirr + ' 0 2000 0755')
-                elif dirr == 'system':
-                    self.fsconfig.insert(0, '/' + ' 0 0 0755')
-                    self.fsconfig.insert(1, '/' + 'lost+found' + ' 0 0 0700')
-                    self.fsconfig.insert(2, dirr + ' 0 0 0755')
-                else:
-                    self.fsconfig.insert(0, '/' + ' 0 0 0755')
-                    self.fsconfig.insert(1, dirr + ' 0 0 0755')
-                break 
-
-            self.__appendf('\n'.join(self.fsconfig), self.CONFING_DIR + os.sep + fs_config_file)
+            scan_dir(root)
+            self.fsconfig.sort()
+            self.__appendf('\n'.join(self.fsconfig), fs_config_file) #2021/04/25
+            #self.__appendf('\n'.join(self.fsconfig), self.BASE_MYDIR + 'config' + os.sep + fs_config_file)
             if self.context: #11.05.18
                 self.context.sort() #11.05.18
-                for c in self.context:
-                    if re.search('lost..found', c):
-                        self.context.insert(0, '/' + ' ' + c.split(" ")[1])                    
-                        self.context.insert(1, '/' + dirr +'(/.*)? ' + c.split(" ")[1])
-                        self.context.insert(2, '/' + dirr + ' ' + c.split(" ")[1])
-                        self.context.insert(3, '/' + dirr + '/lost\+found' + ' ' + c.split(" ")[1])
-                        break
-
-                for c in self.context:
-                    if re.search('/system/system/build..prop ', c):
-                        self.context.insert(3, '/lost\+found' + ' u:object_r:rootfs:s0')
-                        self.context.insert(4, '/' + dirr + '/' + dirr + '(/.*)? ' + c.split(" ")[1])
-                        break
+                
+                if self.isSAR == True:
+                  self.context.insert(0, '/'+dirr+'/'+' u:object_r:rootfs:s0')
+                  self.context.insert(1, '/'+dirr+'(/.*)? u:object_r:rootfs:s0')
+                if self.isSAR == False:
+                    for c in self.context:
+                        if re.search('^/'+dirr+'/build..prop ', c):
+                            self.context.insert(0, '/' + dirr +'(/.*)? ' + c.split(" ")[1])
+                            break
+                        else:
+                            if re.search('lost..found', c):
+                                self.context.insert(0, '/' + dirr +'(/.*)? ' + c.split(" ")[1])
+                                break
                 self.__appendf('\n'.join(self.context), contexts) #11.05.18
 
     def __converSimgToImg(self, target):
@@ -516,7 +556,7 @@ class Extractor(object):
             total_chunks = header.total_chunks
             if header.file_header_size > EXT4_SPARSE_HEADER_LEN:
                 img_file.seek(header.file_header_size - EXT4_SPARSE_HEADER_LEN, 1)
-            with open(target.replace(".img", ".raw.img"), "wb") as raw_img_file:
+            with open(target.rsplit('.',1)[0] + ".raw.img", "wb") as raw_img_file:
                 sector_base = 82528
                 output_len = 0
                 while total_chunks > 0:
@@ -555,7 +595,7 @@ class Extractor(object):
                                 raw_img_file.write(struct.pack("B", 0) * len_data)
                                 sector_base += sector_size
                     total_chunks -= 1
-        self.OUTPUT_IMAGE_FILE = target.replace(".img", ".raw.img")
+        self.OUTPUT_IMAGE_FILE = target.rsplit('.',1)[0] + ".raw.img"
     
     def fixmoto(self, input_file):
         if os.path.exists(input_file) == False:
@@ -583,8 +623,9 @@ class Extractor(object):
             with open(output_file, 'wb') as o, open(input_file, 'rb') as f:
                 data = f.seek(offset)
                 data = f.read(15360)
-                if data:
+                while data:
                     devnull = o.write(data)
+                    data = f.read(15360)
         try:
                 os.remove(input_file)
                 os.rename(output_file, input_file)
@@ -593,16 +634,16 @@ class Extractor(object):
 
     def checkSignOffset(self, file):
         size=os.stat(file.name).st_size
-        if size <= 52428800:
+        if size <= 15728640:
             mm = mmap.mmap(file.fileno(),0 , access=mmap.ACCESS_READ)
         else:
-            mm = mmap.mmap(file.fileno(),52428800 , access=mmap.ACCESS_READ)  # 52428800=50Mb
+            mm = mmap.mmap(file.fileno(),15728640 , access=mmap.ACCESS_READ)  # 15728640=15Mb
         offset = mm.find(struct.pack('<L', EXT4_HEADER_MAGIC))
         return offset
 
     def __getTypeTarget(self, target):
-        filename, file_extension = os.path.splitext(target)
-        if file_extension == '.img':
+        #filename, file_extension = os.path.splitext(target)
+        #if file_extension == '.img' or file_extension == '.PARTITION':
             with open(target, "rb") as img_file:
                 setattr(self, 'sign_offset', self.checkSignOffset(img_file))
                 if self.sign_offset > 0:
@@ -612,23 +653,23 @@ class Extractor(object):
                     return 'img'
                 else:
                     return 'simg'
+        #else:
+          #print()
+          #print('.....Unpacking a file with: "' + file_extension + '" is not supported!')
+          #print()
+          
 
     def main(self, target, output_dir):
         self.BASE_DIR = (os.path.realpath(os.path.dirname(target)) + os.sep)
-        self.BASE_MYDIR = output_dir + os.sep
+        self.BASE_MYDIR = (sys.argv[2]) + os.sep
         self.EXTRACT_DIR = os.path.realpath(os.path.dirname(output_dir)) + os.sep + self.__file_name(os.path.basename(output_dir)) #output_dir
         self.OUTPUT_IMAGE_FILE = self.BASE_DIR + os.path.basename(target)
         self.OUTPUT_MYIMAGE_FILE = os.path.basename(target)
-        self.MYFileName = os.path.basename(self.OUTPUT_IMAGE_FILE).replace(".img", "")
+        self.MYFileName = os.path.basename(self.OUTPUT_IMAGE_FILE).rsplit('.',1)[0] + ".raw.img"
         self.FileName = self.__file_name(os.path.basename(target))
-        #target_type = self.__getTypeTarget(target)
-        target_type = 'img'
-        if sys.argv.__len__() == 3:
-            self.CONFING_DIR = sys.argv[2] + os.sep + 'config'
-        else:
-            self.CONFING_DIR = 'out' + os.sep + 'config'        
+        target_type = self.__getTypeTarget(target)
         if target_type == 'simg':
-            print(".....Convert %s to %s" % (os.path.basename(target), os.path.basename(target).replace(".img", ".raw.img")))
+            print(".....Convert %s to %s" % (os.path.basename(target), os.path.basename(target).rsplit('.',1)[0] + ".raw.img"))
             self.__converSimgToImg(target)
             with open(os.path.abspath(self.OUTPUT_IMAGE_FILE), 'rb') as f:
                 data = f.read(500000)
@@ -652,9 +693,10 @@ class Extractor(object):
 
 if __name__ == '__main__':
     if sys.argv.__len__() == 3:
-        Extractor().main(sys.argv[1], (sys.argv[2] + os.sep + os.path.basename(sys.argv[1]).split('.')[0]))
+        Extractor().main(sys.argv[1], (sys.argv[2] + os.sep + os.path.basename(sys.argv[1])))
     else:
         if sys.argv.__len__() == 2:
-            if not os.path.isdir("out"):
-                os.makedirs("out")
-            Extractor().main(sys.argv[1], "out" + os.sep + os.path.basename(sys.argv[1]).split('.')[0])
+            Extractor().main(sys.argv[1], os.path.realpath(os.path.dirname(sys.argv[1])) + os.sep + os.path.basename(sys.argv[1]))
+        else:
+            print("Must be at least 1 argument...")
+            sys.exit(1)
