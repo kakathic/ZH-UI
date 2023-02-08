@@ -15,7 +15,7 @@ fi
 mv -f $Home/tmp/*.img $Home/Super 2>/dev/null  
 
 # Chế độ (none/readonly)
-Chedo=$(grep -m1 "Chedo=" $Home/Option.md | awk -F= '{print $2}')
+. Option.md
 #Chedo=none
 
 # Kích cỡ phân vùng super 8.5GB/9GB
