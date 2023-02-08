@@ -5,3 +5,9 @@
 Licham=1
 
 #### Các tùy chọn khác
+
+#### Hỗ trợ: ext4 hoặc erofs. Bỏ trống là mặc định
+Dinhdangphanvung=ext4 
+
+#### Chế độ phân vùng: none hoặc readonly
+Chedo=none 

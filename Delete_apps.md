@@ -55,7 +55,7 @@ BTProductionLineTool
 BasicDreams
 BookmarkProvider
 Browser 
-Calculator
+#Calculator
 Chrome
 CloudPrint2 
 CtsShimPrebuilt
@@ -77,7 +77,7 @@ Lens
 MIFinance
 MIService
 MIUIBrowser
-MIUICalculator
+#MIUICalculator
 MIUICompass
 MIUIDriveMode
 MIUIDuokanReader
