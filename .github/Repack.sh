@@ -15,7 +15,7 @@ fi
 mv -f $Home/tmp/*.img $Home/Super 2>/dev/null  
 
 # Chế độ (none/readonly)
-. Option.md
+. $TOME/Option.md
 #Chedo=none
 
 # Kích cỡ phân vùng super 8.5GB/9GB
