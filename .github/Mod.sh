@@ -4,7 +4,7 @@ TOME="$GITHUB_WORKSPACE"
 . $TOME/Option.md
 
 API=$(sudo grep ro.build.version.sdk= $TOME/tmp/system/system/build.prop | cut -d = -f2)
-[ "$API" -ge 31 ] && m='miui-'
+[[ "$API" -ge "31" ]] && m='miui-'
 # Thư mục chứa tập tin: $TOME/Apk
 [[ -z "$(ls $TOME/Apk)" ]] && echo "- Không có tập tin nào!"  
 # Thư mục chứa apk,jar đã mod: $TOME/Mod
@@ -38,14 +38,14 @@ done
 Repackfile() {
 for bapk in $TOME/Mod/*.*; do
 if [ "${bapk##*.}" == 'apk' ] || [ "${bapk##*.}" == 'jar' ];then
-for bsmali in $(cat ${bapk%.*}/class | sed "s|$TOME/Mod/||g" | cut -d '/' -f2 | sort | uniq); do
+cd ${bapk%.*}
+for bsmali in class*; do
 if [ -e "$bsmali".dex ];then
 rm -fr "$bsmali".dex
 smali a --api $API ${bapk%.*}/$bsmali -o "${bapk%.*}/$bsmali".dex
 fi
 done
 unset bsmali
-cd ${bapk%.*}
 sudo zip -qr $bapk '*.dex'
 zipalign -f 4 $bapk $TOME/Mod/tmp/${bapk##*/}
 cp -rf $TOME/Mod/tmp/${bapk##*/} $bapk
@@ -55,7 +55,7 @@ done
 
 # Copy dữ liệu
 Timfile() {
-sudo cp -f $( sudo find $TOME/tmp/* -name "$1") $TOME/Mod
+sudo cp -af $(sudo find $TOME/tmp -name "$1") $TOME/Mod
 }
 
 # Cài ngôn ngữ
@@ -79,21 +79,46 @@ mkdir -p $TMVH
 cp -af $TOME/VH/apk/* $TMVH
 fi
 
+Dichvu() { 
 Timfile ''$m'services.jar'
-
-# Unpack all
 Unpackfile;
-
-# Xoá Getapps
 Vsmali ".method private checkSystemSelfProtection(Z)V" \
 ".end method" \
 '.method private checkSystemSelfProtection(Z)V
     .locals 1
     return-void
 .end method' \
-''$m'services/classes*/com/miui/server/*'
-
+''$m'services/classes*/com/miui/server/*' 
 Repackfile;
-# kết thúc
+}
 
+Caidat() { 
+Timfile 'Settings.apk'
+Unpackfile;
+sed -i 's/"MIUI "/"MIUID "/g' $TOME/Mod/Settings/classes*/com/android/settings/device/MiuiAboutPhoneUtils.smali >/dev/null 2>&1
+sed -i 's/"by "/" "/g' $TOME/Mod/Settings/classes*/com/android/settings/device/MiuiAboutPhoneUtils.smali >/dev/null 2>&1 
+Repackfile;
+}
 
+Khac() {
+for K in miui-services.jar services.jar Settings.apk; do 
+ sudo cp -af $(sudo find $TOME/tmp -name "$K") $TOME/Mod
+ Unpackfile
+ if [ "$K" == "services.jar" ] || [ "$K" == "miui-services.jar" ]; then 
+# Xoá Getapps
+ Vsmali ".method private checkSystemSelfProtection(Z)V" \
+".end method" \
+'.method private checkSystemSelfProtection(Z)V
+    .locals 1
+    return-void
+.end method' \
+''$m'service/classes*/com/miui/server/*'
+ elif [ "$K" == "Settings.apk" ]; then 
+ sed -i 's/"MIUI "/"MIUID "/g' $TOME/Mod/Settings/classes*/com/android/settings/device/MiuiAboutPhoneUtils.smali >/dev/null 2>&1
+ sed -i 's/"by "/" "/g' $TOME/Mod/Settings/classes*/com/android/settings/device/MiuiAboutPhoneUtils.smali >/dev/null 2>&1 
+ fi 
+ Repackfile
+done 
+}
+Dichvu
+Caidat

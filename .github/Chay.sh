@@ -12,7 +12,6 @@ chmod -R 777 .github/*.sh >/dev/null
 
 echo "▼ Tên máy chủ"
 uname -a
-echo ::set-output name=uname::$(uname -a)
 echo
 
 sudo apt-get update > /dev/null
@@ -61,7 +60,7 @@ Unpack;
 #Mod; 
 #. $TOME/.github/Debloat.sh
 Debloat; 
-#. $TOME/.github/Repack.sh
-Repack; 
+. $TOME/.github/Repack.sh
+#Repack; 
 
 echo "- Kết thúc"
