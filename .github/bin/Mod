@@ -108,99 +108,6 @@ done
 }
 Caidat
 #
-tinhnang() {
-for p in $phanvungtam/product $phanvungtam/system/system $phanvungtam/vendor; do 
- if [ -d $p/etc/device_features ]; then
-  for f in $p/etc/device_features/*.xml; do
-   if [ -z "$(sudo grep -m1 'miui_volume_expand_freeland' $f)" ]; then 
-sudo sed -i '/<\/features>/d' $f
-sudo bash -c "echo '
-<integer name="config_cell_count_y_max">15</integer>
-<integer name="config_cell_count_x_max">15</integer>
-<integer name="support_widevine_l1">1</integer>
-<bool name="support_sound_assist">true</bool>
-<bool name="is_support_video_tool_box">true</bool>
-<bool name="support_videobox_display_effect">true</bool>
-<bool name="miui_volume_expand_freeland">true</bool>
-<bool name="support_main_xiaoai">true</bool>
-<bool name="support_tap_fingerprint_sensor_to_home">true</bool>
-<bool name="support_sign_verify_in_cust">true</bool>
-<bool name="support_lhdc_offload">true</bool>
-<bool name="support_audio_share">true</bool>
-<bool name="support_truetone">true</bool>
-<bool name="is_support_fingerprint_tap">true</bool>
-<bool name="is_support_partial_screenshot">true</bool>
-<bool name="support_google_rsa_protocol">true</bool>
-<bool name="enable_flash_global">true</bool>
-<bool name="support_multi_face_input">true</bool>
-<bool name="support_multi_face_input_global">true</bool>
-<string-array name="support_face_unlock_region_global">
-        <item>ALL</item>
-</string-array>
-<string-array name="support_face_unlock_region_dom">
-        <item>ALL</item>
-</string-array>
-<bool name="support_edgesuppression_with_sensor">true</bool>
-<integer-array name="edge_suppresson_condition"> 
-        <item>50</item>
-        <item>2</item>
-        <item>4</item>
-        <item>6</item>
-        <item>8</item>
-        <item>10</item>
-    </integer-array>
-    <integer-array name="edge_suppresson_absolute">
-        <item>0</item>
-        <item>3</item>
-        <item>5</item>
-        <item>8</item>
-        <item>10</item>
-    </integer-array>
-    <integer-array name="edge_suppresson_corner">
-        <item>150</item>
-        <item>300</item>
-        <item>170</item>
-        <item>170</item>
-    </integer-array>
-    <integer-array name="edge_suppresson_size">
-        <item>12</item>
-        <item>96</item>
-    </integer-array> 
-<bool name="support_SR_for_image_display">true</bool>
-<bool name="support_AI_display">true</bool>
-<bool name="support_nature_mode">true</bool>
-<bool name="support_game_dim">true</bool>
-<bool name="support_high_resolution">true</bool>
-<bool name="support_dc_backlight">true</bool>
-<bool name="support_secret_dc_backlight">false</bool>
-<bool name="support_paper_eyecare">true</bool>
-<bool name="support_decrease_brightness_spec_app">true</bool>
-<bool name="support_led_light">true</bool>
-<bool name="support_led_color">true</bool>
-<bool name="support_android_flashlight">true</bool>
-<bool name="config_sunlight_mode_available">true</bool>
-<bool name="dc_backlight_fps_incompatible">true</bool>
-<bool name="need_remove_expert_primary">false</bool>
-<bool name="need_remove_expert_bright">true</bool>
-<float name="paper_eyecare_default_value">91.0</float>
-<integer name="paper_eyecare_default_texture">25</integer>
-<integer name="paper_eyecare_max_texture">70</integer>
-<bool name="support_smart_fps">true</bool>
-<integer name="smart_fps_value">120</integer> 
-<integer-array name="fpsList">
-        <item>120</item>
-        <item>90</item>
-        <item>60</item>
-    </integer-array>
-<integer name="config_screenBrightnessSettingDefault">100</integer>
-<integer name="config_screenBrightnessSettingMaximum">255</integer>
-<integer name="config_screenBrightnessSettingMinimum">15</integer>
-</features>' >> $f"
-   fi
-  done
- fi
-done
-} 
 
 themcauhinh() { 
 # Thêm file_contexts
@@ -665,35 +572,7 @@ sudo rm -rf $TOME/VH
 fi
 } 
 ngonngu
-#
-if [[ "$HK" == "1" ]]; then echo " * Thêm Harman Kardon..."
-mkdir -p $TOME/tam
-7za x -tzip -y $TOME/.github/HarmanKardon.zip -o$TOME/tam >/dev/null
-sudo cp -af $TOME/tam/system/vendor/* $phanvungtam/vendor 
-sudo rm -rf $TOME/tam
-fi 
-#
-if [[ "$GPU" == "1" ]]; then 
- if [[ "$GPU725V4" == "1" ]]; then 
- Taive "https://github.com/chamchamfy/toolcc/raw/main/AdrenoGPUDriver725V4.zip" "$TOME/AdrenoGPUDriver.zip"
- elif [[ "$GPU725" == "1" ]]; then 
- Taive "https://github.com/chamchamfy/toolcc/raw/main/AdrenoGPUDriver725.zip" "$TOME/AdrenoGPUDriver.zip"
- elif [[ "$GPU615" == "1" ]]; then 
- Taive "https://github.com/chamchamfy/toolcc/raw/main/AdrenoGPUDriver615.zip" "$TOME/AdrenoGPUDriver.zip"
- elif [[ "$GPU651" == "1" ]]; then 
- Taive "https://github.com/chamchamfy/toolcc/raw/main/AdrenoGPUDriver651.zip" "$TOME/AdrenoGPUDriver.zip"
- fi 
-if [[ -s "$TOME/AdrenoGPUDriver.zip" ]]; then echo " * Thêm Adreno GPU Driver..."
-mkdir -p $TOME/tam
-7za x -tzip -y $TOME/AdrenoGPUDriver.zip -o$TOME/tam >/dev/null
-sudo cp -af $TOME/tam/system/vendor/* $phanvungtam/vendor 
-sudo rm -rf $TOME/tam $TOME/AdrenoGPUDriver.zip
-fi 
-fi 
-#
-#
-[[ "$tenmamay" == "vili" ]] && sudo cp -af $TOME/.github/libpy/input/* $phanvungtam || tinhnang
-#
+
 #
 if [[ "$twrp" == "1" ]]; then echo " * Thêm BOOT TWRP $tenmamay..."
  mkdir -p $TOME/twrp
