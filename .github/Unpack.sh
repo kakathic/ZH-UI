@@ -1,2 +1,0 @@
-#chamchamfy
-#kakathic

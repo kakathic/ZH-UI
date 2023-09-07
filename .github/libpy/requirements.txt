@@ -1,0 +1,3 @@
+pycryptodome
+docopt
+protobuf<=3.20.1

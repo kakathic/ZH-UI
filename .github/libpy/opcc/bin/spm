@@ -1,0 +1,229 @@
+#!/system/bin/sh
+#Code by chamchamfy
+setprop spectrum.support 1
+ghi() { chmod "$1" "$4"; echo "$2" > "$4"; chmod "$3" "$4"; } 
+
+if [ -f /sdcard/.ccs ]; then ccs=/sdcard/.ccs; elif [ -f /storage/emulated/0/.ccs ]; then ccs=/storage/emulated/0/.ccs; elif [ -f /storage/self/primary/.ccs ]; then ccs=/storage/self/primary/.ccs; elif [ -f /data/media/0/.ccs ]; then ccs=/data/media/0/.ccs; fi 
+
+if [ -f $ccs ]; then 
+GPU=$(grep 'GPU' $ccs | awk -F= '{print $2}'); 
+Governor=$(grep 'Governor' $ccs | awk -F= '{print $2}'); 
+ZRam=$(grep 'ZRam' $ccs | awk -F= '{print $2}');
+else 
+GPU='1'
+Governor='powersave'
+ZRam='2'
+fi 
+
+bat() {
+# User 
+settings put system miui_home_double_tap_to_lock 1
+settings put global GPUTUNER_SWITCH true
+settings put global sys_uidcpupower true
+settings put global sysui_powerui_enabled true
+settings put global screen_enhance_engine_gallery_ai_mode_status true
+settings put global settings_network_and_internet_v2 true
+settings put secure vtb_boosting 1
+settings put system link_turbo_option 1
+settings put global SUPPORT_UGD true
+settings put secure in_call_notification_enabled 1
+settings put secure qs_media_resumption 0
+}
+
+tuychinh() { 
+# IO_Scheduler
+for blk in mmcblk0 mmcblk0rpmb sda sdb sdc sdd sde sdf; do 
+if [ -e $blk ]; then 
+ghi "777" "noop" "644" "/sys/block/$blk/queue/scheduler"
+ghi "777" "512" "644" "/sys/block/$blk/queue/read_ahead_kb"
+ghi "777" "64" "644" "/sys/block/$blk/queue/nr_requests"
+ghi "777" "0" "644" "/sys/block/$blk/queue/iostats"
+fi 
+done 
+
+# ZRam=2
+chmod 777 /dev/block/zram0
+swapoff /dev/block/zram0
+ghi "777" "1" "644" "/sys/block/zram0/reset"
+ghi "777" "1" "644" "/sys/devices/virtual/block/zram0/reset"
+ghi "777" "0" "644" "/sys/block/zram0/mem_limit"
+ghi "777" "lz4" "644" "/sys/block/zram0/comp_algorithm"
+ghi "777" "8" "644" "/sys/block/zram0/max_comp_streams"
+ghi "777" "$(($ZRam*1024))M" "644" "/sys/block/zram0/disksize"
+mkswap /dev/block/zram0
+swapon /dev/block/zram0 
+chmod 644 /dev/block/zram0
+
+# Performance
+ghi "777" "1024" "644" "/sys/devices/virtual/bdi/8:0/read_ahead_kb"
+ghi "777" "1024" "644" "/sys/devices/virtual/bdi/8:16/read_ahead_kb"
+ghi "777" "1024" "644" "/sys/devices/virtual/bdi/8:32/read_ahead_kb"
+ghi "777" "1024" "644" "/sys/devices/virtual/bdi/8:48/read_ahead_kb"
+ghi "777" "1024" "644" "/sys/devices/virtual/bdi/8:64/read_ahead_kb"
+ghi "777" "1024" "644" "/sys/devices/virtual/bdi/8:80/read_ahead_kb"
+ghi "777" "1024" "644" "/sys/devices/virtual/bdi/8:80/read_ahead_kb"
+ghi "777" "1024" "644" "/sys/devices/virtual/bdi/8:80/read_ahead_kb"
+
+# Policy
+if [ -e /sys/devices/system/cpu/cpufreq/policy7 ]; then policy=policy7; cpu=cpu7; elif [ -e /sys/devices/system/cpu/cpufreq/policy6 ]; then policy=policy6; cpu=cpu6; else policy=policy4; cpu=cpu4; fi 
+
+# Config
+if [ "$GPU" = "1" ]; then 
+ghi "777" "115000" "644" "/sys/class/thermal/thermal_zone32/trip_point_0_temp"
+ghi "777" "115000" "644" "/sys/class/thermal/thermal_zone33/trip_point_0_temp"
+ghi "777" "schedutil" "644" "/sys/devices/system/cpu/cpufreq/policy0/scaling_governor"
+ghi "777" "schedutil" "644" "/sys/devices/system/cpu/cpufreq/$policy/scaling_governor"
+ghi "777" "90" "644" "/sys/devices/system/cpu/cpufreq/$policy/schedutil/hispeed_load"
+ghi "777" "1401600" "644" "/sys/devices/system/cpu/cpufreq/$policy/schedutil/hispeed_freq"
+ghi "777" "2420000" "644" "/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq"
+ghi "777" "300000" "644" "/sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq"
+ghi "777" "2840000" "644" "/sys/devices/system/cpu/cpufreq/$policy/scaling_max_freq"
+ghi "777" "825600" "644" "/sys/devices/system/cpu/cpufreq/$policy/scaling_min_freq"
+ghi "777" "0:1305600 1:0 2:0 3:0 4:0 5:0 6:0 7:0" "/sys/devices/system/cpu/cpu_boost/input_boost_freq"
+ghi "777" "0" "644" "/sys/devices/system/cpu/cpu_boost/input_boost_ms"
+ghi "777" "0" "644" "/sys/devices/system/cpu/cpu_boost/sched_boost_on_input"
+ghi "777" "0" "644" "/sys/class/kgsl/kgsl-3d0/thermal_pwrlevel"
+ghi "777" "0" "644" "/sys/class/kgsl/kgsl-3d0/throttling"
+ghi "777" "0" "644" "/sys/class/kgsl/kgsl-3d0/max_pwrlevel"
+ghi "777" "0" "644" "/sys/class/kgsl/kgsl-3d0/perfcounter"
+ghi "777" "0" "644" "/sys/class/kgsl/kgsl-3d0/force_bus_on"
+ghi "777" "1" "644" "/sys/class/kgsl/kgsl-3d0/force_clk_on"
+ghi "777" "1" "644" "/sys/class/kgsl/kgsl-3d0/force_rail_on"
+ghi "777" "1" "644" "/sys/class/kgsl/kgsl-3d0/force_no_nap"
+ghi "777" "1" "644" "/sys/class/kgsl/kgsl-3d0/bus_split"
+ghi "777" "0" "644" "/sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost"
+ghi "777" "$Governor" "644" "/sys/class/kgsl/kgsl-3d0/devfreq/governor"
+ghi "777" "850000000" "644" "/sys/class/kgsl/kgsl-3d0/devfreq/max_freq"
+ghi "777" "315000000" "644" "/sys/class/kgsl/kgsl-3d0/devfreq/min_freq"
+ghi "777" "315000000" "644" "/sys/class/kgsl/kgsl-3d0/gpuclk"
+ghi "777" "850000000" "644" "/sys/class/kgsl/kgsl-3d0/max_gpuclk"
+ghi "777" "10000000" "644" "/sys/class/kgsl/kgsl-3d0/idle_timer"
+ghi "777" "850" "644" "/sys/class/kgsl/kgsl-3d0/max_clock_mhz"
+ghi "777" "315" "644" "/sys/class/kgsl/kgsl-3d0/min_clock_mhz"
+fi  
+}
+
+
+gobo() {
+rm -rf /data/data/*/app_analytics /data/*/*analytics* /data/miui/pai /system/*/*auto-install*.json 
+Danhsach="com.facebook.appmanager com.facebook.system com.facebook.services com.miui.analytics com.miui.systemAdSolution com.miui.msa com.miui.msa.global com.xiaomi.glgm com.mipay.wallet.in com.xiaomi.payment org.mipay.android.manager com.xiaomi.ab com.miui.voiceassist com.miui.voicetrigger com.unionpay.tsmservice.mi com.xiaomi.payment com.xiaomi.aireco com.mobiletools.systemhelper com.xiaomi.shop com.miui.smarttravel com.xiaomi.jr com.xiaomi.youpin com.xiaomi.vipaccount com.miui.virtualsim com.miui.contentextension com.xiaomi.aiasst.service com.android.quicksearchbox com.xiaomi.aiasst.vision com.miui.tsmclient com.miui.nextpay com.sohu.inputmethod.sogou.xiaomi com.iflytek.inputmethod.miui com.baidu.input_mi com.android.browser com.miui.videoplayer com.miui.player com.xiaomi.drivemode com.xiaomi.gamecenter.sdk.service com.xiaomi.macro" 
+for ten in $Danhsach; do pm uninstall -k --user 0 $ten; done 
+pm disable com.google.android.gms/.chimera.GmsIntentOperationService
+pm disable com.miui.powerkeeper/.statemachine.PowerStateMachineService
+pm disable com.miui.powerkeeper/com.miui.powerkeeper.statemachine.PowerStateMachineService
+for ten in $Danhsach; do pm disable $ten; done 
+} 
+
+tinhnang() {
+for p in product system vendor; do 
+ if [ -d /$p/etc/device_features ]; then
+  for f in /$p/etc/device_features/*.xml; do
+   if [ -z "$(grep -m1 'miui_volume_expand_freeland' $f)" ]; then 
+sed -i '/<\/features>/d' $f
+echo '
+<integer name="config_cell_count_y_max">15</integer>
+<integer name="config_cell_count_x_max">15</integer>
+<integer name="support_widevine_l1">2</integer>
+<bool name="support_sound_assist">true</bool>
+<bool name="is_support_video_tool_box">true</bool>
+<bool name="support_videobox_display_effect">true</bool>
+<bool name="miui_volume_expand_freeland">true</bool>
+<bool name="support_main_xiaoai">true</bool>
+<bool name="support_tap_fingerprint_sensor_to_home">true</bool>
+<bool name="support_sign_verify_in_cust">true</bool>
+<bool name="support_lhdc_offload">true</bool>
+<bool name="support_audio_share">true</bool>
+<bool name="support_truetone">true</bool>
+<bool name="is_support_fingerprint_tap">true</bool>
+<bool name="is_support_partial_screenshot">true</bool>
+<bool name="support_google_rsa_protocol">true</bool>
+<bool name="enable_flash_global">true</bool>
+<bool name="support_multi_face_input">true</bool>
+<bool name="support_multi_face_input_global">true</bool>
+<string-array name="support_face_unlock_region_global">
+        <item>ALL</item>
+</string-array>
+<string-array name="support_face_unlock_region_dom">
+        <item>ALL</item>
+</string-array>
+<bool name="support_edgesuppression_with_sensor">true</bool>
+<integer-array name="edge_suppresson_condition"> 
+        <item>50</item>
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+    </integer-array>
+    <integer-array name="edge_suppresson_absolute">
+        <item>0</item>
+        <item>3</item>
+        <item>5</item>
+        <item>8</item>
+        <item>10</item>
+    </integer-array>
+    <integer-array name="edge_suppresson_corner">
+        <item>150</item>
+        <item>300</item>
+        <item>170</item>
+        <item>170</item>
+    </integer-array>
+    <integer-array name="edge_suppresson_size">
+        <item>12</item>
+        <item>96</item>
+    </integer-array> 
+<bool name="support_SR_for_image_display">true</bool>
+<bool name="support_AI_display">true</bool>
+<bool name="support_nature_mode">true</bool>
+<bool name="support_game_dim">true</bool>
+<bool name="support_high_resolution">true</bool>
+<bool name="support_dc_backlight">true</bool>
+<bool name="support_secret_dc_backlight">false</bool>
+<bool name="support_paper_eyecare">true</bool>
+<bool name="support_decrease_brightness_spec_app">true</bool>
+<bool name="support_led_light">true</bool>
+<bool name="support_led_color">true</bool>
+<bool name="support_android_flashlight">true</bool>
+<bool name="config_sunlight_mode_available">true</bool>
+<bool name="dc_backlight_fps_incompatible">true</bool>
+<bool name="need_remove_expert_primary">false</bool>
+<bool name="need_remove_expert_bright">true</bool>
+<float name="paper_eyecare_default_value">91.0</float>
+<integer name="paper_eyecare_default_texture">25</integer>
+<integer name="paper_eyecare_max_texture">70</integer>
+<bool name="support_smart_fps">true</bool>
+<integer name="smart_fps_value">120</integer> 
+<integer-array name="fpsList">
+        <item>120</item>
+        <item>90</item>
+        <item>60</item>
+    </integer-array>
+<integer name="config_screenBrightnessSettingDefault">100</integer>
+<integer name="config_screenBrightnessSettingMaximum">255</integer>
+<integer name="config_screenBrightnessSettingMinimum">15</integer>
+</features>' >> $f
+   fi
+  done
+ fi
+done
+} 
+
+chaynen() { 
+Danhsach="com.facebook.katana com.facebook.orca org.telegram.messenger com.zing.zalo"
+dumpsys deviceidle disable
+for Ten in $Danhsach; do
+appops start $Ten 10008
+appops set $Ten 10008 allow
+appops set $Ten 10021 allow
+appops set $Ten RUN_IN_BACKGROUND allow
+appops set $Ten RUN_ANY_IN_BACKGROUND allow
+appops set $Ten START_FOREGROUND allow 
+done
+}
+
+# Tùy_Chọn
+bat
+tuychinh 
+gobo
+tinhnang 
+#chaynen 

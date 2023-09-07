@@ -1,0 +1,59 @@
+#!/bin/bash
+TOME="$GITHUB_WORKSPACE"
+cd $TOME/Super
+for m in system.img vendor.img product.img system_ext.img; do sudo mkdir -p /mnt/diem/${m%/*}; [[ -s "$m" ]] && sudo mount -w -t auto $TOME/Super/$m /mnt/diem/${m%/*}; done 
+khoichay() {
+if [[ -n "$(echo "$URL" | grep 'CNXM')" ]]; then 
+ Taive "https://sourceforge.net/projects/nikgapps/files/Releases/NikGapps-T/16-Jul-2023/NikGapps-basic-arm64-13-20230716-signed.zip" "$TOME/gapp.zip"
+ if [[ -s "$TOME/gapp.zip" ]]; then echo " * Thêm Gói Gapp..."
+ mkdir -p $TOME/gapp $TOME/tam
+ 7za x -tzip -y $TOME/gapp.zip -o$TOME/tam >/dev/null
+ [[ $? -ne 0 ]] && unzip -qo $TOME/gapp.zip -d $TOME/tam
+ for f in $TOME/tam/AppSet/CarrierServices/*.zip $TOME/tam/AppSet/Core/*.zip; do 
+ 7za x -tzip -y $f -o$TOME/gapp >/dev/null
+ [[ $? -ne 0 ]] && unzip -qo $f -d $TOME/gapp
+ done
+ for t in $TOME/gapp/*/*; do
+  if [[ -d $t ]]; then 
+   t1=$(echo $t | awk -F___ '{print $2}')
+   t2=$(echo $t | awk -F___ '{print $3}')
+   t3=$(echo $t | awk -F___ '{print $4}')
+   t4=$(echo $t | awk -F___ '{print $5}')
+   t5=$(echo $t | awk -F___ '{print $6}')
+   tm="/mnt/diem/product/$t1/$t2/$t3/$t4/$t5"
+   sudo mkdir -p $tm
+   sudo cp -af $t/* $tm
+  fi
+ done
+ sudo rm -rf $TOME/tam $TOME/gapp $TOME/gapp.zip
+ fi
+ Taive "https://sourceforge.net/projects/toolkudotwrp/files/kudo/MiuiMod14.zip" "$TOME/appm.zip"
+ if [[ -s "$TOME/appm.zip" ]]; then echo " * Thêm App Mod..."
+ mkdir -p $TOME/tam
+ 7za x -tzip -y $TOME/appm.zip -o$TOME/tam >/dev/null
+ [[ $? -ne 0 ]] && unzip -qo $TOME/appm.zip -d $TOME/tam
+ for a in $TOME/tam/product/app/*; do 
+ tm=${a//miui/MIUI}; ttm=${a##*/}; tmm=${ttm//miui/MIUI}; 
+ sudo mv -f $a $tm 2>/dev/null
+ sudo mv -f $tm/$ttm.apk $tm/$tmm.apk 2>/dev/null
+ done
+ 
+ sudo mv -f $TOME/tam/product/app/FileExplorer $TOME/tam/product/app/MIUIFileExplorer 2>/dev/null
+ sudo mv -f $TOME/tam/product/app/MIUIFileExplorer/FileExplorer.apk $TOME/tam/product/app/MIUIFileExplorer/MIUIFileExplorer.apk 2>/dev/null
+ sudo mv -f $TOME/tam/product/priv-app/MiuiGallery $TOME/tam/product/app/Gallery_T_CN 2>/dev/null
+ sudo mv -f $TOME/tam/product/priv-app/Gallery_T_CN/MiuiGallery.apk $TOME/tam/product/app/Gallery_T_CN/Gallery_T_CN.apk 2>/dev/null
+  sudo cp -af $TOME/tam/product/*app /mnt/diem/product 2>/dev/null
+ sudo cp -af $TOME/tam/vendor/*app /mnt/diem/vendor 2>/dev/null
+ sudo cp -af $TOME/tam/system_ext/*app /mnt/diem/system_ext 2>/dev/null
+ sudo cp -af $TOME/tam/system/*app /mnt/diem/system/system 2>/dev/null
+  sudo rm -rf $TOME/tam $TOME/appm.zip
+ fi
+ for i in system/system vendor product system_ext; do sudo cd /mnt/diem/$i && Phanquyen; done 
+fi
+}
+#khoichay
+umount /mnt/diem/product 2>/dev/null
+umount /mnt/diem/system 2>/dev/null
+umount /mnt/diem/system_ext 2>/dev/null
+umount /mnt/diem/vendor 2>/dev/null
+#

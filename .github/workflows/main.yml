@@ -1,23 +1,21 @@
-name: REBUILD Rom MIUI by chamchamfy & kakathic
+name: REBUILD Rom MIUI
 on: 
   workflow_dispatch:
     inputs:
       URL:
         description: 'Hãy điền đường dẫn url của link rom để tải xuống'
         required: true
-        default: 'https://bigota.d.miui.com/V13.0.7.0.SKHCNXM/miui_ALIOTH_V13.0.7.0.SKHCNXM_98b397a7dc_12.0.zip'
+        default: 'https://bigota.d.miui.com/V14.0.2.0.TKDMIXM/miui_VILIGlobal_V14.0.2.0.TKDMIXM_a419b72ee9_13.0.zip'
       SIZE:
-        description: 'Kích cỡ phân vùng super'
+        description: 'Kích cỡ phân vùng super: 8.5GB | 9GB | 9.5GB'
         required: true
         default: '8.5'
-      NNTV:
-        description: 'Ngôn ngữ dành riêng cho khu vực'
-        required: true
-        default: 'Viet_Nam'
         type: choice
         options:
-          - Viet_Nam
-          - Global
+         - 8.5
+         - 9
+         - 9.5
+          
 jobs:
   build:
     name: 'Xem quá trình...'
@@ -29,13 +27,12 @@ jobs:
         env:
           URL: ${{ inputs.URL }}
           SIZE: ${{ inputs.SIZE }}
-          NNTV: ${{ inputs.NNTV }}
         run: |
           # Rom Rebuild 
-          bash .github/Chay.sh
+          bash .github/Chay.sh    
       - uses: actions/upload-artifact@v3
         with:
-          name: ZH-UI_${{ env.TENZ }}
-          path: .github/lib/Flash_2in1/*
-          retention-days: 2
+          name: RROM_${{ env.TENZ }}
+          path: .github/libpy/Flash2in1/*
+          retention-days: 3
      
