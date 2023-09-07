@@ -32,6 +32,7 @@
 #PersonalAssistant
 #Weather 
 #Wellbeing
+#ANGLE
 AiAsstVision
 AiAsstVision_L2
 AiAsstVision_8550
@@ -54,6 +55,7 @@ DynamicSystemInstallationService
 EasterEgg
 Email 
 FusedLocationProvider
+#FamilyLinkParentalControls
 GameCenter
 GameCenterGlobal
 Gmail2
@@ -67,6 +69,7 @@ HybridPlatform
 KSICibaEngine 
 MIBrowserGlobal 
 MIBrowserGlobal_removable
+MIBrowserGlobal_builtin_before_2021
 MICOMMUNITY_OVERSEA
 MIFinance
 MIPlayClient
@@ -77,6 +80,7 @@ MITSMClient
 MIUIAICR
 MIUIAiasstService
 MIUIBrowser
+#MIUIBarrage
 #MIUIBarrageV2
 MIUIDriveMode
 MIUIDuokanReader
@@ -112,6 +116,7 @@ MSA
 MSA-Global
 Magisk
 Maps
+Meet
 MarkupGoogle 
 MiBrowser
 MiBugReport
